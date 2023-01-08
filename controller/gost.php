@@ -6,11 +6,6 @@ include("model/slike_DB.php");
 include("model/radionice_DB.php");
 
 class Gost {
-    public static function index() {
-        include("view/header_pocetna.php");
-        include("view/prijava.php");
-        include("view/footer.php");
-    }
     public static function radionice() {
         $radionice = Radionice_DB::get_sve_radionice();
         include("view/header_pocetna.php");
@@ -23,11 +18,13 @@ class Gost {
         include("view/footer.php");
     }
     public static function zaboravljena_lozinka() {
+        // TODO: dodati greske
         include("view/header_pocetna.php");
         include("view/zaboravljena_lozinka.php");
         include("view/footer.php");
     }
     public static function registracija() {
+        // TODO: dodati greske
         include("view/header_pocetna.php");
         include("view/registracija.php");
         include("view/footer.php");
@@ -107,16 +104,25 @@ class Gost {
     public static function dodaj_sliku($slika, $kor_ime) {
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         $idK = $korisnik["idK"];
-        // TODO: dodati provere
         $putanja = "db_files/korisnici/".$idK;
         if (!is_uploaded_file($slika)){
-            return;
+            return false;
         }
+        $a = getimagesize($path);
+        $image_type = $a[2];
+        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_JPG))) {
+            return false;
+        }
+
         mkdir($putanja);
         $putanja .= "/profilna";
-        move_uploaded_file($slika, $putanja);
+        $tmp = move_uploaded_file($slika, $putanja);
+        if (!$tmp) {
+            return false;
+        }
         SlikeDB::dodaj_sliku($putanja);
         KorisniciDB::dodaj_sliku($idK);
+        return true;
     }
     
     public static function registracija_ucesnika() {
@@ -162,7 +168,10 @@ class Gost {
         $uspeh = KorisniciDB::dodaj_ucesnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl);
         if ($_FILES["slika"]["error"] == 0 && $uspeh) {
             $slika = $_FILES["slika"]["tmp_name"];
-            Gost::dodaj_sliku($slika, $kor_ime);
+            $tmp = Gost::dodaj_sliku($slika, $kor_ime);
+            if (!$tmp) {
+                echo "Greška: Greška pri učitavanju slike";
+            }
         }
     }
     
@@ -217,7 +226,10 @@ class Gost {
                 $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj);
         if ($_FILES["slika"]["error"] == 0 && $uspeh) {
             $slika = $_FILES["slika"]["tmp_name"];
-            Gost::dodaj_sliku($slika, $kor_ime);
+            $tmp = Gost::dodaj_sliku($slika, $kor_ime);
+            if (!$tmp) {
+                echo "Greška: Greška pri učitavanju slike";
+            }
         }
     }
     

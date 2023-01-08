@@ -21,7 +21,7 @@ class Organizator {
     public static function dodaj_radionicu() {
         // TODO: Dodati provere ima ih puno
         $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
-        $datum = filter_input(INPUT_POST, "datum", FILTER_SANITIZE_STRING);
+        $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
         $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
         $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
         $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);

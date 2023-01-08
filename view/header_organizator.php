@@ -19,7 +19,7 @@
                                 <a href="routes.php?akcija=moje_radionice&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">moje radionice</div></a>
                             </div>
                             <div class="row p-2">
-                                <a href="routes.php?akcija=dodaj_radionicu&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">dodaj radionicu</div></a>
+                                <a href="routes.php?akcija=dodavanje_radionice&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">dodaj radionicu</div></a>
                             </div>
                         </div>
                         <div class="col-10">

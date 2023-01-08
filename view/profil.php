@@ -15,6 +15,9 @@
     </div>
     
     <div class="col-12" id="podaci_div">
+        <div class=" row justify-content-center j-greska">
+            <?= $greska?>
+        </div>
         <form name="form1" action="routes.php" method="get">
             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke">
             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">

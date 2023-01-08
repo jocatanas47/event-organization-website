@@ -11,6 +11,19 @@ class Radionice_DB {
         return $radionice;
     }
     
+    public static function get_radionice_po_mesto($mesto) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT *"
+                . " FROM radionice"
+                . " WHERE mesto=:mesto";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":mesto", $mesto);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    
     public static function dodaj_radionicu($naziv, $datum, $mesto, $opis_kratki, 
             $opis_dugi, $max_broj_posetilaca, $idO) {
         $db = Baza::getInstanca();

@@ -27,7 +27,7 @@ function zovi($kontroler, $akcija) {
 
 session_start();
 
-$kontroleri = array("gost" => ["index", "prijava", "registracija", 
+$kontroleri = array("gost" => ["prijava", "registracija", 
                                 "registracija_ucesnika", "registracija_organizatora",
                                 "greska", "test", "zaboravljena_lozinka", "prijavi_se",
                                 "resetuj_lozinku", "radionice"],

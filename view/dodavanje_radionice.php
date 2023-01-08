@@ -13,7 +13,7 @@
                         </tr>
                         <tr>
                             <td>datum:</td>
-                            <td><input type="text" name="datum" required></td>
+                            <td><input type="datetime-local" name="datum" required></td>
                         </tr>
                         <tr>
                             <td>mesto:</td>
