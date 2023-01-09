@@ -24,6 +24,47 @@ class Radionice_DB {
         return $radionice;
     }
     
+    public static function get_radionice_po_naziv($naziv) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT *"
+                . " FROM radionice"
+                . " WHERE (lower(naziv) LIKE lower(:naziv))";
+        $iskaz = $db->prepare($upit);
+        $naziv .= "%";
+        $iskaz->bindValue(":naziv", $naziv);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    
+    public static function get_radionice_po_mesto_i_naziv($mesto, $naziv) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT *"
+                . " FROM radionice"
+                . " WHERE (lower(naziv) LIKE lower(:naziv)"
+                . " AND mesto=:mesto)";
+        $iskaz = $db->prepare($upit);
+        $naziv .= "%";
+        $iskaz->bindValue(":naziv", $naziv);
+        $iskaz->bindValue(":mesto", $mesto);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    
+    public static function get_mesta() {
+        $db = Baza::getInstanca();
+        $upit = "SELECT DISTINCT mesto"
+                . " FROM radionice";
+        $iskaz = $db->prepare($upit);
+        $iskaz->execute();
+        $mesta = $iskaz->fetchAll(PDO::FETCH_COLUMN);
+        $iskaz->closeCursor();
+        return $mesta;
+    }
+    
     public static function dodaj_radionicu($naziv, $datum, $mesto, $opis_kratki, 
             $opis_dugi, $max_broj_posetilaca, $idO) {
         $db = Baza::getInstanca();

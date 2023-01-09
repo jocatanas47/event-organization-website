@@ -6,27 +6,50 @@ include("model/slike_DB.php");
 include("model/radionice_DB.php");
 
 class Gost {
-    public static function radionice() {
-        $radionice = Radionice_DB::get_sve_radionice();
-        include("view/header_pocetna.php");
-        include("view/radionice.php");
+    public static function radionice($radionice=NULL) {
+        if ($radionice == NULL) {
+            $radionice = Radionice_DB::get_sve_radionice();
+        }
+        $mesta = Radionice_DB::get_mesta();
+        include("view/gost/header_pocetna.php");
+        include("view/gost/radionice.php");
         include("view/footer.php");
     }
+    public static function filtriraj_radionice() {
+        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        if ($mesto == "izaberite mesto" && $naziv == "") {
+            Gost::radionice();
+        }
+        if ($mesto != "izaberite mesto" && $naziv == "") {
+            $radionice = Radionice_DB::get_radionice_po_mesto($mesto);
+            Gost::radionice($radionice);
+        }
+        if ($mesto == "izaberite mesto" && $naziv != "") {
+            $radionice = Radionice_DB::get_radionice_po_naziv($naziv);
+            Gost::radionice($radionice);
+        }
+        if ($mesto != "izaberite mesto" && $naziv != "") {
+            $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
+            Gost::radionice($radionice);
+        }
+        
+    }
     public static function prijava($greska=NULL) {
-        include("view/header_pocetna.php");
-        include("view/prijava.php");
+        include("view/gost/header_pocetna.php");
+        include("view/gost/prijava.php");
         include("view/footer.php");
     }
     public static function zaboravljena_lozinka() {
         // TODO: dodati greske
-        include("view/header_pocetna.php");
-        include("view/zaboravljena_lozinka.php");
+        include("view/gost/header_pocetna.php");
+        include("view/gost/zaboravljena_lozinka.php");
         include("view/footer.php");
     }
     public static function registracija() {
         // TODO: dodati greske
-        include("view/header_pocetna.php");
-        include("view/registracija.php");
+        include("view/gost/header_pocetna.php");
+        include("view/gost/registracija.php");
         include("view/footer.php");
     }
     

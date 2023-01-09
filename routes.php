@@ -30,8 +30,9 @@ session_start();
 $kontroleri = array("gost" => ["prijava", "registracija", 
                                 "registracija_ucesnika", "registracija_organizatora",
                                 "greska", "test", "zaboravljena_lozinka", "prijavi_se",
-                                "resetuj_lozinku", "radionice"],
-                    "korisnik" => ["profil", "azuriraj_podatke", "promeni_lozinku", "radionice"],
+                                "resetuj_lozinku", "radionice", "filtriraj_radionice"],
+                    "korisnik" => ["profil", "azuriraj_podatke", "promeni_lozinku", "radionice",
+                                    "filtriraj_radionice"],
                     "organizator" => ["radionice", "moje_radionice", "dodavanje_radionice",
                                 "dodaj_radionicu"]);
 

@@ -14,8 +14,8 @@ class Organizator {
         
     }
     public static function dodavanje_radionice($greska=NULL) {
-        include("view/header_organizator.php");
-        include("view/dodavanje_radionice.php");
+        include("view/organizator/header_organizator.php");
+        include("view/organizator/dodavanje_radionice.php");
         include("view/footer.php");
     }
     public static function dodaj_radionicu() {

@@ -3,6 +3,7 @@
 include("model/baza.php");
 include("model/korisnici_DB.php");
 include("model/slike_DB.php");
+include("model/radionice_DB.php");
 
 class Korisnik {
     
@@ -16,8 +17,18 @@ class Korisnik {
             $profilna = False;
         }
         
-        include("view/header_ucesnik.php");
-        include("view/profil.php");
+        include("view/korisnik/header_ucesnik.php");
+        include("view/korisnik/profil.php");
+        include("view/footer.php");
+    }
+    
+    public static function radionice($radionice=NULL) {
+        if ($radionice == NULL) {
+            $radionice = Radionice_DB::get_sve_radionice();
+        }
+        $mesta = Radionice_DB::get_mesta();
+        include("view/korisnik/header_ucesnik.php");
+        include("view/korisnik/radionice.php");
         include("view/footer.php");
     }
     

@@ -88,14 +88,14 @@
         </form>
     </div>
     
-    <div class="col-12" >
-        <div id="radionice_div" style="display:none">
+    <div class="col-12" id="radionice_div" style="display:none">
+        <div>
             aa
         </div>
     </div>
         
-    <div class="col-12">
-        <div id="akcije_div" style="display:none">
+    <div class="col-12" id="akcije_div" style="display:none">
+        <div>
             bb
         </div>
     </div>

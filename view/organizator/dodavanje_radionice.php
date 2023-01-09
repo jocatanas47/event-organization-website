@@ -1,4 +1,9 @@
 <div class="row content">
+    <div class="row justify-content-center">
+        <div class="col-8 text-center j-greska">
+            <?= $greska ?>
+        </div>
+    </div>
     <div class="col-12" id="podaci">
         <form name="form1" action="routes.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="akcija" id="akcija" value="dodaj_radionicu">

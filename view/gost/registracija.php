@@ -17,7 +17,7 @@
             </div>
             <br>
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-5">
                     <table class="table table-hover">
                         <tr>
                             <td>ime:*</td>
@@ -49,7 +49,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-6" id="org_opcioni">
+                <div class="col-5" id="org_opcioni">
                     <table class="table table-hover">
                         <tr>
                             <td>naziv organizacije:</td>
