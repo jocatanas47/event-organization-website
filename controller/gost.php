@@ -93,18 +93,43 @@ class Gost {
         include("view/footer.php");
     }
     public static function dodaj_sliku($slika, $kor_ime) {
+        // TODO: AJAX ko zna sta se salje kao slika nemam pojma
+        
+        
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         $idK = $korisnik["idK"];
-        $putanja = "db_files/korisnici/".$idK;
+        
+        if ($slika["error"] != 0) {
+            // nije poslata slika - ok je
+            return true;
+        }
+        
+        $flag = getimagesize($slika["tmp_name"]);
+        if (!$flag) {
+            return false;
+        }
+        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
+        // TODO: popraviti to
+        /*$a = getimagesize($slika["tmp_name"]);
+        $image_type = $a[2];
+        
+        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+            return false;
+        }*/
+        list($width, $height) = getimagesize($slika["tmp_name"]);
+        if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
+            return false;
+        }
+        
+        $slika = $slika["tmp_name"];
         if (!is_uploaded_file($slika)){
             return false;
         }
-        $a = getimagesize($path);
-        $image_type = $a[2];
-        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_JPG))) {
-            return false;
+        
+        $putanja = "db_files/korisnici/".$idK;
+        if (!is_dir($putanja)) {
+            mkdir($putanja);
         }
-        mkdir($putanja);
         $putanja .= "/profilna";
         $tmp = move_uploaded_file($slika, $putanja);
         if (!$tmp) {
@@ -139,7 +164,7 @@ class Gost {
         if (isset($_FILES['slika'])) {
             list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
             if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
-                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100 do 300x300)";
+                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
             }
         }
         if (KorisniciDB::get_korisnika_po_kor_ime($kor_ime)) {
@@ -155,8 +180,8 @@ class Gost {
         }
        
         $uspeh = KorisniciDB::dodaj_ucesnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl);
-        if (isset($_FILES["slika"]) && $uspeh) {
-            $slika = $_FILES["slika"]["tmp_name"];
+        if ($uspeh && $_FILES["slika"]["error"] == 0) {
+            $slika = $_FILES["slika"];
             $tmp = Gost::dodaj_sliku($slika, $kor_ime);
             if (!$tmp) {
                 echo "Greška: Greška pri učitavanju slike";
@@ -196,7 +221,7 @@ class Gost {
         if (isset($_FILES["slika"])) {
             list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
             if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
-                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100 do 300x300)";
+                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
             }
         }
         if (KorisniciDB::get_korisnika_po_kor_ime($kor_ime)) {
@@ -213,8 +238,8 @@ class Gost {
         
         $uspeh = KorisniciDB::dodaj_organizatora($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl,
                 $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj);
-        if (isset($_FILES["slika"]) && $uspeh) {
-            $slika = $_FILES["slika"]["tmp_name"];
+        if ($uspeh) {
+            $slika = $_FILES["slika"];
             $tmp = Gost::dodaj_sliku($slika, $kor_ime);
             if (!$tmp) {
                 echo "Greška: Greška pri učitavanju slike";

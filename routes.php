@@ -32,7 +32,8 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "greska", "test", "zaboravljena_lozinka", "prijavi_se",
                                 "resetuj_lozinku", "radionice", "filtriraj_radionice"],
                     "korisnik" => ["profil", "azuriraj_podatke", "promeni_lozinku", "radionice",
-                                    "filtriraj_radionice", "radionica_detalji", "promeni_profilnu"],
+                                    "filtriraj_radionice", "radionica_detalji", "promeni_profilnu",
+                                    "prijavi_radionicu", "komentarisi_radionicu", "lajkuj_radionicu"],
                     "organizator" => ["radionice", "moje_radionice", "dodavanje_radionice",
                                 "dodaj_radionicu"]);
 

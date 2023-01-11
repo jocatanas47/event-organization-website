@@ -94,7 +94,6 @@ async function validacijaSlike(slika) {
     dimenzije = await dimenzijeSlike(slika);
     width = dimenzije.width;
     height = dimenzije.height;
-    alert(dimenzije.width);
     if (width >= 100 && width <= 300 && height >= 100 && height <= 300) {
         return true;
     } else {
@@ -130,8 +129,6 @@ async function registracija() {
     tmp = await validacijaSlike(slika);
     if (slika.value != "" && !tmp) {
         alert("slika mora biti dimenzija 100x100 do 300x300");
-        
-        console.log(dimenzijeSlike(slika));
         return;
     }
     
@@ -143,7 +140,7 @@ async function registracija() {
     formData.append("potvrda", lozinka);
     formData.append("telefon", telefon);
     formData.append("mejl", mejl);
-    formData.append("slika", slika.files[0]);
+    formData.append("slika", slika);
     
     if (ucesnik) {
         let xmlhttp = new XMLHttpRequest();

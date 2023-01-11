@@ -37,6 +37,12 @@
 .j-td-hidden {
     display: none;
 }
+.j-pink {
+    background-color: pink !important;
+}
+.j-gray {
+    background-color: lightgray !important;
+}
 
 
 .header {

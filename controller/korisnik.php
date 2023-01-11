@@ -4,6 +4,7 @@ include("model/baza.php");
 include("model/korisnici_DB.php");
 include("model/slike_DB.php");
 include("model/radionice_DB.php");
+include("model/prijave_DB.php");
 
 class Korisnik {
     
@@ -22,6 +23,72 @@ class Korisnik {
         include("view/korisnik/profil.php");
         include("view/footer.php");
     }
+    public static function promeni_profilnu() {
+        // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
+        $idK = $_SESSION["korisnik"];
+        $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
+        
+        if ($_FILES["slika"]["error"] != 0) {
+            $greska = "Greška: Nije prosleđen fajl";
+            Korisnik::Profil($greska);
+            return;
+        }
+        $flag = getimagesize($_FILES["slika"]["tmp_name"]);
+        if (!$flag) {
+            $greska = "Greška: Prosleđeni fajl nije slika";
+            Korisnik::Profil($greska);
+            return;
+        }
+        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
+        // TODO: popraviti to
+        /*$a = getimagesize($_FILES["slika"]["tmp_name"]);
+        $image_type = $a[2];
+        
+        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+            $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
+            Korisnik::profil($greska);
+            return;
+        }*/
+        list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
+        if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
+            $greska = "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
+            Korisnik::Profil($greska);
+            return;
+        }
+        
+        $slika = $_FILES["slika"]["tmp_name"];
+        if (!is_uploaded_file($slika)){
+            $greska .= "Greška: Greška pri menjanju profilne slike";
+            Korisnik::profil($greska);
+            return;
+        }
+        
+        if ($korisnik["idS"] != NULL) {
+            $idS = $korisnik["idS"];
+            $slika = SlikeDB::get_sliku($idS);
+            $putanja = $slika["putanja"];
+            unlink($putanja);
+            SlikeDB::izbrisi_sliku($idS);
+        }
+        
+        /*
+        $slika = $_FILES["slika"]["tmp_name"];
+        $putanja = "db_files/korisnici/".$idK;
+        if (!is_dir($putanja)) {
+            mkdir($putanja);
+        }
+        $putanja .= "/profilna";
+        $tmp = move_uploaded_file($slika, $putanja);
+        if (!$tmp) {
+            $greska .= "Greška: Greška pri menjanju profilne slike";
+            Korisnik::profil($greska);
+            return;
+        }
+        SlikeDB::dodaj_sliku($putanja);
+        KorisniciDB::dodaj_sliku($idK);*/
+        Korisnik::profil();
+    }
+    
     public static function azuriraj_podatke() {
         $ime = filter_input(INPUT_GET, "ime", FILTER_SANITIZE_STRING);
         $prezime = filter_input(INPUT_GET, "prezime", FILTER_SANITIZE_STRING);
@@ -80,9 +147,6 @@ class Korisnik {
         }
         Korisnik::profil();
     }
-    public static function promeni_profilnu() {
-        
-    }
     
     public static function radionice($radionice=NULL) {
         if ($radionice == NULL) {
@@ -93,18 +157,46 @@ class Korisnik {
         include("view/korisnik/radionice.php");
         include("view/footer.php");
     }
-    public static function radionica_detalji() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+    public static function radionica_detalji($idR=NULL, $greska=NULL) {
+        if ($idR == NULL) {
+            $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        }
         $radionica = Radionice_DB::get_radionicu_po_idR($idR);
-        $xcor = 51.505;
-        $ycor = -0.09;
+        $idG = $radionica["idG"];
+        $galerija = SlikeDB::get_sliku($idG);
+        $komentari = Radionice_DB::get_komentare($idR);
         
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice_detalji.php");
         include("view/footer.php");
     }
-    
-    
+    public static function prijavi_radionicu() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idK = $_SESSION["korisnik"];
+        $tmp = PrijaveDB::dodaj_prijavu($idR, $idK);
+        if (!$tmp) {
+            $greska = "Greška: Neuspešna prijava na radionicu";
+            radionica_detalji($idR, $greska);
+            return;
+        }
+        redionica_detalji($idR);
+    }
+    public static function lajkuj_radionicu() {
+        
+    }
+    public static function komentarisi_radionicu() {
+        $idK = $_SESSION["korisnik"];
+        $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        
+        $tmp = Radionice_DB::dodaj_komentar($idK, $idR, $komentar);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri dodavanju komentara";
+            Korisnik::radionica_detalji($idR, $greska);
+            return;
+        }
+        Korisnik::radionica_detalji($idR);
+    }
 }
 
 ?>

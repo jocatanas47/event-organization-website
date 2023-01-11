@@ -25,6 +25,14 @@
                             <td><input type="text" name="mesto" required></td>
                         </tr>
                         <tr>
+                            <td>geografska dužina:</td>
+                            <td><input type="number" step="0.001" name="x_kor" min="-180" max="180" required></td>
+                        </tr>
+                        <tr>
+                            <td>geografska širina:</td>
+                            <td><input type="number" step="0.001" name="y_kor" min="-90" max="90" required></td>
+                        </tr>
+                        <tr>
                             <td>kratki opis:</td>
                             <td><input type="text" name="opis_kratki" required></td>
                         </tr>

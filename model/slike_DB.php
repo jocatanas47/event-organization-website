@@ -23,6 +23,16 @@ class SlikeDB {
         $iskaz->closeCursor();
         return $slika;
     }
+    public static function izbrisi_sliku($idS) {
+        $db = Baza::getInstanca();
+        $upit = "DELETE FROM slike WHERE idS=:idS";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idS", $idS);
+        $iskaz->execute();
+        $slika = $iskaz->fetch();
+        $iskaz->closeCursor();
+        return $slika;
+    }
 }
 
 ?>
