@@ -11,6 +11,17 @@ class Radionice_DB {
         return $radionice;
     }
     
+    public static function get_radionicu_po_idR($idR) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM radionice WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->execute();
+        $radionica = $iskaz->fetch();
+        $iskaz->closeCursor();
+        return $radionica;
+    }
+    
     public static function get_radionice_po_mesto($mesto) {
         $db = Baza::getInstanca();
         $upit = "SELECT *"

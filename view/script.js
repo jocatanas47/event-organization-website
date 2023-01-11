@@ -30,6 +30,21 @@ function togglePodRadAk(num) {
     }
 }
 
+function togglePrijavljeneSve(num) {
+    let prijavljene = document.getElementById("prijavljene_div");
+    let sve = document.getElementById("sve_div");
+    switch (num) {
+        case 0:
+            prijavljene.style.display = "block";
+            sve.style.display = "none";
+            break;
+        case 1:
+            prijavljene.style.display = "none";
+            sve.style.display = "block";
+            break;
+    }
+}
+
 function dobraLozinka(lozinka) {
     if (lozinka.length < 8 || lozinka.length > 16) {
         return false;

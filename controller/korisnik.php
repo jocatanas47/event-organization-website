@@ -8,6 +8,7 @@ include("model/radionice_DB.php");
 class Korisnik {
     
     public static function profil($greska=NULL) {
+        // TODO: Srediti ovo sve i dodati promenu slike
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         $idS = $korisnik["idS"];
@@ -21,17 +22,6 @@ class Korisnik {
         include("view/korisnik/profil.php");
         include("view/footer.php");
     }
-    
-    public static function radionice($radionice=NULL) {
-        if ($radionice == NULL) {
-            $radionice = Radionice_DB::get_sve_radionice();
-        }
-        $mesta = Radionice_DB::get_mesta();
-        include("view/korisnik/header_ucesnik.php");
-        include("view/korisnik/radionice.php");
-        include("view/footer.php");
-    }
-    
     public static function azuriraj_podatke() {
         $ime = filter_input(INPUT_GET, "ime", FILTER_SANITIZE_STRING);
         $prezime = filter_input(INPUT_GET, "prezime", FILTER_SANITIZE_STRING);
@@ -90,6 +80,31 @@ class Korisnik {
         }
         Korisnik::profil();
     }
+    public static function promeni_profilnu() {
+        
+    }
+    
+    public static function radionice($radionice=NULL) {
+        if ($radionice == NULL) {
+            $radionice = Radionice_DB::get_sve_radionice();
+        }
+        $mesta = Radionice_DB::get_mesta();
+        include("view/korisnik/header_ucesnik.php");
+        include("view/korisnik/radionice.php");
+        include("view/footer.php");
+    }
+    public static function radionica_detalji() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $radionica = Radionice_DB::get_radionicu_po_idR($idR);
+        $xcor = 51.505;
+        $ycor = -0.09;
+        
+        include("view/korisnik/header_ucesnik.php");
+        include("view/korisnik/radionice_detalji.php");
+        include("view/footer.php");
+    }
+    
+    
 }
 
 ?>
