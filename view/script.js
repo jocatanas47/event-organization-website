@@ -112,7 +112,13 @@ async function registracija() {
     let ucesnik = document.getElementById("ucesnik").checked;
     let organizator = document.getElementById("organizator").checked;
     let slika = document.getElementById("slika");
-
+    let imaSlika;
+    if(slika.files.length === 0) {
+        imaSlika = "false";
+    } else {
+        imaSlika = "true";
+    }
+    
     if (ime == "" || prezime == "" || kor_ime == "" || lozinka == ""
             || potvrda == "" || telefon == "" || mejl == "") {
         alert("polja označena zvezdicom su obavezna!");
@@ -140,7 +146,8 @@ async function registracija() {
     formData.append("potvrda", lozinka);
     formData.append("telefon", telefon);
     formData.append("mejl", mejl);
-    formData.append("slika", slika);
+    formData.append("slika", slika.files[0]);
+    formData.append("ima_slika", imaSlika);
     
     if (ucesnik) {
         let xmlhttp = new XMLHttpRequest();
@@ -148,7 +155,7 @@ async function registracija() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("greska").innerHTML = xmlhttp.responseText;
             }
-        }
+        };
         formData.append("akcija", "registracija_ucesnika");
         formData.append("kontroler", "gost");
         xmlhttp.open("POST", "routes.php", true);
@@ -166,6 +173,7 @@ async function registracija() {
         formData.append("naziv", naziv);
         formData.append("maticni_broj", maticni_broj);
         formData.append("drzava", drzava);
+        formData.append("grad", grad);
         formData.append("postanski_broj", postanski_broj);
         formData.append("ulica", ulica);
         formData.append("adresa_broj", adresa_broj);
@@ -175,7 +183,7 @@ async function registracija() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("greska").innerHTML = xmlhttp.responseText;
             }
-        }
+        };
         formData.append("akcija", "registracija_organizatora");
         formData.append("kontroler", "gost");
         xmlhttp.open("POST", "routes.php", true);
@@ -226,5 +234,54 @@ function sortirajTabelu(num) {
             redovi[i].parentNode.insertBefore(redovi[i + 1], redovi[i]);
             flag = true;
         }
+    }
+}
+
+function toggleRadPri(num) {
+    let radionica = document.getElementById("radionica_div");
+    let prijave = document.getElementById("prijave_div");
+    switch (num) {
+        case 0:
+            radionica.style.display = "block";
+            prijave.style.display = "none";
+            break;
+        case 1:
+            radionica.style.display = "none";
+            prijave.style.display = "block";
+            break;
+    }
+}
+
+var smer = "asc";
+function sortirajRadionice(num) {
+    let tabela, redovi, i, x, y, zameni;
+    
+    tabela = document.getElementById("radionice_tabela");
+    let flag = true;
+    while (flag) {
+        flag = false;
+        redovi = tabela.rows;
+        for (i = 1; i < (redovi.length - 1); i++) {
+            zameni = false;
+            x = redovi[i].getElementsByTagName("TD")[num];
+            y = redovi[i + 1].getElementsByTagName("TD")[num];
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase() && smer === "asc") {
+                zameni = true;
+                break;
+            }
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase() && smer === "dsc") {
+                zameni = true;
+                break;
+            }
+        }
+        if (zameni) {
+            redovi[i].parentNode.insertBefore(redovi[i + 1], redovi[i]);
+            flag = true;
+        }
+    }
+    if (smer === "asc") {
+        smer = "dsc";
+    } else {
+        smer = "asc";
     }
 }

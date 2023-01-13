@@ -10,16 +10,17 @@
                 <h3><?= $radionica["naziv"] ?></h3>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
-                <div class="col-3">
-                    <img class="img-fluid" src=<?= $slika ?>>
-                </div>
-            <?php endforeach; ?>
-        </div>
+
         <div class="row justify-content-center">
             <div class="col-5 card">
-
+                <div class="row justify-content-center">
+                    <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
+                        <div class="col-6">
+                            <img class="img-fluid" src=<?= $slika ?>>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <br>
                 <div>
                     <?= $radionica["opis_dugi"] ?>
                 </div>
@@ -38,6 +39,7 @@
                         <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                         <input type="hidden" id="akcija" name="akcija" value="prijavi_radionicu">
                         <input type="hidden" id="idR" name="idR" value=<?= $radionica["idR"] ?>>
+                        <?= $radionica["idR"] ?>
                         <input class="btn j-btn j-orange" type="submit" value="prijavi se">
                     </form>
                 </div>
@@ -49,16 +51,32 @@
                     <div class="col-2 card j-pink">
                         <div class="row">
                             <div class="col-6">
-                                <img src="resources/heart.svg">45
+                                <img src="resources/heart.svg"><?= $broj_svidjanja ?>
                             </div>
                             <div class="col-6">
-                                <img src="resources/chat.svg">67
+                                <img src="resources/chat.svg"><?= $broj_komentara ?>
                             </div>
                         </div>
                     </div>
+
+                    <form>
+                        <div class="col-2">
+                            <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
+
+                        </div>
+                    </form>
+
                 </div>
                 <?php foreach ($komentari as $komentar): ?>
-                    <?php $korisnik = KorisniciDB::get_korisnika_po_idK($komentar["idKor"]); ?>
+                    <?php
+                    $korisnik = KorisniciDB::get_korisnika_po_idK($komentar["idKor"]);
+                    $profilna;
+                    if ($korisnik["idS"] != NULL):
+                        $profilna = SlikeDB::get_sliku($korisnik["idS"])["putanja"];
+                    else:
+                        $profilna = "resources/avatar_default.png";
+                    endif;
+                    ?>
                     <div class="row">
                         <div class="col-3 ">
 
@@ -69,7 +87,7 @@
                     </div>
                     <div class="row">
                         <div class="col-3 ">
-                            <img class="img-fluid img-thumbnail" src=<?= SlikeDB::get_sliku($korisnik["idS"])["putanja"] ?>>
+                            <img class="img-fluid img-thumbnail" src=<?= $profilna ?>>
                         </div>
                         <div class="col-8 card j-gray">
                             <?= $komentar["komentar"] ?>
@@ -105,4 +123,7 @@
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+    
+    var marker = new L.Marker([<?= $radionica["y_kor"] ?>, <?= $radionica["x_kor"] ?>]);
+    marker.addTo(map);
 </script>

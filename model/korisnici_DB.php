@@ -76,6 +76,7 @@ class KorisniciDB {
     public static function dodaj_organizatora($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, 
             $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj) {
         $db = Baza::getInstanca();
+        KorisniciDB::dodaj_test("aaa");
         $tmp = KorisniciDB::dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, True);
         if (!$tmp) {
             return false;

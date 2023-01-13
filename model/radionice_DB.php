@@ -83,7 +83,34 @@ class Radionice_DB {
                 . " WHERE idR=:idR";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idR", $idR);
-        $broj = $iskaz->fetch();
+        $iskaz->execute();
+        $broj = $iskaz->fetchColumn();
+        $iskaz->closeCursor();
+        return $broj;
+    }
+    
+    public static function get_broj_lajkova_radionice($idR) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT COUNT(idS)" 
+                . " FROM svidjanja"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->execute();
+        $broj = $iskaz->fetchColumn();
+        $iskaz->closeCursor();
+        return $broj;
+    }
+    
+    public static function get_broj_komentara_radionice($idR) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT COUNT(idKom)" 
+                . " FROM komentari"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->execute();
+        $broj = $iskaz->fetchColumn();
         $iskaz->closeCursor();
         return $broj;
     }
@@ -95,6 +122,33 @@ class Radionice_DB {
                 . " WHERE idK=:idK";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    
+    public static function get_sve_radionice_na_kojima_je_korisnik_prisustvovao($idK) {
+        $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
+        $upit = "SELECT *" 
+                . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
+                . " WHERE (idK=:idK AND datum<:tren_vreme)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    
+    public static function get_sve_radionice_organizatora($idO) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM radionice WHERE idO=:idO";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idO", $idO);
+        $iskaz->execute();
         $radionice = $iskaz->fetchAll();
         $iskaz->closeCursor();
         return $radionice;
@@ -118,11 +172,12 @@ class Radionice_DB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT 1"
                 . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
-                . " WHERE (idK=:idK AND idR=:idR AND datum<:tren_vreme)";
+                . " WHERE (idK=:idK AND idR=:idR )";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $iskaz->bindValue(":idR", $idR);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
         $tmp = $iskaz->fetch();
         $iskaz->closeCursor();
         if (!$tmp) {

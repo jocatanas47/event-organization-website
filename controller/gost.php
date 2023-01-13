@@ -94,6 +94,7 @@ class Gost {
     }
     public static function dodaj_sliku($slika, $kor_ime) {
         // TODO: AJAX ko zna sta se salje kao slika nemam pojma
+        // reseno VALJDA po peti put
         
         
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
@@ -147,9 +148,9 @@ class Gost {
         $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
         $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
         $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $ima_slika = filter_input(INPUT_POST, "ima_slika", FILTER_VALIDATE_BOOLEAN);
         
         $greska = "";
-        
         if ($ime == "" || $prezime == "" || $kor_ime == "" || $lozinka == ""
             || $potvrda == "" || $telefon == "" || $mejl == "") {
             $greska .= "Greška: Sva polja označena zvezdicom su obavezna";
@@ -161,12 +162,16 @@ class Gost {
         if ($lozinka != $potvrda) {
             $greska .= "Greška: Potvrda lozinke mora biti ista kao lozinka";
         }
-        if (isset($_FILES['slika'])) {
-            list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
-            if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
-                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
+        if ($ima_slika) {
+            $slika = $_FILES["slika"];
+            if (isset($_FILES['slika'])) {
+                list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
+                if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
+                    $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
+                }
             }
         }
+        
         if (KorisniciDB::get_korisnika_po_kor_ime($kor_ime)) {
             $greska .= "Greška: Korisničko ime je zauzeto<br>";
         }
@@ -180,7 +185,7 @@ class Gost {
         }
        
         $uspeh = KorisniciDB::dodaj_ucesnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl);
-        if ($uspeh && $_FILES["slika"]["error"] == 0) {
+        if ($uspeh && $ima_slika) {
             $slika = $_FILES["slika"];
             $tmp = Gost::dodaj_sliku($slika, $kor_ime);
             if (!$tmp) {
@@ -190,12 +195,15 @@ class Gost {
     }
     
     public static function registracija_organizatora() {
+        KorisniciDB::dodaj_test("ddd");
         $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
         $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
         $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
         $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
         $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
         $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $ima_slika = filter_input(INPUT_POST, "ima_slika", FILTER_VALIDATE_BOOLEAN);
         
         $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
         $maticni_broj = filter_input(INPUT_POST, "maticni_broj", FILTER_VALIDATE_INT);
@@ -218,10 +226,13 @@ class Gost {
         if ($lozinka != $potvrda) {
             $greska .= "Greška: Potvrda lozinke mora biti ista kao lozinka";
         }
-        if (isset($_FILES["slika"])) {
-            list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
-            if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
-                $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
+        KorisniciDB::dodaj_test("ccc");
+        if ($ima_slika) {
+            if (isset($_FILES["slika"])) {
+                list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
+                if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
+                    $greska .= "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
+                }
             }
         }
         if (KorisniciDB::get_korisnika_po_kor_ime($kor_ime)) {
@@ -235,10 +246,10 @@ class Gost {
         if ($greska != "") {
             return;
         }
-        
+        KorisniciDB::dodaj_test("bbb");
         $uspeh = KorisniciDB::dodaj_organizatora($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl,
                 $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj);
-        if ($uspeh) {
+        if ($uspeh && $ima_slika) {
             $slika = $_FILES["slika"];
             $tmp = Gost::dodaj_sliku($slika, $kor_ime);
             if (!$tmp) {
@@ -273,6 +284,11 @@ class Gost {
             $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
         }
         Gost::radionice($radionice);
+    }
+    
+    public static function izloguj_se() {
+        session_destroy();
+        header("Location: routes.php?kontroler=gost&akcija=prijava");
     }
 }
 

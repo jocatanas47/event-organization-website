@@ -9,7 +9,6 @@ include("model/prijave_DB.php");
 class Korisnik {
     
     public static function profil($greska=NULL) {
-        // TODO: Srediti ovo sve i dodati promenu slike
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         $idS = $korisnik["idS"];
@@ -18,13 +17,14 @@ class Korisnik {
         } else {
             $profilna = False;
         }
-        
+        $radionice = Radionice_DB::get_sve_radionice_na_kojima_je_korisnik_prisustvovao($idK);
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/profil.php");
         include("view/footer.php");
     }
     public static function promeni_profilnu() {
         // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
+        // - do kesiranja je - ne znam kako to da popravim
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         
@@ -55,7 +55,7 @@ class Korisnik {
             Korisnik::Profil($greska);
             return;
         }
-        
+        KorisniciDB::dodaj_test("1");
         $slika = $_FILES["slika"]["tmp_name"];
         if (!is_uploaded_file($slika)){
             $greska .= "Greška: Greška pri menjanju profilne slike";
@@ -64,6 +64,7 @@ class Korisnik {
         }
         
         if ($korisnik["idS"] != NULL) {
+            KorisniciDB::dodaj_test("2");
             $idS = $korisnik["idS"];
             $slika = SlikeDB::get_sliku($idS);
             $putanja = $slika["putanja"];
@@ -71,12 +72,14 @@ class Korisnik {
             SlikeDB::izbrisi_sliku($idS);
         }
         
-        /*
+        KorisniciDB::dodaj_test("3");
         $slika = $_FILES["slika"]["tmp_name"];
         $putanja = "db_files/korisnici/".$idK;
         if (!is_dir($putanja)) {
             mkdir($putanja);
+            KorisniciDB::dodaj_test("5");
         }
+        KorisniciDB::dodaj_test("4");
         $putanja .= "/profilna";
         $tmp = move_uploaded_file($slika, $putanja);
         if (!$tmp) {
@@ -85,7 +88,8 @@ class Korisnik {
             return;
         }
         SlikeDB::dodaj_sliku($putanja);
-        KorisniciDB::dodaj_sliku($idK);*/
+        KorisniciDB::dodaj_test("8");
+        KorisniciDB::dodaj_sliku($idK);
         Korisnik::profil();
     }
     
@@ -157,6 +161,24 @@ class Korisnik {
         include("view/korisnik/radionice.php");
         include("view/footer.php");
     }
+    public static function filtriraj_radionice() {
+        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        if ($mesto == "izaberite mesto" && $naziv == "") {
+            Korisnik::radionice();
+            return;
+        }
+        if ($mesto != "izaberite mesto" && $naziv == "") {
+            $radionice = Radionice_DB::get_radionice_po_mesto($mesto);
+        }
+        if ($mesto == "izaberite mesto" && $naziv != "") {
+            $radionice = Radionice_DB::get_radionice_po_naziv($naziv);
+        }
+        if ($mesto != "izaberite mesto" && $naziv != "") {
+            $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
+        }
+        Korisnik::radionice($radionice);
+    }
     public static function radionica_detalji($idR=NULL, $greska=NULL) {
         if ($idR == NULL) {
             $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -165,6 +187,9 @@ class Korisnik {
         $idG = $radionica["idG"];
         $galerija = SlikeDB::get_sliku($idG);
         $komentari = Radionice_DB::get_komentare($idR);
+        $broj_svidjanja = Radionice_DB::get_broj_lajkova_radionice($idR);
+        $broj_komentara = Radionice_DB::get_broj_komentara_radionice($idR);
+        
         
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice_detalji.php");
@@ -173,13 +198,14 @@ class Korisnik {
     public static function prijavi_radionicu() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         $idK = $_SESSION["korisnik"];
+        KorisniciDB::dodaj_test("idR".$idR."-"."idK".$idK);
         $tmp = PrijaveDB::dodaj_prijavu($idR, $idK);
         if (!$tmp) {
-            $greska = "Greška: Neuspešna prijava na radionicu";
-            radionica_detalji($idR, $greska);
+            $greska = "Greška: Već ste prijavljeni na radionicu";
+            Korisnik::radionica_detalji($idR, $greska);
             return;
         }
-        redionica_detalji($idR);
+        Korisnik::radionica_detalji($idR);
     }
     public static function lajkuj_radionicu() {
         

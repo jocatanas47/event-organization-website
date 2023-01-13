@@ -9,6 +9,7 @@ if (!$kontroler) {
     $kontroler = filter_input(INPUT_POST, "kontroler", FILTER_SANITIZE_STRING);
 }
 if (!$akcija || !$kontroler) {
+    
     $kontroler = "gost";
     $akcija = "prijava";
 }
@@ -21,7 +22,12 @@ function zovi($kontroler, $akcija) {
             break;
         case "korisnik":
             $kontroler = new Korisnik();
+            break;
+        case "organizator":
+            $kontroler = new Organizator();
+            break;
     }
+    KorisniciDB::dodaj_test($akcija);
     $kontroler::$akcija();
 }
 
@@ -33,9 +39,11 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "resetuj_lozinku", "radionice", "filtriraj_radionice"],
                     "korisnik" => ["profil", "azuriraj_podatke", "promeni_lozinku", "radionice",
                                     "filtriraj_radionice", "radionica_detalji", "promeni_profilnu",
-                                    "prijavi_radionicu", "komentarisi_radionicu", "lajkuj_radionicu"],
+                                    "prijavi_radionicu", "komentarisi_radionicu", "lajkuj_radionicu",
+                                    "filtriraj_radionice"],
                     "organizator" => ["radionice", "moje_radionice", "dodavanje_radionice",
-                                "dodaj_radionicu"]);
+                                "dodaj_radionicu", "izaberi_sablon", "filtriraj_radionice",
+                                "uredjivanje_radionice", "prihvati_korisnika"]);
 
 
 if (array_key_exists($kontroler, $kontroleri)) {

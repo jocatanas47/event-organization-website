@@ -122,8 +122,51 @@
 
         </div>
         <div class="row" id="radionice_div" style="display:none">
-            <div>
-                aa
+            <div class="col-12">
+                <table class="table table-hover text-center" id="radionice_tabela">
+                    <tr>
+                        <th onclick="sortirajRadionice(0)">
+                            naziv
+                        </th>
+                        <th onclick="sortirajRadionice(1)">
+                            datum
+                        </th>
+                        <th onclick="sortirajRadionice(2)">
+                            mesto
+                        </th>
+                        <th onclick="sortirajRadionice(3)">
+                            kratki opis
+                        </th>
+                        <th onclick="sortirajRadionice(4)">
+                            dugi opis
+                        </th>
+                        <th onclick="sortirajRadionice(5)">
+                            maksimalni broj posetilaca
+                        </th>
+                    </tr>
+                    <?php foreach($radionice as $radionica): ?>
+                    <tr>
+                        <td>
+                            <?= $radionica["naziv"] ?>
+                        </td>
+                        <td>
+                            <?= $radionica["datum"] ?>
+                        </td>
+                        <td>
+                            <?= $radionica["mesto"] ?>
+                        </td>
+                        <td>
+                            <?= $radionica["opis_kratki"] ?>
+                        </td>
+                        <td>
+                            <?= $radionica["opis_dugi"] ?>
+                        </td>
+                        <td>
+                            <?= $radionica["max_broj_posetilaca"] ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
             </div>
         </div>
 

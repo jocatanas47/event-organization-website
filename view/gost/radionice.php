@@ -9,7 +9,7 @@
                     <select name="mesto" id="mesto">
                         <option value="izaberite mesto">izaberite mesto</option>
                         <?php foreach ($mesta as $mesto): ?>
-                            <option value=<?= $mesto ?>><?= $mesto ?></option>
+                            <option value="<?= $mesto ?>"><?= $mesto ?></option>
                         <?php endforeach; ?>
                     </select>
                     <input type="text" id="naziv" name="naziv" placeholder="naziv">
@@ -41,7 +41,7 @@
                                                 <?= $radionica["mesto"] ?>
                                             </div>
                                             <div class="col-12">
-                                                <?= $radionica["opis_dugi"] ?>
+                                                <?= $radionica["opis_kratki"] ?>
                                             </div>
                                         </div>
                                     </div>

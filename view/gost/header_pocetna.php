@@ -10,20 +10,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 header j-light-purple">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=prijava&kontroler=gost"><div class="col-12 j-purple j-font-white btn">prijava</div></a>
-                            </div>
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=registracija&kontroler=gost"><div class="col-12 j-purple j-font-white btn">registracija</div></a>
-                            </div>
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=radionice&kontroler=gost"><div class="col-12 j-purple j-font-white btn">početna stranica</div></a>
-                            </div>
-                        </div>
-                        <div class="col-10">
-                        </div>
+                    <div class="col-12 header j-light-purple">
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=prijava&kontroler=gost">prijava</a>
+
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=registracija&kontroler=gost">registracija</a>
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=gost">početna stranica</a>
                     </div>
                 </div>
             </div>

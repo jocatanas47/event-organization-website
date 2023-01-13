@@ -1,28 +1,13 @@
 <div class="row content">
     <br>
-    <div class="row justify-content-center">
-        <br>
-        <div class="col-4 text-center">
-            <input type="radio" class="btn btn-check" name="radionice" id="prijavljene" checked onclick="togglePrijavljeneSve(0)">
-            <label class="btn j-orange" for="prijavljene">prijavljene radionice</label>
-
-            <input type="radio" class="btn btn-check" name="radionice" id="sve" onclick="togglePrijavljeneSve(1)">
-            <label class="btn j-orange" for="sve">sve radionice</label>
-        </div>
-    </div>
-    <div class="row" id="prijavljene_div">
-        <div class="col-12">
-            aaaa
-        </div>
-    </div>
-    <div class="row" id="sve_div">
+    <div class="row">
         <div class="col-12">
             <br>
             <div class="row justify-content-center">
                 <div class="col-12 justify-content-center text-center">
                     <form name="forma1" method="get" action="routes.php">
                         <input type="hidden" id="akcija" name="akcija" value="filtriraj_radionice">
-                        <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
+                        <input type="hidden" id="kontroler" name="kontroler" value="organizator">
                         <select name="mesto" id="mesto">
                             <option value="izaberite mesto">izaberite mesto</option>
                             <?php foreach ($mesta as $mesto): ?>
@@ -60,11 +45,13 @@
                                                 <div class="col-12">
                                                     <?= $radionica["opis_kratki"] ?>
                                                 </div>
-                                                <div class="col12">
+                                                <?php if ($radionica["idO"] == $idO): ?>
+                                                <div class="col-12">
                                                     <a class="link-secondary card-link" href=<?php 
                                                     $idR = $radionica['idR'];
-                                                    echo "routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=$idR"; ?>>detalji</a>
+                                                    echo "routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=$idR"; ?>>uredi radionicu</a>
                                                 </div>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div> 

@@ -10,19 +10,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 header j-light-purple">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=radionice&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">radionice</div></a>
-                            </div>
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=moje_radionice&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">moje radionice</div></a>
-                            </div>
-                            <div class="row p-2">
-                                <a href="routes.php?akcija=dodavanje_radionice&kontroler=organizator"><div class="col-12 j-purple j-font-white btn">dodaj radionicu</div></a>
-                            </div>
-                        </div>
-                        <div class="col-10">
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=organizator">radionice</a>
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=organizator">moje radionice</a>
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=dodavanje_radionice&kontroler=organizator">dodaj radionicu</a>
+                        <div class="col-9">
+                            <a class="col-3 j-purple j-font-white btn" href="routes.php?akcija=izloguj_se&kontroler=gost">izloguj se</a>
                         </div>
                     </div>
                 </div>
