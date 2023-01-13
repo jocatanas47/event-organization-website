@@ -5,7 +5,7 @@ class KorisniciDB {
     public static function get_sve_korisnike() {
         $db = Baza::getInstanca();
         $upit = "SELECT * FROM korisnici";
-        $iskaz = $db->prepare($upis);
+        $iskaz = $db->prepare($upit);
         $iskaz->execute();
         $korisnici = $iskaz->fetchAll();
         $iskaz->closeCursor();
@@ -43,6 +43,42 @@ class KorisniciDB {
         $korisnik = $iskaz->fetch();
         $iskaz->closeCursor();
         return $korisnik;
+    }
+    public static function get_korisnike_kojima_se_svidja_radionica($idR) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM korisnici JOIN svidjanja"
+                . " ON korisnici.idK=svidjanja.idK"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->execute();
+        $korisnici = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $korisnici;
+    }
+    
+    public static function get_komentare_korisnika($idK) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM komentari"
+                . " WHERE idKor=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $komentari = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $komentari;
+    }
+    
+    public static function get_svidjanja_korisnika($idK) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM svidjanja"
+                . " WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $svidjanja = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $svidjanja;
     }
 
     public static function dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, $tip) {

@@ -15,7 +15,7 @@
             <div class="col-5 card">
                 <div class="row justify-content-center">
                     <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
-                        <div class="col-6">
+                        <div class="col-4">
                             <img class="img-fluid" src=<?= $slika ?>>
                         </div>
                     <?php endforeach; ?>
@@ -39,7 +39,6 @@
                         <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                         <input type="hidden" id="akcija" name="akcija" value="prijavi_radionicu">
                         <input type="hidden" id="idR" name="idR" value=<?= $radionica["idR"] ?>>
-                        <?= $radionica["idR"] ?>
                         <input class="btn j-btn j-orange" type="submit" value="prijavi se">
                     </form>
                 </div>
@@ -51,20 +50,24 @@
                     <div class="col-2 card j-pink">
                         <div class="row">
                             <div class="col-6">
-                                <img src="resources/heart.svg"><?= $broj_svidjanja ?>
+                                <a href="routes.php?kontroler=korisnik&akcija=svidjanja&idR=<?= $radionica["idR"] ?>"><img src="resources/heart.svg"></a><?= $broj_svidjanja ?>
                             </div>
                             <div class="col-6">
                                 <img src="resources/chat.svg"><?= $broj_komentara ?>
                             </div>
                         </div>
                     </div>
+                    <?php if (Radionice_DB::korisnik_bio_na_radionici($idK, $idR)): ?>
 
-                    <form>
-                        <div class="col-2">
+                        <form>
+                            <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
+                            <input type="hidden" id="akcija" name="akcija" value="lajkuj_radionicu">
                             <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
-
-                        </div>
-                    </form>
+                            <div class="col-2">
+                                <input type="submit" class="btn j-pink" value="sviđa mi se">
+                            </div>
+                        </form>
+                    <?php endif; ?>
 
                 </div>
                 <?php foreach ($komentari as $komentar): ?>

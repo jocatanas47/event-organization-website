@@ -5,6 +5,7 @@ include("model/korisnici_DB.php");
 include("model/slike_DB.php");
 include("model/radionice_DB.php");
 include("model/prijave_DB.php");
+include("model/svidjanja_DB.php");
 
 class Korisnik {
     
@@ -18,6 +19,9 @@ class Korisnik {
             $profilna = False;
         }
         $radionice = Radionice_DB::get_sve_radionice_na_kojima_je_korisnik_prisustvovao($idK);
+        $komentari = KorisniciDB::get_komentare_korisnika($idK);
+        $svidjanja = KorisniciDB::get_svidjanja_korisnika($idK);
+        
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/profil.php");
         include("view/footer.php");
@@ -183,6 +187,7 @@ class Korisnik {
         if ($idR == NULL) {
             $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         }
+        $idK = $_SESSION["korisnik"];
         $radionica = Radionice_DB::get_radionicu_po_idR($idR);
         $idG = $radionica["idG"];
         $galerija = SlikeDB::get_sliku($idG);
@@ -194,6 +199,7 @@ class Korisnik {
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice_detalji.php");
         include("view/footer.php");
+        
     }
     public static function prijavi_radionicu() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -207,8 +213,19 @@ class Korisnik {
         }
         Korisnik::radionica_detalji($idR);
     }
-    public static function lajkuj_radionicu() {
+    public static function svidjanja() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $korisnici = KorisniciDB::get_korisnike_kojima_se_svidja_radionica($idR);
+        include("view/korisnik/header_ucesnik.php");
+        include("view/korisnik/svidjanja.php");
+        include("view/footer.php");
         
+    }
+    public static function lajkuj_radionicu() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idK = $_SESSION["korisnik"];
+        SvidjanjaDB::lajkuj_radionicu($idK, $idR);
+        header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);
     }
     public static function komentarisi_radionicu() {
         $idK = $_SESSION["korisnik"];

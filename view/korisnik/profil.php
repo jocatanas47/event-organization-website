@@ -144,35 +144,107 @@
                             maksimalni broj posetilaca
                         </th>
                     </tr>
-                    <?php foreach($radionice as $radionica): ?>
-                    <tr>
-                        <td>
-                            <?= $radionica["naziv"] ?>
-                        </td>
-                        <td>
-                            <?= $radionica["datum"] ?>
-                        </td>
-                        <td>
-                            <?= $radionica["mesto"] ?>
-                        </td>
-                        <td>
-                            <?= $radionica["opis_kratki"] ?>
-                        </td>
-                        <td>
-                            <?= $radionica["opis_dugi"] ?>
-                        </td>
-                        <td>
-                            <?= $radionica["max_broj_posetilaca"] ?>
-                        </td>
-                    </tr>
+                    <?php foreach ($radionice as $radionica): ?>
+                        <tr>
+                            <td>
+                                <?= $radionica["naziv"] ?>
+                            </td>
+                            <td>
+                                <?= $radionica["datum"] ?>
+                            </td>
+                            <td>
+                                <?= $radionica["mesto"] ?>
+                            </td>
+                            <td>
+                                <?= $radionica["opis_kratki"] ?>
+                            </td>
+                            <td>
+                                <?= $radionica["opis_dugi"] ?>
+                            </td>
+                            <td>
+                                <?= $radionica["max_broj_posetilaca"] ?>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </table>
             </div>
         </div>
 
-        <div class="row" id="akcije_div" style="display:none">
-            <div>
-                bb
+        <div class="row justify-content-center" id="akcije_div" style="display:none">
+            <div class="col-12 justify-content-center">
+                <h4> komentari </h4>
+                <table class="table table-hover">
+                    <tr>
+                        <th>
+                            radionica
+                        </th>
+                        <th>
+                            komentar
+                        </th>
+                        <th>
+                            izmeni
+                        </th>
+                        <th>
+                            izbriši
+                        </th>
+                    </tr>
+                    <?php foreach ($komentari as $komentar): ?>
+                        <?php $radionica = Radionice_DB::get_radionicu_po_idR($komentar["idR"]); ?>
+                        <tr>
+                            <td>
+                                <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>
+                            </td>
+                        <form method="get" action="routes.php">
+                            <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
+                            <input type="hidden" name="akcija" id="akcija" value="promeni_komentar">
+                            <input type="hidden" name="idKom" id="idKom" value="<?= $komentar["idKom"] ?>">
+                            <td>
+                                <input type="text" name="komentar" id="komentar" value="<?= $komentar["komentar"] ?>">
+                            </td>
+                            <td>
+                                <input type="submit" class="btn j-orange" value="promeni komentar">
+                            </td>
+                        </form>
+                        <form method="get" action="routes.php">    
+                            <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
+                            <input type="hidden" name="akcija" id="akcija" value="izbrisi_komentar">
+                            <input type="hidden" name="idKom" id="idKom" value="<?= $komentar["idKom"] ?>">
+                            <td>
+                                <input type="submit" class="btn j-orange" value="izbriši komentar">
+                            </td>
+                        </form>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+            <div class="col-6">
+                <h4> sviđanja </h4>
+                <table class="table table-hover">
+                    <tr>
+                        <th>
+                            radionica
+                        </th>
+                        <th>
+                            akcija
+                        </th>
+                    </tr>
+                    <?php foreach ($svidjanja as $svidjanje): ?>
+                        <?php $radionica = Radionice_DB::get_radionicu_po_idR($svidjanje["idR"]); ?>
+                        <tr>
+                            <td>
+                                <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>
+                            </td>
+                            <td>
+                                <form method="get" action="routes.php">
+                                    <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
+                                    <input type="hidden" name="akcija" id="akcija" value="povuci_svidjanje">
+                                    <input type="hidden" name="idS" id="idS" value="<?= $svidjanje["idS"] ?>">
+                                    <input type="submit" class="btn j-orange" value="povuci sviđanje">
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
             </div>
         </div>
     </div>

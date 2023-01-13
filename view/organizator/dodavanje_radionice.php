@@ -35,7 +35,7 @@
                             <table class="table table-hover">
                                 <tr>
                                     <td>naziv:</td>
-                                    <td><input type="text" name="naziv" required value=<?= $radionica["naziv"] ?>></td>
+                                    <td><input type="text" name="naziv" required value="<?= $radionica["naziv"] ?>"></td>
                                 </tr>
                                 <tr>
                                     <td>datum:</td>
@@ -43,7 +43,7 @@
                                 </tr>
                                 <tr>
                                     <td>mesto:</td>
-                                    <td><input type="text" name="mesto" required value=<?= $radionica["mesto"] ?>></td>
+                                    <td><input type="text" name="mesto" required value="<?= $radionica["mesto"] ?>"></td>
                                 </tr>
                                 <tr>
                                     <td>geografska dužina:</td>
