@@ -32,7 +32,7 @@
             </div>
         </div>
         <br>
-        <?php if (Radionice_DB::get_broj_prijavljenih_na_radionicu($idR) < $radionica["max_broj_posetilaca"]): ?>
+        <?php if (PrijaveDB::get_broj_prijavljenih_na_radionicu($idR) < $radionica["max_broj_posetilaca"]): ?>
             <div class="row justify-content-center">
                 <div class="col-6 text-center">
                     <form method="get" action="routes.php">
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php if (Radionice_DB::korisnik_bio_na_radionici($idK, $idR)): ?>
+                    <?php if (RadioniceDB::korisnik_bio_na_radionici($idK, $idR)): ?>
 
                         <form>
                             <input type="hidden" id="kontroler" name="kontroler" value="korisnik">

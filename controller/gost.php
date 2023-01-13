@@ -1,9 +1,10 @@
 <?php
 
 include("model/baza.php");
+
 include("model/korisnici_DB.php");
-include("model/slike_DB.php");
 include("model/radionice_DB.php");
+include("model/slike_DB.php");
 
 class Gost {
     
@@ -46,7 +47,6 @@ class Gost {
         } else {
             header("Location: routes.php?akcija=dodavanje_radionice&kontroler=organizator");
         }
-        
     }
     
     public static function zaboravljena_lozinka() {
@@ -84,7 +84,7 @@ class Gost {
             Gost::prijava($greska);
             return;
         }
-        Gost::prijava();
+        header("Location: routes.php?kontroler=gost&akcija=prijava");
     }
     
     public static function registracija() {
@@ -260,9 +260,9 @@ class Gost {
     
     public static function radionice($radionice=NULL) {
         if ($radionice == NULL) {
-            $radionice = Radionice_DB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_radionice();
         }
-        $mesta = Radionice_DB::get_mesta();
+        $mesta = RadioniceDB::get_mesta();
         include("view/gost/header_pocetna.php");
         include("view/gost/radionice.php");
         include("view/footer.php");
@@ -275,13 +275,13 @@ class Gost {
             return;
         }
         if ($mesto != "izaberite mesto" && $naziv == "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto($mesto);
+            $radionice = RadioniceDB::get_radionice_po_mesto($mesto);
         }
         if ($mesto == "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_naziv($naziv);
+            $radionice = RadioniceDB::get_radionice_po_naziv($naziv);
         }
         if ($mesto != "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
+            $radionice = RadioniceDB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
         }
         Gost::radionice($radionice);
     }
@@ -290,6 +290,7 @@ class Gost {
         session_destroy();
         header("Location: routes.php?kontroler=gost&akcija=prijava");
     }
+    
 }
 
 ?>

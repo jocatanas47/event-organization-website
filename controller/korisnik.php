@@ -1,10 +1,12 @@
 <?php
 
 include("model/baza.php");
+
+include("model/komentari_DB.php");
 include("model/korisnici_DB.php");
-include("model/slike_DB.php");
-include("model/radionice_DB.php");
 include("model/prijave_DB.php");
+include("model/radionice_DB.php");
+include("model/slike_DB.php");
 include("model/svidjanja_DB.php");
 
 class Korisnik {
@@ -18,9 +20,9 @@ class Korisnik {
         } else {
             $profilna = False;
         }
-        $radionice = Radionice_DB::get_sve_radionice_na_kojima_je_korisnik_prisustvovao($idK);
-        $komentari = KorisniciDB::get_komentare_korisnika($idK);
-        $svidjanja = KorisniciDB::get_svidjanja_korisnika($idK);
+        $radionice = RadioniceDB::get_sve_radionice_na_kojima_je_korisnik_prisustvovao($idK);
+        $komentari = KomentariDB::get_komentare_korisnika($idK);
+        $svidjanja = SvidjanjaDB::get_svidjanja_korisnika($idK);
         
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/profil.php");
@@ -94,7 +96,7 @@ class Korisnik {
         SlikeDB::dodaj_sliku($putanja);
         KorisniciDB::dodaj_test("8");
         KorisniciDB::dodaj_sliku($idK);
-        Korisnik::profil();
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     
     public static function azuriraj_podatke() {
@@ -121,7 +123,7 @@ class Korisnik {
         if (!$tmp) {
             $greska = "Greška: Neuspešno ažuriranje podataka";
         }
-        Korisnik::profil();
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function promeni_lozinku() {
         $idK = $_SESSION["korisnik"];
@@ -153,14 +155,36 @@ class Korisnik {
             Korisnik::profil($greska);
             return;
         }
-        Korisnik::profil();
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
+    }
+    public static function promeni_komentar() {
+        $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
+        $idKom = filter_input(INPUT_GET, "idKom", FILTER_SANITIZE_STRING);
+        $tmp = KomentariDB::promeni_komentar($idKom, $komentar);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri promeni komentara";
+            Korisnik::profil($greska);
+        }
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
+    }
+    public static function izbrisi_komentar() {
+        $idKom = filter_input(INPUT_GET, "idKom", FILTER_SANITIZE_STRING);
+        $tmp = KomentariDB::izbrisi_komentar($idKom);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri brisanju komentara";
+            Korisnik::profil($greska);
+        }
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
+    }
+    public static function povuci_svidjanje() {
+        
     }
     
     public static function radionice($radionice=NULL) {
         if ($radionice == NULL) {
-            $radionice = Radionice_DB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_radionice();
         }
-        $mesta = Radionice_DB::get_mesta();
+        $mesta = RadioniceDB::get_mesta();
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice.php");
         include("view/footer.php");
@@ -173,33 +197,32 @@ class Korisnik {
             return;
         }
         if ($mesto != "izaberite mesto" && $naziv == "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto($mesto);
+            $radionice = RadioniceDB::get_radionice_po_mesto($mesto);
         }
         if ($mesto == "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_naziv($naziv);
+            $radionice = RadioniceDB::get_radionice_po_naziv($naziv);
         }
         if ($mesto != "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
+            $radionice = RadioniceDB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
         }
         Korisnik::radionice($radionice);
     }
+    
     public static function radionica_detalji($idR=NULL, $greska=NULL) {
         if ($idR == NULL) {
             $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         }
         $idK = $_SESSION["korisnik"];
-        $radionica = Radionice_DB::get_radionicu_po_idR($idR);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $idG = $radionica["idG"];
         $galerija = SlikeDB::get_sliku($idG);
-        $komentari = Radionice_DB::get_komentare($idR);
-        $broj_svidjanja = Radionice_DB::get_broj_lajkova_radionice($idR);
-        $broj_komentara = Radionice_DB::get_broj_komentara_radionice($idR);
-        
+        $komentari = KomentariDB::get_komentare($idR);
+        $broj_svidjanja = SvidjanjaDB::get_broj_lajkova_radionice($idR);
+        $broj_komentara = KomentariDB::get_broj_komentara_radionice($idR);
         
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice_detalji.php");
         include("view/footer.php");
-        
     }
     public static function prijavi_radionicu() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -211,7 +234,7 @@ class Korisnik {
             Korisnik::radionica_detalji($idR, $greska);
             return;
         }
-        Korisnik::radionica_detalji($idR);
+        header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);
     }
     public static function svidjanja() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -219,7 +242,6 @@ class Korisnik {
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/svidjanja.php");
         include("view/footer.php");
-        
     }
     public static function lajkuj_radionicu() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -232,14 +254,15 @@ class Korisnik {
         $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         
-        $tmp = Radionice_DB::dodaj_komentar($idK, $idR, $komentar);
+        $tmp = KomentariDB::dodaj_komentar($idK, $idR, $komentar);
         if (!$tmp) {
             $greska = "Greška: Greška pri dodavanju komentara";
             Korisnik::radionica_detalji($idR, $greska);
             return;
         }
-        Korisnik::radionica_detalji($idR);
+        header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);
     }
+    
 }
 
 ?>

@@ -11,39 +11,6 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $korisnici;
     }
-
-    public static function get_korisnika_po_idK($idK) {
-        $db = Baza::getInstanca();
-        $upit = "SELECT * FROM korisnici WHERE idK=:idK";
-        $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":idK", $idK);
-        $iskaz->execute();
-        $korisnik = $iskaz->fetch();
-        $iskaz->closeCursor();
-        return $korisnik;
-    }
-
-    public static function get_korisnika_po_kor_ime($kor_ime) {
-        $db = Baza::getInstanca();
-        $upit = "SELECT * FROM korisnici WHERE kor_ime=:kor_ime";
-        $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":kor_ime", $kor_ime);
-        $iskaz->execute();
-        $korisnik = $iskaz->fetch();
-        $iskaz->closeCursor();
-        return $korisnik;
-    }
-
-    public static function get_korisnika_po_mejl($mejl) {
-        $db = Baza::getInstanca();
-        $upit = "SELECT * FROM korisnici WHERE mejl=:mejl";
-        $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":mejl", $mejl);
-        $iskaz->execute();
-        $korisnik = $iskaz->fetch();
-        $iskaz->closeCursor();
-        return $korisnik;
-    }
     public static function get_korisnike_kojima_se_svidja_radionica($idR) {
         $db = Baza::getInstanca();
         $upit = "SELECT * FROM korisnici JOIN svidjanja"
@@ -56,29 +23,36 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $korisnici;
     }
-    
-    public static function get_komentare_korisnika($idK) {
+
+    public static function get_korisnika_po_idK($idK) {
         $db = Baza::getInstanca();
-        $upit = "SELECT * FROM komentari"
-                . " WHERE idKor=:idK";
+        $upit = "SELECT * FROM korisnici WHERE idK=:idK";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $iskaz->execute();
-        $komentari = $iskaz->fetchAll();
+        $korisnik = $iskaz->fetch();
         $iskaz->closeCursor();
-        return $komentari;
+        return $korisnik;
     }
-    
-    public static function get_svidjanja_korisnika($idK) {
+    public static function get_korisnika_po_kor_ime($kor_ime) {
         $db = Baza::getInstanca();
-        $upit = "SELECT * FROM svidjanja"
-                . " WHERE idK=:idK";
+        $upit = "SELECT * FROM korisnici WHERE kor_ime=:kor_ime";
         $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":idK", $idK);
+        $iskaz->bindValue(":kor_ime", $kor_ime);
         $iskaz->execute();
-        $svidjanja = $iskaz->fetchAll();
+        $korisnik = $iskaz->fetch();
         $iskaz->closeCursor();
-        return $svidjanja;
+        return $korisnik;
+    }
+    public static function get_korisnika_po_mejl($mejl) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM korisnici WHERE mejl=:mejl";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":mejl", $mejl);
+        $iskaz->execute();
+        $korisnik = $iskaz->fetch();
+        $iskaz->closeCursor();
+        return $korisnik;
     }
 
     public static function dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, $tip) {
@@ -104,15 +78,12 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
-
     public static function dodaj_ucesnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl) {
         return KorisniciDB::dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, False);
     }
-
     public static function dodaj_organizatora($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, 
             $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj) {
         $db = Baza::getInstanca();
-        KorisniciDB::dodaj_test("aaa");
         $tmp = KorisniciDB::dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, True);
         if (!$tmp) {
             return false;
@@ -148,7 +119,6 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
-
     public static function dodaj_privremenu_lozinku($mejl, $privremena_lozinka) {
         $db = Baza::getInstanca();
         $vreme = date('Y-m-d H:i:s', time() + 30*60);
@@ -163,7 +133,18 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
-
+    public static function promeni_lozinku($idK, $nova_lozinka) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE korisnici"
+                . " SET lozinka=:nova_lozinka, lozinka_promenjena=0"
+                . " WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":nova_lozinka", $nova_lozinka);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
     public static function azuriraj_korisnika($idK, $ime, $prezime, $kor_ime, $telefon, $mejl) {
         $db = Baza::getInstanca();
         $upit = "UPDATE korisnici"
@@ -178,20 +159,7 @@ class KorisniciDB {
         $iskaz->bindValue(":idK", $idK);
         $tmp = $iskaz->execute();
         $iskaz->closeCursor();
-        return $idK;
-    }
-    
-    public static function promeni_lozinku($idK, $nova_lozinka) {
-        $db = Baza::getInstanca();
-        $upit = "UPDATE korisnici"
-                . " SET lozinka=:nova_lozinka, lozinka_promenjena=0"
-                . " WHERE idK=:idK";
-        $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":nova_lozinka", $nova_lozinka);
-        $iskaz->bindValue(":idK", $idK);
-        $tmp = $iskaz->execute();
-        $iskaz->closeCursor();
-        return $idK;
+        return $tmp;
     }
 
     public static function dodaj_test($str="default") {
@@ -205,5 +173,6 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
+    
 }
 ?>

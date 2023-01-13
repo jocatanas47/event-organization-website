@@ -189,7 +189,7 @@
                         </th>
                     </tr>
                     <?php foreach ($komentari as $komentar): ?>
-                        <?php $radionica = Radionice_DB::get_radionicu_po_idR($komentar["idR"]); ?>
+                        <?php $radionica = RadioniceDB::get_radionicu_po_idR($komentar["idR"]); ?>
                         <tr>
                             <td>
                                 <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>
@@ -229,7 +229,7 @@
                         </th>
                     </tr>
                     <?php foreach ($svidjanja as $svidjanje): ?>
-                        <?php $radionica = Radionice_DB::get_radionicu_po_idR($svidjanje["idR"]); ?>
+                        <?php $radionica = RadioniceDB::get_radionicu_po_idR($svidjanje["idR"]); ?>
                         <tr>
                             <td>
                                 <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>

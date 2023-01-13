@@ -1,6 +1,7 @@
 <?php
 
 class SlikeDB {
+    
     public static function dodaj_sliku($putanja) {
         $db = Baza::getInstanca();
         $upit = "INSERT INTO slike"
@@ -28,11 +29,11 @@ class SlikeDB {
         $upit = "DELETE FROM slike WHERE idS=:idS";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idS", $idS);
-        $iskaz->execute();
-        $slika = $iskaz->fetch();
+        $tmp = $iskaz->execute();
         $iskaz->closeCursor();
-        return $slika;
+        return $tmp;
     }
+    
 }
 
 ?>

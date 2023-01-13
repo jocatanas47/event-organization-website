@@ -1,19 +1,20 @@
 <?php
 
 include("model/baza.php");
+
 include("model/korisnici_DB.php");
-include("model/slike_DB.php");
-include("model/radionice_DB.php");
 include("model/prijave_DB.php");
+include("model/radionice_DB.php");
+include("model/slike_DB.php");
 
 class Organizator {
     
     public static function radionice($radionice=NULL) {
         $idO = $_SESSION["korisnik"];
         if ($radionice == NULL) {
-            $radionice = Radionice_DB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_radionice();
         }
-        $mesta = Radionice_DB::get_mesta();
+        $mesta = RadioniceDB::get_mesta();
         include("view/organizator/header_organizator.php");
         include("view/organizator/radionice.php");
         include("view/footer.php");
@@ -26,21 +27,22 @@ class Organizator {
             return;
         }
         if ($mesto != "izaberite mesto" && $naziv == "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto($mesto);
+            $radionice = RadioniceDB::get_radionice_po_mesto($mesto);
         }
         if ($mesto == "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_naziv($naziv);
+            $radionice = RadioniceDB::get_radionice_po_naziv($naziv);
         }
         if ($mesto != "izaberite mesto" && $naziv != "") {
-            $radionice = Radionice_DB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
+            $radionice = RadioniceDB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
         }
         Organizator::radionice($radionice);
     }
+    
     public static function uredjivanje_radionice($idR=NULL, $greska=NULL) {
         if ($idR == NULL) {
             $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         }
-        $radionica = Radionice_DB::get_radionicu_po_idR($idR);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $prijave = PrijaveDB::get_sve_neodobrene_prijave($idR);
         include("view/organizator/header_organizator.php");
         include("view/organizator/uredjivanje_radionice.php");
@@ -58,8 +60,8 @@ class Organizator {
     public static function prihvati_korisnika() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
-        $radionica = Radionice_DB::get_radionicu_po_idR($idR);
-        $broj_prijavljenih = Radionice_DB::get_broj_prijavljenih_na_radionicu($idR);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
+        $broj_prijavljenih = PrijaveDB::get_broj_prijavljenih_na_radionicu($idR);
         if ($broj_prijavljenih >= $radionica["max_broj_posetilaca"]) {
             $greska = "Greška: Radionica je puna";
             Organizator::uredjivanje_radionice($idR, $greska);
@@ -71,14 +73,17 @@ class Organizator {
             Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
-        Organizator::uredjivanje_radionice($idR);
+        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=".$idR);
     }
-    public static function dodavanje_radionice($greska=NULL, $radionica=NULL) {
+    
+    public static function dodavanje_radionice($greska=NULL, $idR=NULL) {
         $idO = $_SESSION["korisnik"];
-        $radionice = Radionice_DB::get_sve_radionice_organizatora($idO);
-        if ($radionica == NULL) {
+        $radionice = RadioniceDB::get_sve_radionice_organizatora($idO);
+        if ($idR == NULL) {
             $radionica = ["naziv" => "", "mesto" => "", "x_kor" => "", "y_kor" => "",
                 "opis_kratki" => "", "opis_dugi" => "", "max_broj_posetilaca" => ""];
+        } else {
+            $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         }
         include("view/organizator/header_organizator.php");
         include("view/organizator/dodavanje_radionice.php");
@@ -87,11 +92,10 @@ class Organizator {
     public static function izaberi_sablon() {
         $idR = filter_input(INPUT_GET, "sablon", FILTER_VALIDATE_INT);
         if ($idR == -1) {
-            Organizator::dodavanje_radionice();
+            header("Location: routes.php?kontroler=organizator&akcija=dodavanje_radionice");
             return;
         }
-        $radionica = Radionice_DB::get_radionicu_po_idR($idR);
-        Organizator::dodavanje_radionice("", $radionica);
+        Organizator::dodavanje_radionice("", $idR);
     }
     public static function dodaj_radionicu() {
         // TODO: kako se povecava maksimalni upload
@@ -164,7 +168,7 @@ class Organizator {
         }
         $glavna_slika = $glavna_slika["tmp_name"];
         $galerija_slika = $galerija_slika["tmp_name"];
-        $tmp = Radionice_DB::dodaj_radionicu($naziv, $datum, $mesto, $x_kor, $y_kor, 
+        $tmp = RadioniceDB::dodaj_radionicu($naziv, $datum, $mesto, $x_kor, $y_kor, 
                 $opis_kratki, $opis_dugi, $max_broj_posetilaca, $idO);
         if (!$tmp) {
             $greska = "Greška: Greška pri dodavanju radionice";
@@ -181,7 +185,7 @@ class Organizator {
         move_uploaded_file($glavna_slika, $putanja_slika."/".$idR);
         SlikeDB::dodaj_sliku($putanja_slika."/".$idR);
         $idS = $db->lastInsertId();
-        Radionice_DB::dodaj_sliku($idR, $idS);
+        RadioniceDB::dodaj_sliku($idR, $idS);
         $putanja_galerija = "db_files/radionice/galerija/".$idR;
         if (!is_dir($putanja_galerija)) {
             mkdir($putanja_galerija);
@@ -193,9 +197,9 @@ class Organizator {
         }
         SlikeDB::dodaj_sliku($putanja_galerija);
         $idG = $db->lastInsertId();
-        Radionice_DB::dodaj_galeriju($idR, $idG);
+        RadioniceDB::dodaj_galeriju($idR, $idG);
         
-        Organizator::dodavanje_radionice();
+        header("Location: routes.php?kontroler=organizator&akcija=dodavanje_radionice");
     }
 }
 
