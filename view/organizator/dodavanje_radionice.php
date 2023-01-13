@@ -15,7 +15,7 @@
                     <select name="sablon" id="sablon">
                         <option value="-1">izaberite šablon</option>
                         <?php foreach ($radionice as $radionica1): ?>
-                            <option value=<?= $radionica1["idR"] ?>><?= $radionica1["naziv"]." - ".$radionica1["datum"] ?></option>
+                            <option value="<?= $radionica1["idR"] ?>"><?= $radionica1["naziv"]." - ".$radionica1["datum"] ?></option>
                         <?php endforeach; ?>
                     </select>
                     <input type="submit" class="j-btn btn j-orange" value="primeni šablon">
@@ -47,11 +47,11 @@
                                 </tr>
                                 <tr>
                                     <td>geografska dužina:</td>
-                                    <td><input type="number" step="0.001" name="x_kor" min="-180" max="180" required value=<?= $radionica["x_kor"] ?>></td>
+                                    <td><input type="number" step="0.001" name="x_kor" min="-180" max="180" required value="<?= $radionica["x_kor"] ?>"></td>
                                 </tr>
                                 <tr>
                                     <td>geografska širina:</td>
-                                    <td><input type="number" step="0.001" name="y_kor" min="-90" max="90" required value=<?= $radionica["y_kor"] ?>></td>
+                                    <td><input type="number" step="0.001" name="y_kor" min="-90" max="90" required value="<?= $radionica["y_kor"] ?>"></td>
                                 </tr>
                                 <tr>
                                     <td>kratki opis:</td>
@@ -71,7 +71,7 @@
                                 </tr>
                                 <tr>
                                     <td>maksimalni broj posetilaca:</td>
-                                    <td><input type="number" name="max_broj_posetilaca" required value=<?= $radionica["max_broj_posetilaca"] ?>></td>
+                                    <td><input type="number" name="max_broj_posetilaca" required value="<?= $radionica["max_broj_posetilaca"] ?>"></td>
                                 </tr>
                             </table>
                         </div>

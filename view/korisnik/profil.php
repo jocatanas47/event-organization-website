@@ -60,23 +60,23 @@
                                     <table class="table table-hover">
                                         <tr>
                                             <td>ime:</td>
-                                            <td><input type="text" name="ime" value=<?= $korisnik["ime"] ?> required></td>
+                                            <td><input type="text" name="ime" value="<?= $korisnik["ime"] ?>" required></td>
                                         </tr>
                                         <tr>
                                             <td>prezime:</td>
-                                            <td><input type="text" name="prezime" value=<?= $korisnik["prezime"] ?> required></td>
+                                            <td><input type="text" name="prezime" value="<?= $korisnik["prezime"] ?>" required></td>
                                         </tr>
                                         <tr>
                                             <td>korisničko ime:</td>
-                                            <td><input type="text" name="kor_ime" value=<?= $korisnik["kor_ime"] ?> required></td>
+                                            <td><input type="text" name="kor_ime" value="<?= $korisnik["kor_ime"] ?>" required></td>
                                         </tr>
                                         <tr>
                                             <td>kontakt telefon:</td>
-                                            <td><input type="text" name="telefon" value=<?= $korisnik["telefon"] ?> required></td>
+                                            <td><input type="text" name="telefon" value="<?= $korisnik["telefon"] ?>" required></td>
                                         </tr>
                                         <tr>
                                             <td>e-mail adresa:</td>
-                                            <td><input type="text" name="mejl" value=<?= $korisnik["mejl"] ?> required></td>
+                                            <td><input type="text" name="mejl" value="<?= $korisnik["mejl"] ?>" required></td>
                                         </tr>
                                     </table>
 

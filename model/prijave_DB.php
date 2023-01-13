@@ -26,6 +26,17 @@ class PrijaveDB {
         return $tmp;
     }
     
+    public static function izbrisi_prijavu($idR, $idK) {
+        $db = Baza::getInstanca();
+        $upit = "DELETE FROM prijave WHERE (idR=:idR AND idK=:idK)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
     public static function odobri_prijavu($idK, $idR) {
         $db = Baza::getInstanca();
         $upit = "UPDATE prijave SET odobri=1 WHERE (idK=:idK AND idR=:idR)";

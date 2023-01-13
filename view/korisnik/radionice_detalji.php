@@ -38,7 +38,7 @@
                     <form method="get" action="routes.php">
                         <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                         <input type="hidden" id="akcija" name="akcija" value="prijavi_radionicu">
-                        <input type="hidden" id="idR" name="idR" value=<?= $radionica["idR"] ?>>
+                        <input type="hidden" id="idR" name="idR" value="<?= $radionica["idR"] ?>">
                         <input class="btn j-btn j-orange" type="submit" value="prijavi se">
                     </form>
                 </div>
@@ -55,20 +55,21 @@
                             <div class="col-6">
                                 <img src="resources/chat.svg"><?= $broj_komentara ?>
                             </div>
+
                         </div>
                     </div>
-                    <?php if (RadioniceDB::korisnik_bio_na_radionici($idK, $idR)): ?>
-
-                        <form>
-                            <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
-                            <input type="hidden" id="akcija" name="akcija" value="lajkuj_radionicu">
-                            <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
-                            <div class="col-2">
-                                <input type="submit" class="btn j-pink" value="sviđa mi se">
-                            </div>
-                        </form>
-                    <?php endif; ?>
-
+                    <div class="col-2">
+                        <?php if (RadioniceDB::korisnik_bio_na_radionici($idK, $idR)): ?>
+                            <form>
+                                <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
+                                <input type="hidden" id="akcija" name="akcija" value="lajkuj_radionicu">
+                                <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
+                                <div class="col-12">
+                                    <input type="submit" class="btn j-pink" value="sviđa mi se">
+                                </div>
+                            </form>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <?php foreach ($komentari as $komentar): ?>
                     <?php
@@ -90,7 +91,7 @@
                     </div>
                     <div class="row">
                         <div class="col-3 ">
-                            <img class="img-fluid img-thumbnail" src=<?= $profilna ?>>
+                            <img class="img-fluid img-thumbnail" src="<?= $profilna ?>">
                         </div>
                         <div class="col-8 card j-gray">
                             <?= $komentar["komentar"] ?>
@@ -102,7 +103,7 @@
                 <form name="form1" method="get" action="routes.php">
                     <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                     <input type="hidden" id="akcija" name="akcija" value="komentarisi_radionicu">
-                    <input type="hidden" id="idR" name="idR" value=<?= $idR ?>>
+                    <input type="hidden" id="idR" name="idR" value="<?= $idR ?>">
                     <div class="row border-top p-2">
                         <div class="col-3">
                             komentar:
@@ -126,7 +127,7 @@
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-    
+
     var marker = new L.Marker([<?= $radionica["y_kor"] ?>, <?= $radionica["x_kor"] ?>]);
     marker.addTo(map);
 </script>

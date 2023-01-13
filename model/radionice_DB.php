@@ -24,11 +24,13 @@ class RadioniceDB {
     }
     public static function get_sve_radionice_na_koje_je_korisnik_prijavljen($idK) {
         $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *" 
                 . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
-                . " WHERE (idK=:idK)";
+                . " WHERE (idK=:idK AND datum>:tren_vreme)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
         $radionice = $iskaz->fetchAll();
         $iskaz->closeCursor();
@@ -168,6 +170,24 @@ class RadioniceDB {
         $iskaz->bindValue(":idK", $idK);
         $iskaz->bindValue(":naziv", $naziv);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
+        $tmp = $iskaz->fetch();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public static function vise_od_12h_do_radionice($idR) {
+        $db = Baza::getInstanca();
+        $vreme = date('Y-m-d H:i:s', time() + 12*60*60);
+        $upit = "SELECT 1"
+                . " FROM radionice"
+                . " WHERE (idR=:idR AND datum>:vreme)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->bindValue(":vreme", $vreme);
         $iskaz->execute();
         $tmp = $iskaz->fetch();
         $iskaz->closeCursor();

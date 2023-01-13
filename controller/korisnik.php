@@ -177,14 +177,22 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function povuci_svidjanje() {
-        
+        $idS = filter_input(INPUT_GET, "idS", FILTER_SANITIZE_STRING);
+        $tmp = SvidjanjaDB::povuci_svidjanje($idS);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri povlačenju sviđanja";
+            Korisnik::profil($greska);
+        }
+        header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     
-    public static function radionice($radionice=NULL) {
+    public static function radionice($greska=NULL, $radionice=NULL) {
         if ($radionice == NULL) {
             $radionice = RadioniceDB::get_sve_radionice();
         }
+        $idK = $_SESSION["korisnik"];
         $mesta = RadioniceDB::get_mesta();
+        $prijavljene_radionice = RadioniceDB::get_sve_radionice_na_koje_je_korisnik_prijavljen($idK);
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/radionice.php");
         include("view/footer.php");
@@ -205,7 +213,18 @@ class Korisnik {
         if ($mesto != "izaberite mesto" && $naziv != "") {
             $radionice = RadioniceDB::get_radionice_po_mesto_i_naziv($mesto, $naziv);
         }
-        Korisnik::radionice($radionice);
+        Korisnik::radionice("", $radionice);
+    }
+    public static function otkazi_prijavu() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idK = $_SESSION["korisnik"];
+        $tmp = PrijaveDB::izbrisi_prijavu($idR, $idK);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri otkazivanju prijave";
+            Korisnik::radionice($greska);
+            return;
+        }
+        header("Location: routes.php?kontroler=korisnik&akcija=radionice");
     }
     
     public static function radionica_detalji($idR=NULL, $greska=NULL) {
