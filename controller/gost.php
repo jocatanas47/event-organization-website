@@ -1,10 +1,19 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require("PHPMailer/Exception.php");
+require("PHPMailer/PHPMailer.php");
+require("PHPMailer/SMTP.php");
+
 include("model/baza.php");
 
 include("model/korisnici_DB.php");
 include("model/radionice_DB.php");
 include("model/slike_DB.php");
+include("model/svidjanja_DB.php");
 
 class Gost {
     
@@ -84,6 +93,25 @@ class Gost {
             Gost::prijava($greska);
             return;
         }
+        
+        $mail = new PHPMailer(true);
+        
+        $mail->isSMTP();
+         
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'radionice.projekat@gmail.com';
+        $mail->Password = 'ilsimlvuihgulbxc';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+        $mail->setFrom('mejlsluzba@codexworld.com', 'Mailer');
+        $mail->addAddress($mejl);
+        
+        $mail->isHTML(true);
+        $mail->Subject = "Nova Lozinka";
+        $mail->Body = "Vaša nova lozinka je: ".$nova_lozinka;
+        $mail->send();
+        
         header("Location: routes.php?kontroler=gost&akcija=prijava");
     }
     
@@ -246,7 +274,6 @@ class Gost {
         if ($greska != "") {
             return;
         }
-        KorisniciDB::dodaj_test("bbb");
         $uspeh = KorisniciDB::dodaj_organizatora($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl,
                 $naziv, $maticni_broj, $drzava, $grad, $postanski_broj, $ulica, $adresa_broj);
         if ($uspeh && $ima_slika) {
@@ -263,6 +290,7 @@ class Gost {
             $radionice = RadioniceDB::get_sve_aktuelne_radionice();
         }
         $mesta = RadioniceDB::get_mesta();
+        $top_radionice = RadioniceDB::get_top_radionice();
         include("view/gost/header_pocetna.php");
         include("view/gost/radionice.php");
         include("view/footer.php");

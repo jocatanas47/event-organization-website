@@ -29,9 +29,9 @@ class SvidjanjaDB {
     
     public static function povuci_svidjanje($idS) {
         $db = Baza::getInstanca();
-        $upit = "DELETE FROM svidjanja WHERE idS=:idS";
+        $upit = "DELETE FROM svidjanja WHERE idSvidj=:idSvidj";
         $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":idS", $idS);
+        $iskaz->bindValue(":idSvidj", $idS);
         $tmp = $iskaz->execute();
         $iskaz->closeCursor();
         return $tmp;
@@ -39,7 +39,7 @@ class SvidjanjaDB {
     
     public static function get_broj_lajkova_radionice($idR) {
         $db = Baza::getInstanca();
-        $upit = "SELECT COUNT(idS)" 
+        $upit = "SELECT COUNT(idSvidj)" 
                 . " FROM svidjanja"
                 . " WHERE idR=:idR";
         $iskaz = $db->prepare($upit);

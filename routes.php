@@ -1,5 +1,7 @@
 <?php
 
+
+
 $akcija = filter_input(INPUT_GET, "akcija", FILTER_SANITIZE_STRING);
 if (!$akcija) {
     $akcija = filter_input(INPUT_POST, "akcija", FILTER_SANITIZE_STRING);
@@ -9,7 +11,6 @@ if (!$kontroler) {
     $kontroler = filter_input(INPUT_POST, "kontroler", FILTER_SANITIZE_STRING);
 }
 if (!$akcija || !$kontroler) {
-    
     $kontroler = "gost";
     $akcija = "prijava";
 }
@@ -27,7 +28,6 @@ function zovi($kontroler, $akcija) {
             $kontroler = new Organizator();
             break;
     }
-    KorisniciDB::dodaj_test($akcija);
     $kontroler::$akcija();
 }
 

@@ -123,7 +123,7 @@ class KorisniciDB {
         $db = Baza::getInstanca();
         $vreme = date('Y-m-d H:i:s', time() + 30*60);
         $upit = "UPDATE korisnici"
-                . " SET lozinka_privremena=:privremena_lozinka, lozinka_trajanje=:vreme"
+                . " SET lozinka_privremena=:privremena_lozinka, lozinka_trajanje=:vreme, lozinka_promenjena=1"
                 . " WHERE mejl = :mejl";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":privremena_lozinka", $privremena_lozinka);

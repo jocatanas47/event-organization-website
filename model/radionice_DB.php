@@ -106,6 +106,22 @@ class RadioniceDB {
         $iskaz->closeCursor();
         return $radionice;
     }
+    public static function get_top_radionice() {
+        $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
+        $upit = "SELECT *, COUNT(svidjanja.idSvidj) as lajkovi"
+                . " FROM radionice"
+                . " LEFT JOIN svidjanja ON radionice.idR=svidjanja.idR"
+                . " WHERE datum>:tren_vreme"
+                . " GROUP BY radionice.idR"
+                . " ORDER BY lajkovi DESC";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
     
     public static function get_radionicu_po_idR($idR) {
         $db = Baza::getInstanca();
