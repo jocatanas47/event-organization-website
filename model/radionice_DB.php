@@ -181,6 +181,28 @@ class RadioniceDB {
         return $tmp;
     }
     
+    public static function azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor,
+            $opis_kratki, $opis_dugi, $max_broj_posetilaca) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE radionice"
+                . " SET naziv=:naziv, datum=:datum, mesto=:mesto,"
+                . " x_kor=:x_kor, y_kor=:y_kor, opis_kratki=:opis_kratki,"
+                . " opis_dugi=:opis_dugi, max_broj_posetilaca=:max_broj_posetilaca "
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":naziv", $naziv);
+        $iskaz->bindValue(":datum", $datum);
+        $iskaz->bindValue(":mesto", $mesto);
+        $iskaz->bindValue(":x_kor", $x_kor);
+        $iskaz->bindValue(":y_kor", $y_kor);
+        $iskaz->bindValue(":opis_kratki", $opis_kratki);
+        $iskaz->bindValue(":opis_dugi", $opis_dugi);
+        $iskaz->bindValue(":max_broj_posetilaca", $max_broj_posetilaca);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
     public static function korisnik_bio_na_radionici($idK, $idR) {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());

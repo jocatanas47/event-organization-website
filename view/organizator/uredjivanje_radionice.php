@@ -27,7 +27,7 @@
                         <form name="form2" action="routes.php" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_glavnu_sliku">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
-                            <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
+                            <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
                                 <div class="col-6">
                                     <input type="file" name="slika" required>
@@ -40,7 +40,7 @@
                         <form name="form3" action="routes.php" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_galeriju">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
-                            <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
+                            <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
                                 <div class="col-6">
                                     <input type="file" name="galerija[]" required multiple>
@@ -55,7 +55,7 @@
                         <form name="form1" action="routes.php" method="get">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionice">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
-                            <input type="hidden" name="idR" id="idR" value=<?= $idR ?>>
+                            <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
                                 <div class="col-12">
                                     <table class="table table-hover">

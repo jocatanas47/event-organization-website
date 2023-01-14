@@ -13,14 +13,16 @@
 
         <div class="row justify-content-center">
             <div class="col-5 card">
-                <div class="row justify-content-center">
-                    <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
-                        <div class="col-4">
-                            <img class="img-fluid" src=<?= $slika ?>>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <br>
+                <?php if ($galerija != NULL): ?>
+                    <div class="row justify-content-center">
+                        <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
+                            <div class="col-4">
+                                <img class="img-fluid" src=<?= $slika ?>>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <br>
+                <?php endif; ?>
                 <div>
                     <?= $radionica["opis_dugi"] ?>
                 </div>

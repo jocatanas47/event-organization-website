@@ -162,6 +162,36 @@ class KorisniciDB {
         return $tmp;
     }
 
+    
+    
+    public static function korisnik_predlozio_radionicu($idK) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT 1"
+                . " FROM korisnici"
+                . " WHERE (idK=:idK AND hoce_org=1)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $tmp = $iskaz->fetch();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public static function korisnik_hoce_org($idK) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE korisnici"
+                . " SET hoce_org=1"
+                . " WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
     public static function dodaj_test($str="default") {
         $db = Baza::getInstanca();
         $upit = "INSERT INTO test_baza"

@@ -8,34 +8,34 @@ include("model/radionice_DB.php");
 include("model/slike_DB.php");
 
 class Organizator {
-    
-    public static function promena_lozinke($greska=NULL) {
+
+    public static function promena_lozinke($greska = NULL) {
         include("view/organizator/header_organizator.php");
         include("view/organizator/promena_lozinke.php");
         include("view/footer.php");
     }
+
     public static function promeni_lozinku() {
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
-        
+
         $stara_lozinka = filter_input(INPUT_GET, "stara_lozinka", FILTER_SANITIZE_STRING);
         $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
         $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
-        
+
         $lozinka;
         if ($korisnik["lozinka_promenjena"]) {
             $lozinka = $korisnik["lozinka_privremena"];
         } else {
             $lozinka = $korisnik["lozinka"];
         }
-        
-        if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka)
-                || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
+
+        if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka) || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
             $greska .= "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
             Organizator::promena_lozinke($greska);
             return;
         }
-        
+
         $greska = "Greška: Greška pri promeni lozinke, proverite unesene podatke";
         if ($stara_lozinka != $lozinka) {
             Organizator::promena_lozinke($greska);
@@ -45,18 +45,18 @@ class Organizator {
             Organizator::promena_lozinke($greska);
             return;
         }
-        
+
         $tmp = KorisniciDB::promeni_lozinku($idK, $nova_lozinka);
         if (!$tmp) {
             Organizator::promena_lozinke($greska);
             return;
         }
         KorisniciDB::dodaj_test($nova_lozinka);
-        
+
         header("Location: routes.php?kontroler=gost&akcija=izloguj_se");
     }
-    
-    public static function radionice($radionice=NULL) {
+
+    public static function radionice($radionice = NULL) {
         $idO = $_SESSION["korisnik"];
         if ($radionice == NULL) {
             $radionice = RadioniceDB::get_sve_radionice();
@@ -66,6 +66,7 @@ class Organizator {
         include("view/organizator/radionice.php");
         include("view/footer.php");
     }
+
     public static function filtriraj_radionice() {
         $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
         $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
@@ -84,8 +85,8 @@ class Organizator {
         }
         Organizator::radionice($radionice);
     }
-    
-    public static function uredjivanje_radionice($idR=NULL, $greska=NULL) {
+
+    public static function uredjivanje_radionice($idR = NULL, $greska = NULL) {
         if ($idR == NULL) {
             $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
         }
@@ -95,14 +96,161 @@ class Organizator {
         include("view/organizator/uredjivanje_radionice.php");
         include("view/footer.php");
     }
+
     public static function azuriraj_podatke_radionica() {
-        
+        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        $datum = date("Y-m-d H:i:s", strtotime($_GET["datum"]));
+        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
+        $x_kor = filter_input(INPUT_GET, "x_kor", FILTER_VALIDATE_FLOAT);
+        $y_kor = filter_input(INPUT_GET, "y_kor", FILTER_VALIDATE_FLOAT);
+        $opis_kratki = filter_input(INPUT_GET, "opis_kratki", FILTER_SANITIZE_STRING);
+        $opis_dugi = filter_input(INPUT_GET, "opis_dugi", FILTER_SANITIZE_STRING);
+        $max_broj_posetilaca = filter_input(INPUT_GET, "max_broj_posetilaca", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_GET, "idR", FILTER_VALIDATE_INT);
+
+        $tmp = RadioniceDB::azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor, $opis_kratki, $opis_dugi, $max_broj_posetilaca);
+        if (!$tmp) {
+            $greska = "Greška: Greška pri ažuriranju radionice";
+            Organizator::uredjivanje_radionice($idR, $greska);
+            return;
+        }
+        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
-    public static function promeni_glavnu_sliku() {
-        
+
+    public static function azuriraj_glavnu_sliku() {
+        // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
+        // - do kesiranja je - ne znam kako to da popravim
+        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
+
+        if ($_FILES["slika"]["error"] != 0) {
+            $greska = "Greška: Nije prosleđen fajl";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+        $flag = getimagesize($_FILES["slika"]["tmp_name"]);
+        if (!$flag) {
+            $greska = "Greška: Prosleđeni fajl nije slika";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
+        // TODO: popraviti to
+        /* $a = getimagesize($_FILES["slika"]["tmp_name"]);
+          $image_type = $a[2];
+
+          if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+          $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
+          Korisnik::profil($greska);
+          return;
+          } */
+        $slika = $_FILES["slika"]["tmp_name"];
+        if (!is_uploaded_file($slika)) {
+            $greska = "Greška: Greška pri menjanju glavne slike";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+
+        if ($radionica["idS"] != NULL) {
+            $idS = $radionica["idS"];
+            $slika = SlikeDB::get_sliku($idS);
+            $putanja = $slika["putanja"];
+            unlink($putanja);
+            SlikeDB::izbrisi_sliku($idS);
+        }
+        $slika = $_FILES["slika"]["tmp_name"];
+        $putanja = "db_files/radionice/glavna_slika/" . $idR;
+        if (!is_dir($putanja)) {
+            mkdir($putanja);
+        }
+        $putanja .= "/" . $idR;
+        $tmp = move_uploaded_file($slika, $putanja);
+        if (!$tmp) {
+            $greska .= "Greška: Greška pri menjanju glavne slike";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+
+        SlikeDB::dodaj_sliku($putanja);
+        $db = Baza::getInstanca();
+        $idS = $db->lastInsertId();
+        RadioniceDB::dodaj_sliku($idR, $idS);
+
+        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
-    public static function promeni_galeriju() {
-        
+
+    public static function azuriraj_galeriju() {
+        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
+
+        if ($_FILES["galerija"]["error"][0] != 0) {
+            $greska = "Greška: Nije prosleđen fajl";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+        $galerija = $_FILES["galerija"];
+        if (count($galerija["tmp_name"]) > 5) {
+            $greska = "Greska: Galerija može da sadrži maksimalno 5 slika";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+        foreach ($_FILES["galerija"]["tmp_name"] as $slika) {
+            $flag = getimagesize($slika);
+            if (!$flag) {
+                $greska = "Greška: Prosleđeni fajl nije slika";
+                Organizator::uredjivanje_radionice($greska);
+                return;
+            }
+            // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
+            // TODO: popraviti to
+            /* $a = getimagesize($_FILES["slika"]["tmp_name"]);
+              $image_type = $a[2];
+
+              if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+              $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
+              Korisnik::profil($greska);
+              return;
+              } */
+            if (!is_uploaded_file($slika)) {
+                $greska = "Greška: Greška pri menjanju galerije";
+                Organizator::uredjivanje_radionice($greska);
+                return;
+            }
+        }
+
+        if ($radionica["idG"] != NULL) {
+            $idG = $radionica["idG"];
+            $galerija = SlikeDB::get_sliku($idG);
+            $putanja = $galerija["putanja"];
+            $slike = glob($putanja . "/*");
+            foreach ($slike as $slika) {
+                unlink($slika);
+            }
+            rmdir($putanja);
+            SlikeDB::izbrisi_sliku($idG);
+        }
+        $galerija = $_FILES["galerija"]["tmp_name"];
+        $putanja = "db_files/radionice/galerija/" . $idR;
+        if (!is_dir($putanja)) {
+            mkdir($putanja);
+        }
+
+        $i = 0;
+        foreach ($galerija as $slika) {
+            move_uploaded_file($slika, $putanja . "/" . $i);
+            $i++;
+        }
+        SlikeDB::dodaj_sliku($putanja);
+        $db = Baza::getInstanca();
+        $idG = $db->lastInsertId();
+        $tmp = RadioniceDB::dodaj_galeriju($idR, $idG);
+        if (!$tmp) {
+            $greska .= "Greška: Greška pri menjanju galerije";
+            Organizator::uredjivanje_radionice($greska);
+            return;
+        }
+
+        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function prihvati_korisnika() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
@@ -120,10 +268,10 @@ class Organizator {
             Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
-        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=".$idR);
+        header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
-    
-    public static function dodavanje_radionice($greska=NULL, $idR=NULL) {
+
+    public static function dodavanje_radionice($greska = NULL, $idR = NULL) {
         $idO = $_SESSION["korisnik"];
         $radionice = RadioniceDB::get_sve_radionice_organizatora($idO);
         if ($idR == NULL) {
@@ -144,6 +292,7 @@ class Organizator {
         }
         Organizator::dodavanje_radionice("", $idR);
     }
+
     public static function dodaj_radionicu() {
         // TODO: kako se povecava maksimalni upload
         $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
@@ -155,12 +304,12 @@ class Organizator {
         $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
         $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
         $idO = $_SESSION["korisnik"];
-        
+
         $glavna_slika = $_FILES["glavna_slika"];
         $galerija_slika = $_FILES["galerija_slika"];
-        
-        if ($glavna_slika["error"] != 0 || count($galerija_slika) < 1) {
-            $greska = "Greška: Nije prosleđen fajl";
+
+        if ($glavna_slika["error"] != 0) {
+            $greska = "Greška: Nije prosleđen fajl sa glavnom slikom";
             Organizator::dodavanje_radionice($greska);
             return;
         }
@@ -172,82 +321,90 @@ class Organizator {
         }
         // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
         // TODO: popraviti to
-        /*$a = getimagesize($glavna_slika["tmp_name"]);
-        $image_type = $a[2];
-        
-        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-            $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-            Organizator::dodavanje_radionice($greska);
-            return;
-        }*/
-        if (!is_uploaded_file($glavna_slika["tmp_name"])){
+        /* $a = getimagesize($glavna_slika["tmp_name"]);
+          $image_type = $a[2];
+
+          if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+          $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
+          Organizator::dodavanje_radionice($greska);
+          return;
+          } */
+        if (!is_uploaded_file($glavna_slika["tmp_name"])) {
             $greska = "Greška: Nije pronađen fajl";
             Organizator::dodavanje_radionice($greska);
             return;
         }
-        if (count($galerija_slika) > 5) {
-            $greska = "Greska: Galerija može da sadrži maksimalno 5 slika";
-            Organizator::dodavanje_radionice($greska);
-            return;
-        }
-        foreach ($galerija_slika["tmp_name"] as $slika) {
-            $flag = getimagesize($slika);
-            if (!$flag) {
-                $greska = "Greška: Prosleđeni fajl nije slika";
-                Organizator::dodavanje_radionice($greska);
-                return;
-            }
-            // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-            // TODO: popraviti to
-            /*$a = getimagesize($slika["tmp_name"]);
-            $image_type = $a[2];
 
-            if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-                $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-                Organizator::dodavanje_radionice($greska);
-                return;
-            }*/
-            if (!is_uploaded_file($slika)){
-                $greska = "Greška: Nije pronađen fajl";
+        if ($galerija_slika["error"][0] == 0) {
+            if (count($galerija_slika["tmp_name"]) > 5) {
+                $greska = "Greska: Galerija može da sadrži maksimalno 5 slika";
                 Organizator::dodavanje_radionice($greska);
                 return;
             }
+            foreach ($galerija_slika["tmp_name"] as $slika) {
+                $flag = getimagesize($slika);
+                if (!$flag) {
+                    $greska = "Greška: Prosleđeni fajl nije slika";
+                    Organizator::dodavanje_radionice($greska);
+                    return;
+                }
+                // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
+                // TODO: popraviti to
+                /* $a = getimagesize($slika["tmp_name"]);
+                  $image_type = $a[2];
+
+                  if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
+                  $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
+                  Organizator::dodavanje_radionice($greska);
+                  return;
+                  } */
+                if (!is_uploaded_file($slika)) {
+                    $greska = "Greška: Nije pronađen fajl";
+                    Organizator::dodavanje_radionice($greska);
+                    return;
+                }
+            }
         }
+
         $glavna_slika = $glavna_slika["tmp_name"];
-        $galerija_slika = $galerija_slika["tmp_name"];
-        $tmp = RadioniceDB::dodaj_radionicu($naziv, $datum, $mesto, $x_kor, $y_kor, 
-                $opis_kratki, $opis_dugi, $max_broj_posetilaca, $idO);
+        $tmp = RadioniceDB::dodaj_radionicu($naziv, $datum, $mesto, $x_kor, $y_kor,
+                        $opis_kratki, $opis_dugi, $max_broj_posetilaca, $idO);
         if (!$tmp) {
             $greska = "Greška: Greška pri dodavanju radionice";
             Organizator::dodavanje_radionice($greska);
-                return;
+            return;
         }
         $db = Baza::getInstanca();
         $idR = $db->lastInsertId();
-        $putanja_slika = "db_files/radionice/glavna_slika/".$idR;
+        $putanja_slika = "db_files/radionice/glavna_slika/" . $idR;
         if (!is_dir($putanja_slika)) {
             mkdir($putanja_slika);
         }
-        
-        move_uploaded_file($glavna_slika, $putanja_slika."/".$idR);
-        SlikeDB::dodaj_sliku($putanja_slika."/".$idR);
+
+        move_uploaded_file($glavna_slika, $putanja_slika . "/" . $idR);
+        SlikeDB::dodaj_sliku($putanja_slika . "/" . $idR);
         $idS = $db->lastInsertId();
         RadioniceDB::dodaj_sliku($idR, $idS);
-        $putanja_galerija = "db_files/radionice/galerija/".$idR;
-        if (!is_dir($putanja_galerija)) {
-            mkdir($putanja_galerija);
+
+        if ($galerija_slika["error"][0] == 0) {
+            $galerija_slika = $galerija_slika["tmp_name"];
+            $putanja_galerija = "db_files/radionice/galerija/" . $idR;
+            if (!is_dir($putanja_galerija)) {
+                mkdir($putanja_galerija);
+            }
+            $i = 0;
+            foreach ($galerija_slika as $slika) {
+                move_uploaded_file($slika, $putanja_galerija . "/" . $i);
+                $i++;
+            }
+            SlikeDB::dodaj_sliku($putanja_galerija);
+            $idG = $db->lastInsertId();
+            RadioniceDB::dodaj_galeriju($idR, $idG);
         }
-        $i = 0;
-        foreach ($galerija_slika as $slika) {
-            move_uploaded_file($slika, $putanja_galerija."/".$i);
-            $i++;
-        }
-        SlikeDB::dodaj_sliku($putanja_galerija);
-        $idG = $db->lastInsertId();
-        RadioniceDB::dodaj_galeriju($idR, $idG);
-        
+
         header("Location: routes.php?kontroler=organizator&akcija=dodavanje_radionice");
     }
+
 }
 
 ?>

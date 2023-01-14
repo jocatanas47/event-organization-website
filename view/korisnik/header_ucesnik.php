@@ -21,7 +21,7 @@
                         <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=korisnik">radionice</a>
                     </div>
                     <div class="row p-2">
-                        <a class="col-2 j-purple j-font-white btn">postani organizator</a>
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=predlog_radionice&kontroler=korisnik">postani organizator</a>
                         <div class="col-9">
                             <a class="col-3 j-purple j-font-white btn" href="routes.php?akcija=izloguj_se&kontroler=gost">izloguj se</a>
                         </div>
