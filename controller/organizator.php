@@ -9,6 +9,53 @@ include("model/slike_DB.php");
 
 class Organizator {
     
+    public static function promena_lozinke($greska=NULL) {
+        include("view/organizator/header_organizator.php");
+        include("view/organizator/promena_lozinke.php");
+        include("view/footer.php");
+    }
+    public static function promeni_lozinku() {
+        $idK = $_SESSION["korisnik"];
+        $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
+        
+        $stara_lozinka = filter_input(INPUT_GET, "stara_lozinka", FILTER_SANITIZE_STRING);
+        $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
+        
+        $lozinka;
+        if ($korisnik["lozinka_promenjena"]) {
+            $lozinka = $korisnik["lozinka_privremena"];
+        } else {
+            $lozinka = $korisnik["lozinka"];
+        }
+        
+        if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka)
+                || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
+            $greska .= "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
+            Organizator::promena_lozinke($greska);
+            return;
+        }
+        
+        $greska = "Greška: Greška pri promeni lozinke, proverite unesene podatke";
+        if ($stara_lozinka != $lozinka) {
+            Organizator::promena_lozinke($greska);
+            return;
+        }
+        if ($nova_lozinka != $potvrda) {
+            Organizator::promena_lozinke($greska);
+            return;
+        }
+        
+        $tmp = KorisniciDB::promeni_lozinku($idK, $nova_lozinka);
+        if (!$tmp) {
+            Organizator::promena_lozinke($greska);
+            return;
+        }
+        KorisniciDB::dodaj_test($nova_lozinka);
+        
+        header("Location: routes.php?kontroler=gost&akcija=izloguj_se");
+    }
+    
     public static function radionice($radionice=NULL) {
         $idO = $_SESSION["korisnik"];
         if ($radionice == NULL) {

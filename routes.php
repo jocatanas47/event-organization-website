@@ -44,7 +44,8 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "izbrisi_komentar", "povuci_svidjanje", "otkazi_prijavu"],
                     "organizator" => ["radionice", "moje_radionice", "dodavanje_radionice",
                                 "dodaj_radionicu", "izaberi_sablon", "filtriraj_radionice",
-                                "uredjivanje_radionice", "prihvati_korisnika"]);
+                                "uredjivanje_radionice", "prihvati_korisnika", "promena_lozinke",
+                                "promeni_lozinku"]);
 
 
 if (array_key_exists($kontroler, $kontroleri)) {

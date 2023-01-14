@@ -260,7 +260,7 @@ class Gost {
     
     public static function radionice($radionice=NULL) {
         if ($radionice == NULL) {
-            $radionice = RadioniceDB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_aktuelne_radionice();
         }
         $mesta = RadioniceDB::get_mesta();
         include("view/gost/header_pocetna.php");

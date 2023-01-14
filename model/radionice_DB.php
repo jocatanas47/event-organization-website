@@ -14,7 +14,7 @@ class RadioniceDB {
     public static function get_sve_aktuelne_radionice() {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());
-        $upit = "SELECT * FROM radionice WHERE datum<:tren_vreme";
+        $upit = "SELECT * FROM radionice WHERE datum>:tren_vreme";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
@@ -62,11 +62,13 @@ class RadioniceDB {
     }
     public static function get_radionice_po_mesto($mesto) {
         $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE mesto=:mesto";
+                . " WHERE mesto=:mesto AND datum>:tren_vreme";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":mesto", $mesto);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
         $radionice = $iskaz->fetchAll();
         $iskaz->closeCursor();
@@ -74,12 +76,14 @@ class RadioniceDB {
     }
     public static function get_radionice_po_naziv($naziv) {
         $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE (lower(naziv) LIKE lower(:naziv))";
+                . " WHERE (lower(naziv) LIKE lower(:naziv) AND datum>:tren_vreme)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
         $radionice = $iskaz->fetchAll();
         $iskaz->closeCursor();
@@ -87,14 +91,16 @@ class RadioniceDB {
     }
     public static function get_radionice_po_mesto_i_naziv($mesto, $naziv) {
         $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
                 . " WHERE (lower(naziv) LIKE lower(:naziv)"
-                . " AND mesto=:mesto)";
+                . " AND mesto=:mesto AND datum>:tren_vreme)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
         $iskaz->bindValue(":mesto", $mesto);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
         $radionice = $iskaz->fetchAll();
         $iskaz->closeCursor();

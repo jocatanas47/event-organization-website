@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form>
+                        <form method="get" action="routes.php">
                             <div class="row">
                                 <div class="col-12">
                                     <input type="hidden" name="akcija" id="akcija" value="promeni_lozinku">

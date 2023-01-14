@@ -2,6 +2,12 @@
     <div class="col-12">
         <br>
         <div class="row justify-content-center">
+            <div class="col-8 text-center j-greska">
+                <?= $greska ?>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
             <div class="col-4 text-center">
                 <input type="radio" class="btn btn-check" name="dugme" id="radionica" checked onclick="toggleRadPri(0)">
                 <label class="btn j-orange" for="radionica">radionica</label>

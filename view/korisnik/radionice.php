@@ -4,14 +4,14 @@
         <div class="row justify-content-center">
             <br>
             <div class="col-4 text-center">
-                <input type="radio" class="btn btn-check" name="radionice" id="prijavljene" checked onclick="togglePrijavljeneSve(0)">
+                <input type="radio" class="btn btn-check" name="radionice" id="prijavljene" onclick="togglePrijavljeneSve(0)">
                 <label class="btn j-orange" for="prijavljene">prijavljene radionice</label>
 
-                <input type="radio" class="btn btn-check" name="radionice" id="sve" onclick="togglePrijavljeneSve(1)">
+                <input type="radio" class="btn btn-check" name="radionice" id="sve" checked onclick="togglePrijavljeneSve(1)">
                 <label class="btn j-orange" for="sve">sve radionice</label>
             </div>
         </div>
-        <div class="row" id="prijavljene_div">
+        <div class="row" id="prijavljene_div" style="display:none">
             <div class="col-12">
                 <table class="table">
                     <tbody>
@@ -63,7 +63,7 @@
                 </table>
             </div>
         </div>
-        <div class="row" id="sve_div" style="display:none">
+        <div class="row" id="sve_div">
             <div class="col-12">
                 <br>
                 <div class="row justify-content-center">

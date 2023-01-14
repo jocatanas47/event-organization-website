@@ -12,10 +12,10 @@
             <div class="row">
                 <div class="col-12 header j-light-purple">
                     <div class="row p-2">
-                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=organizator">radionice</a>
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=promena_lozinke&kontroler=organizator">promena lozinke</a>
                     </div>
                     <div class="row p-2">
-                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=organizator">moje radionice</a>
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=organizator">radionice</a>
                     </div>
                     <div class="row p-2">
                         <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=dodavanje_radionice&kontroler=organizator">dodaj radionicu</a>

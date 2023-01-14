@@ -140,6 +140,13 @@ class Korisnik {
             $lozinka = $korisnik["lozinka"];
         }
         
+        if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka)
+                || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
+            $greska .= "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
+            Korisnik::profil($greska);
+            return;
+        }
+        
         $greska = "Greška: Greška pri promeni lozinke, proverite unesene podatke";
         if ($stara_lozinka != $lozinka) {
             Korisnik::profil($greska);
@@ -155,7 +162,7 @@ class Korisnik {
             Korisnik::profil($greska);
             return;
         }
-        header("Location: routes.php?kontroler=korisnik&akcija=profil");
+        header("Location: routes.php?kontroler=gost&akcija=izloguj_se");
     }
     public static function promeni_komentar() {
         $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
@@ -188,7 +195,7 @@ class Korisnik {
     
     public static function radionice($greska=NULL, $radionice=NULL) {
         if ($radionice == NULL) {
-            $radionice = RadioniceDB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_aktuelne_radionice();
         }
         $idK = $_SESSION["korisnik"];
         $mesta = RadioniceDB::get_mesta();
