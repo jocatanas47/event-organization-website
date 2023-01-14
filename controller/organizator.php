@@ -8,6 +8,7 @@ include("model/radionice_DB.php");
 include("model/slike_DB.php");
 
 class Organizator {
+    // TODO staviti ogranicenje svuda na datetime input da moze da bude samo u buducnosti
 
     public static function promena_lozinke($greska = NULL) {
         include("view/organizator/header_organizator.php");
