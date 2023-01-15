@@ -14,7 +14,7 @@ class RadioniceDB {
     public static function get_sve_aktuelne_radionice() {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());
-        $upit = "SELECT * FROM radionice WHERE datum>:tren_vreme";
+        $upit = "SELECT * FROM radionice WHERE (datum>:tren_vreme AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
@@ -27,7 +27,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *" 
                 . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
-                . " WHERE (idK=:idK AND datum>:tren_vreme)";
+                . " WHERE (idK=:idK AND datum>:tren_vreme AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
@@ -41,7 +41,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *" 
                 . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
-                . " WHERE (idK=:idK AND datum<:tren_vreme AND odobri=1)";
+                . " WHERE (idK=:idK AND datum<:tren_vreme AND odobri=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
@@ -52,7 +52,7 @@ class RadioniceDB {
     }
     public static function get_sve_radionice_organizatora($idO) {
         $db = Baza::getInstanca();
-        $upit = "SELECT * FROM radionice WHERE idO=:idO";
+        $upit = "SELECT * FROM radionice WHERE (idO=:idO AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idO", $idO);
         $iskaz->execute();
@@ -65,7 +65,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE mesto=:mesto AND datum>:tren_vreme";
+                . " WHERE (mesto=:mesto AND datum>:tren_vreme AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":mesto", $mesto);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
@@ -79,7 +79,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE (lower(naziv) LIKE lower(:naziv) AND datum>:tren_vreme)";
+                . " WHERE (lower(naziv) LIKE lower(:naziv) AND datum>:tren_vreme AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
@@ -95,7 +95,7 @@ class RadioniceDB {
         $upit = "SELECT *"
                 . " FROM radionice"
                 . " WHERE (lower(naziv) LIKE lower(:naziv)"
-                . " AND mesto=:mesto AND datum>:tren_vreme)";
+                . " AND mesto=:mesto AND datum>:tren_vreme AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
@@ -112,7 +112,7 @@ class RadioniceDB {
         $upit = "SELECT *, COUNT(svidjanja.idSvidj) as lajkovi"
                 . " FROM radionice"
                 . " LEFT JOIN svidjanja ON radionice.idR=svidjanja.idR"
-                . " WHERE datum>:tren_vreme"
+                . " WHERE (datum>:tren_vreme AND AND otkazana=0)"
                 . " GROUP BY radionice.idR"
                 . " ORDER BY lajkovi DESC";
         $iskaz = $db->prepare($upit);
@@ -203,13 +203,25 @@ class RadioniceDB {
         return $tmp;
     }
     
+    public static function otkazi_radionicu($idR) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE radionice"
+                . " SET otkazana=1"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
     public static function korisnik_bio_na_radionici($idK, $idR) {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());
         $naziv = RadioniceDB::get_radionicu_po_idR($idR)["naziv"];
         $upit = "SELECT 1"
                 . " FROM radionice JOIN prijave ON radionice.idR=prijave.idR"
-                . " WHERE (idK=:idK AND naziv=:naziv AND datum<:tren_vreme AND odobri=1)";
+                . " WHERE (idK=:idK AND naziv=:naziv AND datum<:tren_vreme AND odobri=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $iskaz->bindValue(":naziv", $naziv);

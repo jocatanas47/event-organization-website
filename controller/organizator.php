@@ -1,5 +1,13 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require("PHPMailer/Exception.php");
+require("PHPMailer/PHPMailer.php");
+require("PHPMailer/SMTP.php");
+
 include("model/baza.php");
 
 include("model/korisnici_DB.php");
@@ -97,7 +105,6 @@ class Organizator {
         include("view/organizator/uredjivanje_radionice.php");
         include("view/footer.php");
     }
-
     public static function azuriraj_podatke_radionica() {
         $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
         $datum = date("Y-m-d H:i:s", strtotime($_GET["datum"]));
@@ -117,7 +124,6 @@ class Organizator {
         }
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
-
     public static function azuriraj_glavnu_sliku() {
         // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
         // - do kesiranja je - ne znam kako to da popravim
@@ -179,7 +185,6 @@ class Organizator {
 
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
-
     public static function azuriraj_galeriju() {
         $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
@@ -270,6 +275,37 @@ class Organizator {
             return;
         }
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
+    }
+    public static function otkazi_radionicu() {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $korisnici = KorisniciDB::get_korisnike_koji_su_prijavljeni_na_radionicu($idR);
+        
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
+        $tmp = RadioniceDB::otkazi_radionicu($idR);
+        if (!$imp) {
+            $greska = "Greška: Greška pri otkazivanju radionice";
+            uredjivanje_radionice($idR, $greska);
+            return;
+        }
+        
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'radionice.projekat@gmail.com';
+        $mail->Password = 'ilsimlvuihgulbxc';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+        
+        $mail->setFrom('radionice.projekat@gmail.com', 'Mailer');
+        foreach ($korisnici as $korisnik) {
+            $mejl = $korisnik["mejl"];
+            $mail->addAddress($mejl);
+        }
+        $mail->isHTML(true);
+        $mail->Subject = "Otkazivanje radionice";
+        $mail->Body = "Radionica ".$radionica["naziv"]." zakazana za ".$radionica["datum"]." se otkazuje.";
+        $mail->send();
     }
 
     public static function dodavanje_radionice($greska = NULL, $idR = NULL) {

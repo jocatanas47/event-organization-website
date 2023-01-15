@@ -23,6 +23,18 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $korisnici;
     }
+    public static function get_korisnike_koji_su_prijavljeni_na_radionicu($idR) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM korisnici JOIN prijave"
+                . " ON korisnici.idK=prijave.idK"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $iskaz->execute();
+        $korisnici = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $korisnici;
+    }
 
     public static function get_korisnika_po_idK($idK) {
         $db = Baza::getInstanca();

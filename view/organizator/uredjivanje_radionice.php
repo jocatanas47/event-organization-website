@@ -50,6 +50,16 @@
                                 </div>
                             </div>
                         </form>
+                        <form name="form4" action="routes.php" method="get">
+                            <input type="hidden" name="akcija" id="akcija" value="otkazi_radionicu">
+                            <input type="hidden" name="kontroler" id="kontroler" value="organizator">
+                            <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
+                            <div class="row">
+                                <div class="col-12">
+                                    <input type="submit" class="btn j-orange" value="otkaži radionicu">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">

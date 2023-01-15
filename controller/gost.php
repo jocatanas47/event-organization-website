@@ -104,7 +104,7 @@ class Gost {
         $mail->Password = 'ilsimlvuihgulbxc';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
-        $mail->setFrom('mejlsluzba@codexworld.com', 'Mailer');
+        $mail->setFrom('radionice.projekat@gmail.com', 'Mailer');
         $mail->addAddress($mejl);
         
         $mail->isHTML(true);
