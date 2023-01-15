@@ -40,7 +40,7 @@ class Organizator {
         }
 
         if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka) || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
-            $greska .= "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
+            $greska = "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
             Organizator::promena_lozinke($greska);
             return;
         }
@@ -173,7 +173,7 @@ class Organizator {
         $putanja .= "/" . $idR;
         $tmp = move_uploaded_file($slika, $putanja);
         if (!$tmp) {
-            $greska .= "Greška: Greška pri menjanju glavne slike";
+            $greska = "Greška: Greška pri menjanju glavne slike";
             Organizator::uredjivanje_radionice($greska);
             return;
         }
@@ -251,7 +251,7 @@ class Organizator {
         $idG = $db->lastInsertId();
         $tmp = RadioniceDB::dodaj_galeriju($idR, $idG);
         if (!$tmp) {
-            $greska .= "Greška: Greška pri menjanju galerije";
+            $greska = "Greška: Greška pri menjanju galerije";
             Organizator::uredjivanje_radionice($greska);
             return;
         }

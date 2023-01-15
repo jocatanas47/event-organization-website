@@ -61,16 +61,14 @@ class Korisnik {
             Korisnik::Profil($greska);
             return;
         }
-        KorisniciDB::dodaj_test("1");
         $slika = $_FILES["slika"]["tmp_name"];
         if (!is_uploaded_file($slika)){
-            $greska .= "Greška: Greška pri menjanju profilne slike";
+            $greska = "Greška: Greška pri menjanju profilne slike";
             Korisnik::profil($greska);
             return;
         }
         
         if ($korisnik["idS"] != NULL) {
-            KorisniciDB::dodaj_test("2");
             $idS = $korisnik["idS"];
             $slika = SlikeDB::get_sliku($idS);
             $putanja = $slika["putanja"];
@@ -78,23 +76,19 @@ class Korisnik {
             SlikeDB::izbrisi_sliku($idS);
         }
         
-        KorisniciDB::dodaj_test("3");
         $slika = $_FILES["slika"]["tmp_name"];
         $putanja = "db_files/korisnici/".$idK;
         if (!is_dir($putanja)) {
             mkdir($putanja);
-            KorisniciDB::dodaj_test("5");
         }
-        KorisniciDB::dodaj_test("4");
         $putanja .= "/profilna";
         $tmp = move_uploaded_file($slika, $putanja);
         if (!$tmp) {
-            $greska .= "Greška: Greška pri menjanju profilne slike";
+            $greska = "Greška: Greška pri menjanju profilne slike";
             Korisnik::profil($greska);
             return;
         }
         SlikeDB::dodaj_sliku($putanja);
-        KorisniciDB::dodaj_test("8");
         KorisniciDB::dodaj_sliku($idK);
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
@@ -119,9 +113,10 @@ class Korisnik {
             return;
         }
         $tmp = KorisniciDB::azuriraj_korisnika($idK, $ime, $prezime, $kor_ime, $telefon, $mejl);
-        $greska = "";
         if (!$tmp) {
             $greska = "Greška: Neuspešno ažuriranje podataka";
+            Korisnik::profil($greska);
+            return;
         }
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
@@ -142,7 +137,7 @@ class Korisnik {
         
         if (!preg_match("/^[a-zA-Z]/", $nova_lozinka) || !preg_match("/[A-Z]/", $nova_lozinka)
                 || !preg_match("/\d/", $nova_lozinka) || !preg_match("/[^a-zA-Z\d]/", $nova_lozinka)) {
-            $greska .= "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
+            $greska = "Greška: Lozinka mora da sadrži minimalno 8 a maksimalno 16 karaktera; mora da sarži bar jedno veliko slovo cifru i specijalni karakter; mora da kreće slovom<br>";
             Korisnik::profil($greska);
             return;
         }

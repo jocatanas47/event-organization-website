@@ -173,7 +173,51 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
-
+    public static function odobri_korisnika($idK) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE korisnici SET status=1 WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    public static function odbij_korisnika($idK) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE korisnici SET status=2 WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
+    public static function izbrisi_korisnika($idK) {
+        $db = Baza::getInstanca();
+        $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
+        $tip = $korisnik["tip"];
+        $upit = "DELETE FROM korisnici WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        
+        if ($tip == 0) {
+            return true;
+        }
+        $upit = "DELETE FROM organizatori WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        return true;
+    }
     
     
     public static function korisnik_predlozio_radionicu($idK) {

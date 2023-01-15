@@ -112,7 +112,7 @@ class RadioniceDB {
         $upit = "SELECT *, COUNT(svidjanja.idSvidj) as lajkovi"
                 . " FROM radionice"
                 . " LEFT JOIN svidjanja ON radionice.idR=svidjanja.idR"
-                . " WHERE (datum>:tren_vreme AND AND otkazana=0)"
+                . " WHERE (datum>:tren_vreme AND otkazana=0)"
                 . " GROUP BY radionice.idR"
                 . " ORDER BY lajkovi DESC";
         $iskaz = $db->prepare($upit);

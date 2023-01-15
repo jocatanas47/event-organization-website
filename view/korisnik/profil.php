@@ -238,7 +238,7 @@
                                 <form method="get" action="routes.php">
                                     <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                                     <input type="hidden" name="akcija" id="akcija" value="povuci_svidjanje">
-                                    <input type="hidden" name="idS" id="idS" value="<?= $svidjanje["idS"] ?>">
+                                    <input type="hidden" name="idS" id="idS" value="<?= $svidjanje["idSvidj"] ?>">
                                     <input type="submit" class="btn j-orange" value="povuci sviđanje">
                                 </form>
                             </td>
