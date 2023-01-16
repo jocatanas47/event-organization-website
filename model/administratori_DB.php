@@ -2,7 +2,7 @@
 
 class AdministratoriDB {
     
-    public static function get_administratora_po_kor_idA($idA) {
+    public static function get_administratora_po_idA($idA) {
         $db = Baza::getInstanca();
         $upit = "SELECT * FROM administratori WHERE idA=:idA";
         $iskaz = $db->prepare($upit);

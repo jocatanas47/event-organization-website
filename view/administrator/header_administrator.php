@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-12 header j-light-purple">
                     <div class="row p-2">
-                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=promeni_lozinku&kontroler=administrator">promeni lozinku</a>
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=promena_lozinke&kontroler=administrator">promeni lozinku</a>
 
                     </div>
                     <div class="row p-2">

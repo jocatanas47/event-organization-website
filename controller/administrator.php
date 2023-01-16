@@ -4,6 +4,8 @@ include("model/baza.php");
 include("model/administratori_DB.php");
 include("model/korisnici_DB.php");
 include("model/slike_DB.php");
+include("model/prijave_DB.php");
+include("model/radionice_DB.php");
 
 class Administrator {
 
@@ -43,7 +45,7 @@ class Administrator {
         $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
         $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
 
-        $idA = $_SESSION["idA"];
+        $idA = $_SESSION["administrator"];
         $administrator = AdministratoriDB::get_administratora_po_idA($idA);
 
         $greska = "Greška: Greška pri promeni lozinke, proverite unesene podatke";
@@ -387,10 +389,29 @@ class Administrator {
         header("Location: routes.php?kontroler=administrator&akcija=dodavanje_korisnika");
     }
 
-    public static function radionice() {
+    public static function radionice($greska=NULL) {
+        $odobrene_radionice = RadioniceDB::get_sve_odobrene_aktuelne_radionice();
+        $neodobrene_radionice = RadioniceDB::get_sve_neodobrene_aktuelne_radionice();
+        include("view/administrator/header_administrator.php");
+        include("view/administrator/radionice.php");
+        include("view/footer.php");
+    }
+    public static function odobri_radionicu() {
         
     }
-
+    public static function izbrisi_radionicu() {
+        
+    }
+    public static function odobri_ucesnika_u_organizatora() {
+        
+    }
+    public static function radionica_detalji($greska=NULL) {
+        $idR = filter_input(INPUT_GET, "idR", FILTER_VALIDATE_INT);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
+        include("view/administrator/header_administrator.php");
+        include("view/administrator/radionica_detalji.php");
+        include("view/footer.php");
+    }
 }
 
 ?>

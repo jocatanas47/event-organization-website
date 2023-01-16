@@ -61,6 +61,21 @@ class PrijaveDB {
         return $broj;
     }
     
+    public static function korisnik_prijavljen_na_radionicu($idK) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT COUNT(idP) FROM prijave WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $broj = $iskaz->fetchColumn();
+        $iskaz->closeCursor();
+        if ($broj > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
 
 ?>

@@ -22,6 +22,28 @@ class RadioniceDB {
         $iskaz->closeCursor();
         return $radionice;
     }
+    public static function get_sve_odobrene_aktuelne_radionice() {
+        $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
+        $upit = "SELECT * FROM radionice WHERE (datum>:tren_vreme AND odobrena=1 AND otkazana=0)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
+    public static function get_sve_neodobrene_aktuelne_radionice() {
+        $db = Baza::getInstanca();
+        $tren_vreme = date('Y-m-d H:i:s', time());
+        $upit = "SELECT * FROM radionice WHERE (datum>:tren_vreme AND odobrena=0 AND otkazana=0)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
+        $iskaz->execute();
+        $radionice = $iskaz->fetchAll();
+        $iskaz->closeCursor();
+        return $radionice;
+    }
     public static function get_sve_radionice_na_koje_je_korisnik_prijavljen($idK) {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());

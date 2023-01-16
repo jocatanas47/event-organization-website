@@ -52,7 +52,8 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "prijava", "prijavi_se", "promeni_lozinku", "promeni_profilnu",
                                 "azuriraj_podatke", "promeni_lozinku_korisniku", "korisnik_detalji",
                                 "odobri_korisnika", "odbij_korisnika", "izbrisi_korisnika", "azuriraj_podatke_firme",
-                                "dodavanje_korisnika", "dodaj_korisnika"]);
+                                "dodavanje_korisnika", "dodaj_korisnika", "izbrisi_radionicu", "odobri_radionicu",
+                                "odobri_ucesnika_u_organizatora", "radionica_detalji"]);
 
 
 if (array_key_exists($kontroler, $kontroleri)) {
