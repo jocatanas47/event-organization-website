@@ -88,7 +88,7 @@ class Administrator {
             $slika = SlikeDB::get_sliku($idS);
             $putanja = $slika["putanja"];
             $tmp1 = unlink($putanja);
-            $putanja_foldera = preg_replace("/profilna$", "", $putanja);
+            $putanja_foldera = dirname($putanja);
             $tmp2 = rmdir($putanja_foldera);
             $tmp3 = SlikeDB::izbrisi_sliku($idS);
             if (!$tmp1 || !$tmp2 || !$tmp3) {
@@ -408,14 +408,15 @@ class Administrator {
     }
     public static function izbrisi_radionicu() {
         $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
-        $radionica = KorisniciDB::get_radionicu_po_idR($idR);
+        $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $idS = $radionica["idS"];
         $idG = $radionica["idG"];
         if ($idS != NULL) {
             $slika = SlikeDB::get_sliku($idS);
             $putanja = $slika["putanja"];
             $tmp1 = unlink($putanja);
-            $putanja_foldera = preg_replace("/\d{1}$", "", $putanja);
+            KorisniciDB::dodaj_test($putanja);
+            $putanja_foldera = dirname($putanja);
             $tmp2 = rmdir($putanja_foldera);
             $tmp3 = SlikeDB::izbrisi_sliku($idS);
             if (!$tmp1 || !$tmp2 || !$tmp3) {

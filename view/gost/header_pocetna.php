@@ -11,17 +11,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 header j-light-purple">
-                    <div class="col-12 header j-light-purple">
-                        <div class="row p-2">
-                            <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=prijava&kontroler=gost">prijava</a>
-
-                        </div>
-                        <div class="row p-2">
-                            <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=registracija&kontroler=gost">registracija</a>
-                        </div>
-                        <div class="row p-2">
-                            <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=gost">početna stranica</a>
-                        </div>
+                    <div class="row p-2">
+                        <a class="col-6 col-md-2 j-purple j-font-white btn" href="routes.php?akcija=prijava&kontroler=gost">prijava</a>
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-6 col-md-2 j-purple j-font-white btn" href="routes.php?akcija=registracija&kontroler=gost">registracija</a>
+                    </div>
+                    <div class="row p-2">
+                        <a class="col-6 col-md-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=gost">početna stranica</a>
                     </div>
                 </div>
             </div>

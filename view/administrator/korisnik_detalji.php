@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5">
+            <div class="col-10 col-md-5">
 
                 <div class="row">
                     <div class="col-12 text-center">
@@ -27,10 +27,10 @@
                             <input type="hidden" id="akcija" name="akcija" value="promeni_profilnu">
                             <input type="hidden" id="idK" name="idK" value="<?= $idK ?>">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="file" class="form-control" accept=".jpg,.png" name="slika" required>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="submit" class="btn j-btn j-orange" value="promeni profilnu">
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                 <?php endif; ?>
 
             </div>
-            <div class="col-5 align-bottom">
+            <div class="col-10 col-md-5 align-bottom">
                 <form action="routes.php" method="get">
                     <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke">
                     <input type="hidden" name="kontroler" id="kontroler" value="administrator">

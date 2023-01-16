@@ -1,5 +1,5 @@
 <div class="row content justify-content-center">
-    <div class="col-4 text-center">
+    <div class="col-8 col-md-4 text-center">
         <table class="table table-hover">
             <?php foreach ($korisnici as $korisnik): ?>
             <tr>

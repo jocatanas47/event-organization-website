@@ -32,6 +32,11 @@ class Gost {
             Gost::prijava($greska);
             return;
         }
+        if ($korisnik["status"] != 1) {
+            $greska = "Greška: Vaš nalog nije još prihvaćen";
+            Gost::prijava($greska);
+            return;
+        }
         if (!$korisnik["lozinka_promenjena"]) {
             if ($korisnik["lozinka"] != $lozinka) {
                 $greska = "Greška: Pogreško korisničko ime ili lozinka";

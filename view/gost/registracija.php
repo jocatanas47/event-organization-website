@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-4 text-center">
+                <div class="col-8 col-md-4 text-center">
                     <input type="radio" class="btn btn-check" name="korisnik" id="ucesnik" onclick="toggleUceOrg(0)">
                     <label class="btn j-orange" for="ucesnik">učesnik</label>
 
@@ -17,7 +17,7 @@
             </div>
             <br>
             <div class="row justify-content-center">
-                <div class="col-5">
+                <div class="col-10 col-md-5">
                     <table class="table table-hover">
                         <tr>
                             <td>ime:*</td>
@@ -49,7 +49,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-5" id="org_opcioni">
+                <div class="col-10 col-md-5" id="org_opcioni">
                     <table class="table table-hover">
                         <tr>
                             <td>naziv organizacije:</td>
@@ -83,14 +83,14 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-3 text-center">
+                <div class="col-6 col-md-3 text-center">
                     <label for="slika" class="form-label">profilna slika:</label>
                     <input type="file" class="form-control" accept=".jpg,.png" name="slika" id="slika">
                 </div>
             </div>
             <br>
             <div class="row justify-content-center">
-                <div class="col-4 text-center">
+                <div class="col-8 col-md-4 text-center">
                     <input type="button" class="btn j-orange" value="registruj se" onclick="registracija()">
                 </div>
             </div>

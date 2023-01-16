@@ -3,7 +3,7 @@
         <br>
         <div class="row justify-content-center">
             <br>
-            <div class="col-4 text-center">
+            <div class="col-8 col-md-4 text-center">
                 <input type="radio" class="btn btn-check" name="profil" id="podaci" checked onclick="togglePodRadAk(0)">
                 <label class="btn j-orange" for="podaci">podaci</label>
 
@@ -21,7 +21,7 @@
                     <?= $greska ?>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-5">
+                    <div class="col-10 col-md-5">
                         <div class="row">
                             <div class="col-12 text-center">
                                 <?php if ($profilna): ?>
@@ -38,10 +38,10 @@
                                     <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                                     <input type="hidden" id="akcija" name="akcija" value="promeni_profilnu">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-10 col-md-6">
                                             <input type="file" class="form-control" accept=".jpg,.png" name="slika" required>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-10 col-md-6">
                                             <input type="submit" class="btn j-btn j-orange" value="promeni profilnu">
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                         <br>
 
                     </div>
-                    <div class="col-5 align-bottom">
+                    <div class="col-10 col-md-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke">
                             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
@@ -217,7 +217,7 @@
                     <?php endforeach; ?>
                 </table>
             </div>
-            <div class="col-6">
+            <div class="col-10 col-md-6">
                 <h4> sviđanja </h4>
                 <table class="table table-hover">
                     <tr>

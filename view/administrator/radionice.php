@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-4 text-center">
+            <div class="col-8 col-md-4 text-center">
                 <input type="radio" class="btn btn-check" name="radionica" id="prihvacene" checked onclick="togglePriPre(0)">
                 <label class="btn j-orange" for="prihvacene">prihvaćene</label>
 
@@ -67,8 +67,8 @@
                 </table>
             </div>
         </div>
-        <div class="row justify-content-center" id="predlozene_div">
-            <div class="col-10text-center">
+        <div class="row justify-content-center" id="predlozene_div" style="display:none">
+            <div class="col-10 text-center">
                 <table class="table table-hover">
                     <tr>
                         <th>

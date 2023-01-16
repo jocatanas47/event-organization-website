@@ -3,7 +3,7 @@
         <br>
         <div class="row justify-content-center">
             <br>
-            <div class="col-4 text-center">
+            <div class="col-8 col-md-4 text-center">
                 <input type="radio" class="btn btn-check" name="radionice" id="prijavljene" onclick="togglePrijavljeneSve(0)">
                 <label class="btn j-orange" for="prijavljene">prijavljene radionice</label>
 
@@ -19,7 +19,7 @@
                             <tr>
                                 <td>
                                     <div class="row justify-content-center">
-                                        <div class="col-5">
+                                        <div class="col-10 col-md-5">
                                             <div class="card">
                                                 <img class="img-fluid" src=<?php echo SlikeDB::get_sliku($radionica["idS"])["putanja"]; ?>>
                                                 <div class="card-body">
@@ -92,7 +92,7 @@
                             <tr>
                                 <td>
                                     <div class="row justify-content-center">
-                                        <div class="col-5">
+                                        <div class="col-10 col-md-5">
                                             <div class="card">
                                                 <img class="img-fluid" src="<?php echo SlikeDB::get_sliku($radionica["idS"])["putanja"]; ?>">
                                                 <div class="card-body">

@@ -8,7 +8,7 @@
         </div>
         <br>
         <div class="row justify-content-center">
-            <div class="col-4 text-center">
+            <div class="col-8 col-md-4 text-center">
                 <input type="radio" class="btn btn-check" name="dugme" id="radionica" checked onclick="toggleRadPri(0)">
                 <label class="btn j-orange" for="radionica">radionica</label>
 
@@ -19,11 +19,8 @@
         <br>
         <div class="row" id="radionica_div">
             <div class="col-12">
-                <div class="row justify-content-center j-greska">
-                    <?= $greska ?>
-                </div>
                 <div class="row justify-content-center">
-                    <div class="col-5">
+                    <div class="col-10 col-md-5">
                         <form name="form2" action="routes.php" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_glavnu_sliku">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
@@ -61,7 +58,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-5 align-bottom">
+                    <div class="col-10 col-md-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionica">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
@@ -116,8 +113,8 @@
 
             </div>
         </div>
-        <div class="row justify-content-center" id="prijave_div">
-            <div class="col-4">
+        <div class="row justify-content-center" id="prijave_div" style="display:none">
+            <div class="col-8 col-md-4">
                 <table class="table table-hover text-center">
                     <?php foreach ($prijave as $prijava): ?>
                         <form method="get" action="routes.php">

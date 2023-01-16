@@ -11,16 +11,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="row justify-content-center">
-                    <div class="col-5">
+                    <div class="col-10 col-md-5">
                         <form name="form2" action="routes.php" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_glavnu_sliku">
                             <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="file" name="slika" required>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="submit" class="btn j-orange" value="ažuriraj glavnu sliku">
                                 </div>
                             </div>
@@ -30,16 +30,16 @@
                             <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="file" name="galerija[]" required multiple>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-10 col-md-6">
                                     <input type="submit" class="btn j-orange" value="ažuriraj galeriju">
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="col-5 align-bottom">
+                    <div class="col-10 col-md-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionice">
                             <input type="hidden" name="kontroler" id="kontroler" value="administrator">
@@ -91,7 +91,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>w
         </div>
     </div>
 </div>

@@ -68,7 +68,7 @@ class Organizator {
     public static function radionice($radionice = NULL) {
         $idO = $_SESSION["korisnik"];
         if ($radionice == NULL) {
-            $radionice = RadioniceDB::get_sve_radionice();
+            $radionice = RadioniceDB::get_sve_aktuelne_radionice();
         }
         $mesta = RadioniceDB::get_mesta();
         include("view/organizator/header_organizator.php");

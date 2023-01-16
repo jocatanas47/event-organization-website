@@ -1,5 +1,5 @@
 <div class="row content">
-    <div class="col-2 justify-content-center">
+    <div class="col-10 col-md-2 justify-content-center">
         <h5 class="text-center">
             top 5 radionica
         </h5>

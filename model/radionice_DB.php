@@ -14,7 +14,7 @@ class RadioniceDB {
     public static function get_sve_aktuelne_radionice() {
         $db = Baza::getInstanca();
         $tren_vreme = date('Y-m-d H:i:s', time());
-        $upit = "SELECT * FROM radionice WHERE (datum>:tren_vreme AND otkazana=0)";
+        $upit = "SELECT * FROM radionice WHERE (datum>:tren_vreme AND odobrena=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
@@ -87,7 +87,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE (mesto=:mesto AND datum>:tren_vreme AND otkazana=0)";
+                . " WHERE (mesto=:mesto AND datum>:tren_vreme AND odobrena=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":mesto", $mesto);
         $iskaz->bindValue(":tren_vreme", $tren_vreme);
@@ -101,7 +101,7 @@ class RadioniceDB {
         $tren_vreme = date('Y-m-d H:i:s', time());
         $upit = "SELECT *"
                 . " FROM radionice"
-                . " WHERE (lower(naziv) LIKE lower(:naziv) AND datum>:tren_vreme AND otkazana=0)";
+                . " WHERE (lower(naziv) LIKE lower(:naziv) AND datum>:tren_vreme AND odobrena=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
@@ -117,7 +117,7 @@ class RadioniceDB {
         $upit = "SELECT *"
                 . " FROM radionice"
                 . " WHERE (lower(naziv) LIKE lower(:naziv)"
-                . " AND mesto=:mesto AND datum>:tren_vreme AND otkazana=0)";
+                . " AND mesto=:mesto AND datum>:tren_vreme AND odobrena=1 AND otkazana=0)";
         $iskaz = $db->prepare($upit);
         $naziv .= "%";
         $iskaz->bindValue(":naziv", $naziv);
@@ -134,7 +134,7 @@ class RadioniceDB {
         $upit = "SELECT *, COUNT(svidjanja.idSvidj) as lajkovi"
                 . " FROM radionice"
                 . " LEFT JOIN svidjanja ON radionice.idR=svidjanja.idR"
-                . " WHERE (datum>:tren_vreme AND otkazana=0)"
+                . " WHERE (datum>:tren_vreme AND odobrena=1 AND otkazana=0)"
                 . " GROUP BY radionice.idR"
                 . " ORDER BY lajkovi DESC";
         $iskaz = $db->prepare($upit);
@@ -263,7 +263,7 @@ class RadioniceDB {
         }
         $upit = "DELETE FROM prijave WHERE idR=:idR";
         $iskaz = $db->prepare($upit);
-        $iskaz->bindValue(":idK", $idK);
+        $iskaz->bindValue(":idR", $idR);
         $tmp = $iskaz->execute();
         $iskaz->closeCursor();
         if (!$tmp) {

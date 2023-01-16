@@ -7,7 +7,7 @@
         </div>
         <form method="get" action="routes.php">
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-10 col-md-6">
                     <input type="hidden" name="akcija" id="akcija" value="promeni_lozinku">
                     <input type="hidden" name="kontroler" id="kontroler" value="organizator">
 

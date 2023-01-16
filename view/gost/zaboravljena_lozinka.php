@@ -4,7 +4,7 @@
             <input type="hidden" name="akcija" id="akcija" value="resetuj_lozinku">
             <input type="hidden" name="kontroler" id="kontroler" value="gost">
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-10 col-md-6">
                     <br>
                     <table class="table table-hover">
                         <tr>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-4 text-center">
+                <div class="col-8 col-md-4 text-center">
                     <input type="submit" class="btn j-orange" value="pošalji">
                 </div>
             </div>

@@ -12,11 +12,11 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-5 card">
+            <div class="col-10 col-md-5 card">
                 <?php if ($galerija != NULL): ?>
                     <div class="row justify-content-center">
                         <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
-                            <div class="col-4">
+                            <div class="col-8 col-md-4">
                                 <img class="img-fluid" src=<?= $slika ?>>
                             </div>
                         <?php endforeach; ?>
@@ -28,7 +28,7 @@
                 </div>
 
             </div>
-            <div class="col-4">
+            <div class="col-8 col-md-4">
                 <div id="mapa">
                 </div>
             </div>
@@ -47,7 +47,7 @@
             </div>
         <?php endif; ?>
         <div class="row justify-content-center">
-            <div class="col-6 card">
+            <div class="col-10 col-md-6 card">
                 <div class="row text-center">
                     <div class="col-2 card j-pink">
                         <div class="row">
@@ -60,7 +60,7 @@
 
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4 col-md-2">
                         <?php if (RadioniceDB::korisnik_bio_na_radionici($idK, $idR)): ?>
                             <form>
                                 <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
@@ -84,15 +84,14 @@
                     endif;
                     ?>
                     <div class="row">
-                        <div class="col-3 ">
-
+                        <div class="col-3">
                         </div>
                         <div class="col-8">
                             <?= $korisnik["kor_ime"] ?> <?= $komentar["datum"] ?>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-3 ">
+                        <div class="col-3">
                             <img class="img-fluid img-thumbnail" src="<?= $profilna ?>">
                         </div>
                         <div class="col-8 card j-gray">
