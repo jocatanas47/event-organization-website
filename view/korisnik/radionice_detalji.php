@@ -37,7 +37,7 @@
         <?php if (PrijaveDB::get_broj_prijavljenih_na_radionicu($idR) < $radionica["max_broj_posetilaca"]): ?>
             <div class="row justify-content-center">
                 <div class="col-6 text-center">
-                    <form method="get" action="routes.php">
+                    <form method="post" action="routes.php">
                         <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                         <input type="hidden" id="akcija" name="akcija" value="prijavi_radionicu">
                         <input type="hidden" id="idR" name="idR" value="<?= $radionica["idR"] ?>">
@@ -101,7 +101,7 @@
                     <br>
                 <?php endforeach; ?>
 
-                <form name="form1" method="get" action="routes.php">
+                <form name="form1" method="post" action="routes.php">
                     <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                     <input type="hidden" id="akcija" name="akcija" value="komentarisi_radionicu">
                     <input type="hidden" id="idR" name="idR" value="<?= $idR ?>">

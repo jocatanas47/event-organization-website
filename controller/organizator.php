@@ -28,9 +28,9 @@ class Organizator {
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
 
-        $stara_lozinka = filter_input(INPUT_GET, "stara_lozinka", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
+        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka", FILTER_SANITIZE_STRING);
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
 
         $lozinka;
         if ($korisnik["lozinka_promenjena"]) {
@@ -77,8 +77,8 @@ class Organizator {
     }
 
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Organizator::radionice();
             return;
@@ -106,15 +106,15 @@ class Organizator {
         include("view/footer.php");
     }
     public static function azuriraj_podatke_radionica() {
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
-        $datum = date("Y-m-d H:i:s", strtotime($_GET["datum"]));
-        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
-        $x_kor = filter_input(INPUT_GET, "x_kor", FILTER_VALIDATE_FLOAT);
-        $y_kor = filter_input(INPUT_GET, "y_kor", FILTER_VALIDATE_FLOAT);
-        $opis_kratki = filter_input(INPUT_GET, "opis_kratki", FILTER_SANITIZE_STRING);
-        $opis_dugi = filter_input(INPUT_GET, "opis_dugi", FILTER_SANITIZE_STRING);
-        $max_broj_posetilaca = filter_input(INPUT_GET, "max_broj_posetilaca", FILTER_VALIDATE_INT);
-        $idR = filter_input(INPUT_GET, "idR", FILTER_VALIDATE_INT);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
+        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
+        $x_kor = filter_input(INPUT_POST, "x_kor", FILTER_VALIDATE_FLOAT);
+        $y_kor = filter_input(INPUT_POST, "y_kor", FILTER_VALIDATE_FLOAT);
+        $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
+        $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
+        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
 
         $tmp = RadioniceDB::azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor, $opis_kratki, $opis_dugi, $max_broj_posetilaca);
         if (!$tmp) {
@@ -259,8 +259,8 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function prihvati_korisnika() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $broj_prijavljenih = PrijaveDB::get_broj_prijavljenih_na_radionicu($idR);
         if ($broj_prijavljenih >= $radionica["max_broj_posetilaca"]) {
@@ -277,7 +277,7 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function otkazi_radionicu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         $korisnici = KorisniciDB::get_korisnike_koji_su_prijavljeni_na_radionicu($idR);
         
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
@@ -323,7 +323,7 @@ class Organizator {
         include("view/footer.php");
     }
     public static function izaberi_sablon() {
-        $idR = filter_input(INPUT_GET, "sablon", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "sablon", FILTER_VALIDATE_INT);
         if ($idR == -1) {
             header("Location: routes.php?kontroler=organizator&akcija=dodavanje_radionice");
             return;

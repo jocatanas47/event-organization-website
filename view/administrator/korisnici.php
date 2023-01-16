@@ -64,20 +64,20 @@
                                 <?= $status ?>
                             </td>
                             <td>
-                                <form action="routes.php" method="get">
+                                <form action="routes.php" method="post">
                                     <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                     <input type="hidden" name="akcija" id="akcija" value="izbrisi_korisnika">
                                     <input type="hidden" name="idK" id="idK" value="<?= $korisnik["idK"] ?>">
                                     <input type="submit" class="btn j-orange" value="izbriši">
                                 </form>
                                 <?php if ($korisnik["status"] == 0): ?>
-                                    <form action="routes.php" method="get">
+                                    <form action="routes.php" method="post">
                                         <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                         <input type="hidden" name="akcija" id="akcija" value="odobri_korisnika">
                                         <input type="hidden" name="idK" id="idK" value="<?= $korisnik["idK"] ?>">
                                         <input type="submit" class="btn j-orange" value="odobri">
                                     </form>
-                                    <form action="routes.php" method="get">
+                                    <form action="routes.php" method="post">
                                         <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                         <input type="hidden" name="akcija" id="akcija" value="odbij_korisnika">
                                         <input type="hidden" name="idK" id="idK" value="<?= $korisnik["idK"] ?>">

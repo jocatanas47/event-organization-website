@@ -23,8 +23,8 @@ class Gost {
         include("view/footer.php");
     }
     public static function prijavi_se() {
-        $kor_ime = filter_input(INPUT_GET, "kor_ime", FILTER_SANITIZE_STRING);
-        $lozinka = filter_input(INPUT_GET, "lozinka", FILTER_SANITIZE_STRING);
+        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
+        $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
         
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         if (!$korisnik) {
@@ -69,7 +69,7 @@ class Gost {
         include("view/footer.php");
     }
     public static function resetuj_lozinku() {
-        $mejl = filter_input(INPUT_GET, "mejl", FILTER_SANITIZE_STRING);
+        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
         
         $dobra_lozinka = false;
         $nova_lozinka = "";
@@ -301,8 +301,8 @@ class Gost {
         include("view/footer.php");
     }
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Gost::radionice();
             return;

@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <form name="form1" action="routes.php" method="get">
+                <form name="form1" action="routes.php" method="post">
                     <input type="hidden" name="akcija" id="akcija" value="prijavi_se">
                     <input type="hidden" name="kontroler" id="kontroler" value="gost">
                     <div class="row justify-content-center">

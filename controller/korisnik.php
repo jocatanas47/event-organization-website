@@ -94,11 +94,11 @@ class Korisnik {
     }
     
     public static function azuriraj_podatke() {
-        $ime = filter_input(INPUT_GET, "ime", FILTER_SANITIZE_STRING);
-        $prezime = filter_input(INPUT_GET, "prezime", FILTER_SANITIZE_STRING);
-        $kor_ime = filter_input(INPUT_GET, "kor_ime", FILTER_SANITIZE_STRING);
-        $telefon = filter_input(INPUT_GET, "telefon", FILTER_SANITIZE_STRING);
-        $mejl = filter_input(INPUT_GET, "mejl", FILTER_SANITIZE_STRING);
+        $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
+        $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
+        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
+        $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
+        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
         
         $idK = $_SESSION["korisnik"];
         
@@ -124,9 +124,9 @@ class Korisnik {
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         
-        $stara_lozinka = filter_input(INPUT_GET, "stara_lozinka", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
+        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka", FILTER_SANITIZE_STRING);
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
         
         $lozinka;
         if ($korisnik["lozinka_promenjena"]) {
@@ -160,8 +160,8 @@ class Korisnik {
         header("Location: routes.php?kontroler=gost&akcija=izloguj_se");
     }
     public static function promeni_komentar() {
-        $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
-        $idKom = filter_input(INPUT_GET, "idKom", FILTER_SANITIZE_STRING);
+        $komentar = filter_input(INPUT_POST, "komentar", FILTER_SANITIZE_STRING);
+        $idKom = filter_input(INPUT_POST, "idKom", FILTER_SANITIZE_STRING);
         $tmp = KomentariDB::promeni_komentar($idKom, $komentar);
         if (!$tmp) {
             $greska = "Greška: Greška pri promeni komentara";
@@ -170,7 +170,7 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function izbrisi_komentar() {
-        $idKom = filter_input(INPUT_GET, "idKom", FILTER_SANITIZE_STRING);
+        $idKom = filter_input(INPUT_POST, "idKom", FILTER_SANITIZE_STRING);
         $tmp = KomentariDB::izbrisi_komentar($idKom);
         if (!$tmp) {
             $greska = "Greška: Greška pri brisanju komentara";
@@ -179,7 +179,7 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function povuci_svidjanje() {
-        $idS = filter_input(INPUT_GET, "idS", FILTER_SANITIZE_STRING);
+        $idS = filter_input(INPUT_POST, "idS", FILTER_SANITIZE_STRING);
         $tmp = SvidjanjaDB::povuci_svidjanje($idS);
         if (!$tmp) {
             $greska = "Greška: Greška pri povlačenju sviđanja";
@@ -200,8 +200,8 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Korisnik::radionice();
             return;
@@ -218,7 +218,7 @@ class Korisnik {
         Korisnik::radionice("", $radionice);
     }
     public static function otkazi_prijavu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         $idK = $_SESSION["korisnik"];
         $tmp = PrijaveDB::izbrisi_prijavu($idR, $idK);
         if (!$tmp) {
@@ -250,7 +250,7 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function prijavi_radionicu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         $idK = $_SESSION["korisnik"];
         KorisniciDB::dodaj_test("idR".$idR."-"."idK".$idK);
         $tmp = PrijaveDB::dodaj_prijavu($idR, $idK);
@@ -269,15 +269,15 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function lajkuj_radionicu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         $idK = $_SESSION["korisnik"];
         SvidjanjaDB::lajkuj_radionicu($idK, $idR);
         header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);
     }
     public static function komentarisi_radionicu() {
         $idK = $_SESSION["korisnik"];
-        $komentar = filter_input(INPUT_GET, "komentar", FILTER_SANITIZE_STRING);
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $komentar = filter_input(INPUT_POST, "komentar", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         
         $tmp = KomentariDB::dodaj_komentar($idK, $idR, $komentar);
         if (!$tmp) {

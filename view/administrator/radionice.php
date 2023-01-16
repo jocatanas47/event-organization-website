@@ -55,7 +55,7 @@
                                 <?= KorisniciDB::get_korisnika_po_idK($idK)["kor_ime"] ?>
                             </td>
                             <td>
-                                <form action="routes.php" method="get">
+                                <form action="routes.php" method="post">
                                     <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                     <input type="hidden" name="akcija" id="akcija" value="izbrisi_radionicu">
                                     <input type="hidden" name="idR" id="idR" value="<?= $radionica["idR"] ?>">
@@ -115,7 +115,7 @@
                             <td>
                                 <?php if ($korisnik["tip"] == 0): ?>
                                     <?php if (!PrijaveDB::korisnik_prijavljen_na_radionicu($korisnik["idK"])): ?>
-                                        <form action="routes.php" method="get">
+                                        <form action="routes.php" method="post">
                                             <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                             <input type="hidden" name="akcija" id="akcija" value="odobri_ucesnika_u_organizatora">
                                             <input type="hidden" name="idK" id="idK" value="<?= $korisnik["idK"] ?>">
@@ -125,14 +125,14 @@
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if ($korisnik["tip"] == 1): ?>
-                                    <form action="routes.php" method="get">
+                                    <form action="routes.php" method="post">
                                         <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                         <input type="hidden" name="akcija" id="akcija" value="odobri_radionicu">
                                         <input type="hidden" name="idR" id="idR" value="<?= $radionica["idR"] ?>">
                                         <input type="submit" class="btn j-orange" value="prihvati">
                                     </form>
                                 <?php endif ?>
-                                <form action="routes.php" method="get">
+                                <form action="routes.php" method="post">
                                     <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                     <input type="hidden" name="akcija" id="akcija" value="izbrisi_radionicu">
                                     <input type="hidden" name="idR" id="idR" value="<?= $radionica["idR"] ?>">

@@ -5,7 +5,7 @@
             <br>
             <div class="row justify-content-center">
                 <div class="col-12 justify-content-center text-center">
-                    <form name="forma1" method="get" action="routes.php">
+                    <form name="forma1" method="post" action="routes.php">
                         <input type="hidden" id="akcija" name="akcija" value="filtriraj_radionice">
                         <input type="hidden" id="kontroler" name="kontroler" value="organizator">
                         <select name="mesto" id="mesto">

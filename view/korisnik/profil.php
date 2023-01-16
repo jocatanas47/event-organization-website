@@ -52,7 +52,7 @@
 
                     </div>
                     <div class="col-10 col-md-5 align-bottom">
-                        <form name="form1" action="routes.php" method="get">
+                        <form name="form1" action="routes.php" method="post">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke">
                             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                             <div class="row">
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form method="get" action="routes.php">
+                        <form method="post" action="routes.php">
                             <div class="row">
                                 <div class="col-12">
                                     <input type="hidden" name="akcija" id="akcija" value="promeni_lozinku">
@@ -194,7 +194,7 @@
                             <td>
                                 <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>
                             </td>
-                        <form method="get" action="routes.php">
+                        <form method="post" action="routes.php">
                             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                             <input type="hidden" name="akcija" id="akcija" value="promeni_komentar">
                             <input type="hidden" name="idKom" id="idKom" value="<?= $komentar["idKom"] ?>">
@@ -205,7 +205,7 @@
                                 <input type="submit" class="btn j-orange" value="promeni komentar">
                             </td>
                         </form>
-                        <form method="get" action="routes.php">    
+                        <form method="post" action="routes.php">    
                             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                             <input type="hidden" name="akcija" id="akcija" value="izbrisi_komentar">
                             <input type="hidden" name="idKom" id="idKom" value="<?= $komentar["idKom"] ?>">
@@ -235,7 +235,7 @@
                                 <?= $radionica["naziv"] . " - " . $radionica["datum"] ?>
                             </td>
                             <td>
-                                <form method="get" action="routes.php">
+                                <form method="post" action="routes.php">
                                     <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                                     <input type="hidden" name="akcija" id="akcija" value="povuci_svidjanje">
                                     <input type="hidden" name="idS" id="idS" value="<?= $svidjanje["idSvidj"] ?>">

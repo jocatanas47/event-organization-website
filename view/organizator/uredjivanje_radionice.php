@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form name="form4" action="routes.php" method="get">
+                        <form name="form4" action="routes.php" method="post">
                             <input type="hidden" name="akcija" id="akcija" value="otkazi_radionicu">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
@@ -59,7 +59,7 @@
                         </form>
                     </div>
                     <div class="col-10 col-md-5 align-bottom">
-                        <form name="form1" action="routes.php" method="get">
+                        <form name="form1" action="routes.php" method="post">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionica">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
@@ -117,7 +117,7 @@
             <div class="col-8 col-md-4">
                 <table class="table table-hover text-center">
                     <?php foreach ($prijave as $prijava): ?>
-                        <form method="get" action="routes.php">
+                        <form method="post" action="routes.php">
                             <input type="hidden" name="akcija" id="akcija" value="prihvati_korisnika">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
                             <input type="hidden" name="idK" id="idK" value=<?= $prijava["idK"] ?>>

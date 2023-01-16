@@ -40,7 +40,7 @@
                 <br>
 
                 <?php if ($korisnik["tip"] == 1): ?>
-                    <form action="routes.php" method="get">
+                    <form action="routes.php" method="post">
                         <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_firme">
                         <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                         <input type="hidden" id="idK" name="idK" value="<?= $idK ?>">
@@ -88,7 +88,7 @@
 
             </div>
             <div class="col-10 col-md-5 align-bottom">
-                <form action="routes.php" method="get">
+                <form action="routes.php" method="post">
                     <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke">
                     <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                     <input type="hidden" id="idK" name="idK" value="<?= $idK ?>">
@@ -125,7 +125,7 @@
                     </div>
                 </form>
 
-                <form method="get" action="routes.php">
+                <form method="post" action="routes.php">
                     <div class="row">
                         <div class="col-12">
                             <input type="hidden" name="akcija" id="akcija" value="promeni_lozinku_korisniku">

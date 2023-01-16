@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div class="col-10 col-md-5 align-bottom">
-                        <form name="form1" action="routes.php" method="get">
+                        <form name="form1" action="routes.php" method="post">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionice">
                             <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">

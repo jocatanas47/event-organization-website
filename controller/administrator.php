@@ -16,8 +16,8 @@ class Administrator {
     }
 
     public static function prijavi_se() {
-        $kor_ime = filter_input(INPUT_GET, "kor_ime", FILTER_SANITIZE_STRING);
-        $lozinka = filter_input(INPUT_GET, "lozinka", FILTER_SANITIZE_STRING);
+        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
+        $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
 
         $administrator = AdministratoriDB::get_administratora_po_kor_ime($kor_ime);
         if (!$administrator) {
@@ -41,9 +41,9 @@ class Administrator {
     }
 
     public static function promeni_lozinku() {
-        $stara_lozinka = filter_input(INPUT_GET, "stara_lozinka", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
+        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka", FILTER_SANITIZE_STRING);
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
 
         $idA = $_SESSION["administrator"];
         $administrator = AdministratoriDB::get_administratora_po_idA($idA);
@@ -81,7 +81,7 @@ class Administrator {
     }
 
     public static function izbrisi_korisnika() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         $idS = $korisnik["idS"];
         if ($idS != NULL) {
@@ -107,7 +107,7 @@ class Administrator {
     }
 
     public static function odobri_korisnika() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
         $tmp = KorisniciDB::odobri_korisnika($idK);
         if (!$tmp) {
             $greska = "Greška: Greška pri odobrenju korisnika";
@@ -118,7 +118,7 @@ class Administrator {
     }
 
     public static function odbij_korisnika() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
         $tmp = KorisniciDB::odbij_korisnika($idK);
         if (!$tmp) {
             $greska = "Greška: Greška pri odbijanju korisnika";
@@ -210,12 +210,12 @@ class Administrator {
     }
 
     public static function azuriraj_podatke() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
-        $ime = filter_input(INPUT_GET, "ime", FILTER_SANITIZE_STRING);
-        $prezime = filter_input(INPUT_GET, "prezime", FILTER_SANITIZE_STRING);
-        $kor_ime = filter_input(INPUT_GET, "kor_ime", FILTER_SANITIZE_STRING);
-        $telefon = filter_input(INPUT_GET, "telefon", FILTER_SANITIZE_STRING);
-        $mejl = filter_input(INPUT_GET, "mejl", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
+        $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
+        $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
+        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
+        $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
+        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
 
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         if ($korisnik && $korisnik["idK"] != $idK) {
@@ -239,14 +239,14 @@ class Administrator {
     }
 
     public static function azuriraj_podatke_firme() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
-        $maticni_broj = filter_input(INPUT_GET, "maticni_broj", FILTER_VALIDATE_INT);
-        $drzava = filter_input(INPUT_GET, "drzava", FILTER_SANITIZE_STRING);
-        $grad = filter_input(INPUT_GET, "grad", FILTER_SANITIZE_STRING);
-        $postanski_broj = filter_input(INPUT_GET, "postanski_broj", FILTER_VALIDATE_INT);
-        $ulica = filter_input(INPUT_GET, "ulica", FILTER_SANITIZE_STRING);
-        $adresa_broj = filter_input(INPUT_GET, "adresa_broj", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $maticni_broj = filter_input(INPUT_POST, "maticni_broj", FILTER_VALIDATE_INT);
+        $drzava = filter_input(INPUT_POST, "drzava", FILTER_SANITIZE_STRING);
+        $grad = filter_input(INPUT_POST, "grad", FILTER_SANITIZE_STRING);
+        $postanski_broj = filter_input(INPUT_POST, "postanski_broj", FILTER_VALIDATE_INT);
+        $ulica = filter_input(INPUT_POST, "ulica", FILTER_SANITIZE_STRING);
+        $adresa_broj = filter_input(INPUT_POST, "adresa_broj", FILTER_SANITIZE_STRING);
         if (!$naziv) {
             KorisniciDB::dodaj_test("balasdio");
         }
@@ -261,9 +261,9 @@ class Administrator {
     }
 
     public static function promeni_lozinku_korisniku() {
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_GET, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_GET, "potvrda", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
+        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
 
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
 
@@ -397,7 +397,7 @@ class Administrator {
         include("view/footer.php");
     }
     public static function odobri_radionicu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
         $tmp = RadioniceDB::odobri_radionicu($idR);
         if (!$tmp) {
             $greska = "Greška: Greška pri odobrenju radionice";
@@ -407,7 +407,7 @@ class Administrator {
         header("Location: routes.php?kontroler=administrator&akcija=radionice");
     }
     public static function izbrisi_radionicu() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $idS = $radionica["idS"];
         $idG = $radionica["idG"];
@@ -453,8 +453,8 @@ class Administrator {
         header("Location: routes.php?kontroler=administrator&akcija=radionice");
     }
     public static function odobri_ucesnika_u_organizatora() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
-        $idK = filter_input(INPUT_GET, "idK", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
         
         $tmp = KorisniciDB::odobri_ucesnika_u_organizatora($idK);
         if (!$tmp) {
@@ -482,15 +482,15 @@ class Administrator {
         include("view/footer.php");
     }
     public static function azuriraj_podatke_radionica() {
-        $naziv = filter_input(INPUT_GET, "naziv", FILTER_SANITIZE_STRING);
-        $datum = date("Y-m-d H:i:s", strtotime($_GET["datum"]));
-        $mesto = filter_input(INPUT_GET, "mesto", FILTER_SANITIZE_STRING);
-        $x_kor = filter_input(INPUT_GET, "x_kor", FILTER_VALIDATE_FLOAT);
-        $y_kor = filter_input(INPUT_GET, "y_kor", FILTER_VALIDATE_FLOAT);
-        $opis_kratki = filter_input(INPUT_GET, "opis_kratki", FILTER_SANITIZE_STRING);
-        $opis_dugi = filter_input(INPUT_GET, "opis_dugi", FILTER_SANITIZE_STRING);
-        $max_broj_posetilaca = filter_input(INPUT_GET, "max_broj_posetilaca", FILTER_VALIDATE_INT);
-        $idR = filter_input(INPUT_GET, "idR", FILTER_VALIDATE_INT);
+        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
+        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
+        $x_kor = filter_input(INPUT_POST, "x_kor", FILTER_VALIDATE_FLOAT);
+        $y_kor = filter_input(INPUT_POST, "y_kor", FILTER_VALIDATE_FLOAT);
+        $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
+        $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
+        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
 
         $tmp = RadioniceDB::azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor, $opis_kratki, $opis_dugi, $max_broj_posetilaca);
         if (!$tmp) {

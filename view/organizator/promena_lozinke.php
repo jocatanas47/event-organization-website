@@ -5,7 +5,7 @@
                 <?= $greska ?>
             </div>
         </div>
-        <form method="get" action="routes.php">
+        <form method="post" action="routes.php">
             <div class="row justify-content-center">
                 <div class="col-10 col-md-6">
                     <input type="hidden" name="akcija" id="akcija" value="promeni_lozinku">
