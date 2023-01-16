@@ -5,6 +5,7 @@
         <link rel="stylesheet" type="text/css" href="view/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <script src="view/script.js"></script>
+        <script src="view/administrator/script.js"></script>
     </head>
     <body>
         <div class="container">
@@ -15,7 +16,10 @@
 
                     </div>
                     <div class="row p-2">
-                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=korisnici&kontroler=adiministrator">korisnici</a>
+                        <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=korisnici&kontroler=administrator">korisnici</a>
+                        <div class="col-9">
+                            <a class="col-3 j-purple j-font-white btn" href="routes.php?akcija=dodavanje_korisnika&kontroler=administrator">dodaj korisnika</a>
+                        </div>
                     </div>
                     <div class="row p-2">
                         <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=administrator">radionice</a>

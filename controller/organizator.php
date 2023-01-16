@@ -282,7 +282,7 @@ class Organizator {
         
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $tmp = RadioniceDB::otkazi_radionicu($idR);
-        if (!$imp) {
+        if (!$tmp) {
             $greska = "Greška: Greška pri otkazivanju radionice";
             uredjivanje_radionice($idR, $greska);
             return;
@@ -306,6 +306,7 @@ class Organizator {
         $mail->Subject = "Otkazivanje radionice";
         $mail->Body = "Radionica ".$radionica["naziv"]." zakazana za ".$radionica["datum"]." se otkazuje.";
         $mail->send();
+        header("Location: routes.php?kontroler=organizator&akcija=radionice");
     }
 
     public static function dodavanje_radionice($greska = NULL, $idR = NULL) {

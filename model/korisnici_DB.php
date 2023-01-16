@@ -66,6 +66,17 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $korisnik;
     }
+    
+    public static function get_organizatora($idK) {
+        $db = Baza::getInstanca();
+        $upit = "SELECT * FROM organizatori WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $iskaz->execute();
+        $korisnik = $iskaz->fetch();
+        $iskaz->closeCursor();
+        return $korisnik;
+    }
 
     public static function dodaj_korisnika($ime, $prezime, $kor_ime, $lozinka, $telefon, $mejl, $tip) {
         $db = Baza::getInstanca();
@@ -173,6 +184,26 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
+    public static function azuriraj_firmu($idK, $naziv, $maticni_broj, $drzava,
+            $grad, $postanski_broj, $ulica, $adresa_broj) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE organizatori"
+                . " SET naziv=:naziv, maticni_broj=:maticni_broj, drzava=:drzava,"
+                . " grad=:grad, postanski_broj=:postanski_broj, ulica=:ulica, adresa_broj=:adresa_broj"
+                . " WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":naziv", $naziv);
+        $iskaz->bindValue(":maticni_broj", $maticni_broj);
+        $iskaz->bindValue(":drzava", $drzava);
+        $iskaz->bindValue(":grad", $grad);
+        $iskaz->bindValue(":postanski_broj", $postanski_broj);
+        $iskaz->bindValue(":ulica", $ulica);
+        $iskaz->bindValue(":adresa_broj", $adresa_broj);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
     public static function odobri_korisnika($idK) {
         $db = Baza::getInstanca();
         $upit = "UPDATE korisnici SET status=1 WHERE idK=:idK";
@@ -197,6 +228,31 @@ class KorisniciDB {
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         $tip = $korisnik["tip"];
         $upit = "DELETE FROM korisnici WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        
+        $upit = "DELETE FROM prijave WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        $upit = "DELETE FROM svidjanja WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        $upit = "DELETE FROM komentari WHERE idKor=:idK";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
         $tmp = $iskaz->execute();

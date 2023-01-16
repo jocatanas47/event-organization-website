@@ -46,7 +46,7 @@
                         ?>
                         <tr>
                             <td>
-                                <a class="link-secondary" href="routes.php?kontroler=organizator&akcija=korisnik_detalji&idK=<?= $korisnik["idK"] ?>">
+                                <a class="link-secondary" href="routes.php?kontroler=administrator&akcija=korisnik_detalji&idK=<?= $korisnik["idK"] ?>">
                                     <?= $korisnik["kor_ime"] ?>
                                 </a>
                             </td>
@@ -74,7 +74,7 @@
                                         <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                                         <input type="hidden" name="akcija" id="akcija" value="odbij_korisnika">
                                         <input type="hidden" name="idK" id="idK" value="<?= $korisnik["idK"] ?>">
-                                        <input type="submit" class="btn j-orange" value="odobri">
+                                        <input type="submit" class="btn j-orange" value="odbij">
                                     </form>
                                 <?php endif; ?>
                             </td>

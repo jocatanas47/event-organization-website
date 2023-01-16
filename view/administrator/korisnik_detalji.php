@@ -1,5 +1,6 @@
 <div class="row content">
     <div class="col-12">
+        <br>
         <div class="row">
             <div class="col-12justify-content-center j-greska">
                 <?= $greska ?>
@@ -7,7 +8,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-5">
-                
+
                 <div class="row">
                     <div class="col-12 text-center">
                         <?php if ($profilna): ?>
@@ -18,7 +19,7 @@
                     </div>
                 </div>
                 <br>
-                
+
                 <div class="row">
                     <div class="col-12 text-center">
                         <form action="routes.php" method="post" enctype="multipart/form-data">
@@ -37,6 +38,53 @@
                     </div>
                 </div>
                 <br>
+
+                <?php if ($korisnik["tip"] == 1): ?>
+                    <form action="routes.php" method="get">
+                        <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_firme">
+                        <input type="hidden" name="kontroler" id="kontroler" value="administrator">
+                        <input type="hidden" id="idK" name="idK" value="<?= $idK ?>">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <td>naziv organizacije:</td>
+                                        <td><input type="text" name="naziv" value="<?= $organizator["naziv"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>matični broj organizacije:</td>
+                                        <td><input type="number" name="maticni_broj" value="<?= $organizator["maticni_broj"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>država:</td>
+                                        <td><input type="text" name="drzava" value="<?= $organizator["drzava"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>grad:</td>
+                                        <td><input type="text" name="grad" value="<?= $organizator["grad"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>poštanski broj:</td>
+                                        <td><input type="number" name="postanski_broj" value="<?= $organizator["postanski_broj"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ulica:</td>
+                                        <td><input type="text" name="ulica" value="<?= $organizator["ulica"] ?>"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>broj:</td>
+                                        <td><input type="text" name="adresa_broj" value="<?= $organizator["adresa_broj"] ?>"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <input type="submit" class="btn j-orange" value="ažuriraj podatke firme">
+                            </div>
+                        </div>
+                    </form>
+                <?php endif; ?>
 
             </div>
             <div class="col-5 align-bottom">
@@ -76,7 +124,7 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <form method="get" action="routes.php">
                     <div class="row">
                         <div class="col-12">
