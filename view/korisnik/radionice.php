@@ -93,7 +93,7 @@
                                 <td>
                                     <div class="row justify-content-center">
                                         <div class="col-10 col-md-5">
-                                            <div class="card">
+                                            <div class="card col-12">
                                                 <img class="img-fluid" src="<?php echo SlikeDB::get_sliku($radionica["idS"])["putanja"]; ?>">
                                                 <div class="card-body">
                                                     <div class="col-12 font-weight-bold text-center">

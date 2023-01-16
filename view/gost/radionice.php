@@ -69,7 +69,7 @@
                     <tr>
                         <td>
                             <div class="row justify-content-center">
-                                <div class="col-5">
+                                <div class="col-10 col-md-5">
                                     <div class="card">
                                         <img class="img-fluid" src=<?php echo SlikeDB::get_sliku($radionica["idS"])["putanja"]; ?>>
                                         <div class="card-body">
