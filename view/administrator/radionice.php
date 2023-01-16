@@ -6,6 +6,11 @@
             </div>
         </div>
         <div class="row justify-content-center">
+            <div class="col-12 justify-content-center">
+                <a class="link-secondary card-link" href="routes.php?kontroler=administrator&akcija=dodavanje_radionice">dodaj radionicu</a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="col-4 text-center">
                 <input type="radio" class="btn btn-check" name="radionica" id="prihvacene" checked onclick="togglePriPre(0)">
                 <label class="btn j-orange" for="prihvacene">prihvaćene</label>
@@ -14,6 +19,7 @@
                 <label class="btn j-orange" for="predlozene">predložene</label>
             </div>
         </div>
+        <br>
         <div class="row justify-content-center" id="prihvacene_div">
             <div class="col-10 text-center">
                 <table class="table table-hover">
@@ -32,9 +38,13 @@
                         </th>
                     </tr>
                     <?php foreach ($odobrene_radionice as $radionica): ?>
+                        <?php
+                        $korisnik = KorisniciDB::get_korisnika_po_idK($radionica["idO"]);
+                        $idK = $radionica["idO"];
+                        ?>
                         <tr>
                             <td>
-                                <a class="link-secondary" href="routes.php?kontroler=administrator&akcija=korisnik_detalji&idK=<?= $korisnik["idK"] ?>">
+                                <a class="link-secondary" href="routes.php?kontroler=administrator&akcija=radionica_detalji&idR=<?= $radionica["idR"] ?>">
                                     <?= $radionica["naziv"] ?>
                                 </a>
                             </td>

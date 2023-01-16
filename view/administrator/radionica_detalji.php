@@ -10,9 +10,6 @@
         <br>
         <div class="row">
             <div class="col-12">
-                <div class="row justify-content-center j-greska">
-                    <?= $greska ?>
-                </div>
                 <div class="row justify-content-center">
                     <div class="col-5">
                         <form name="form2" action="routes.php" method="post" enctype="multipart/form-data">
@@ -45,7 +42,7 @@
                     <div class="col-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">
                             <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionice">
-                            <input type="hidden" name="kontroler" id="kontroler" value="organizator">
+                            <input type="hidden" name="kontroler" id="kontroler" value="administrator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">
                                 <div class="col-12">

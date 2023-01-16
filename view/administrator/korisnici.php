@@ -5,6 +5,13 @@
                 <?php $greska ?>
             </div>
         </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-12 justify-content-center">
+                <a class="link-secondary card-link" href="routes.php?kontroler=administrator&akcija=dodavanje_korisnika">dodaj korisnika</a>
+            </div>
+        </div>
+        <br>
         <div class="row justify-content-center">
             <div class="col-10 text-center">
                 <table class="table table-hover">

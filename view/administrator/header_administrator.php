@@ -17,12 +17,11 @@
                     </div>
                     <div class="row p-2">
                         <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=korisnici&kontroler=administrator">korisnici</a>
-                        <div class="col-9">
-                            <a class="col-3 j-purple j-font-white btn" href="routes.php?akcija=dodavanje_korisnika&kontroler=administrator">dodaj korisnika</a>
-                        </div>
+                    
                     </div>
                     <div class="row p-2">
                         <a class="col-2 j-purple j-font-white btn" href="routes.php?akcija=radionice&kontroler=administrator">radionice</a>
+
                         <div class="col-9">
                             <a class="col-3 j-purple j-font-white btn" href="routes.php?akcija=izloguj_se&kontroler=gost">izloguj se</a>
                         </div>

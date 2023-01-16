@@ -132,13 +132,13 @@ class Organizator {
 
         if ($_FILES["slika"]["error"] != 0) {
             $greska = "Greška: Nije prosleđen fajl";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
         $flag = getimagesize($_FILES["slika"]["tmp_name"]);
         if (!$flag) {
             $greska = "Greška: Prosleđeni fajl nije slika";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
         // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
@@ -154,7 +154,7 @@ class Organizator {
         $slika = $_FILES["slika"]["tmp_name"];
         if (!is_uploaded_file($slika)) {
             $greska = "Greška: Greška pri menjanju glavne slike";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
 
@@ -174,7 +174,7 @@ class Organizator {
         $tmp = move_uploaded_file($slika, $putanja);
         if (!$tmp) {
             $greska = "Greška: Greška pri menjanju glavne slike";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
 
@@ -191,20 +191,20 @@ class Organizator {
 
         if ($_FILES["galerija"]["error"][0] != 0) {
             $greska = "Greška: Nije prosleđen fajl";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
         $galerija = $_FILES["galerija"];
         if (count($galerija["tmp_name"]) > 5) {
             $greska = "Greska: Galerija može da sadrži maksimalno 5 slika";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
         foreach ($_FILES["galerija"]["tmp_name"] as $slika) {
             $flag = getimagesize($slika);
             if (!$flag) {
                 $greska = "Greška: Prosleđeni fajl nije slika";
-                Organizator::uredjivanje_radionice($greska);
+                Organizator::uredjivanje_radionice($idR, $greska);
                 return;
             }
             // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
@@ -219,7 +219,7 @@ class Organizator {
               } */
             if (!is_uploaded_file($slika)) {
                 $greska = "Greška: Greška pri menjanju galerije";
-                Organizator::uredjivanje_radionice($greska);
+                Organizator::uredjivanje_radionice($idR, $greska);
                 return;
             }
         }
@@ -252,7 +252,7 @@ class Organizator {
         $tmp = RadioniceDB::dodaj_galeriju($idR, $idG);
         if (!$tmp) {
             $greska = "Greška: Greška pri menjanju galerije";
-            Organizator::uredjivanje_radionice($greska);
+            Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
 

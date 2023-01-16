@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-5 align-bottom">
                         <form name="form1" action="routes.php" method="get">
-                            <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionice">
+                            <input type="hidden" name="akcija" id="akcija" value="azuriraj_podatke_radionica">
                             <input type="hidden" name="kontroler" id="kontroler" value="organizator">
                             <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
                             <div class="row">

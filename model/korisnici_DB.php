@@ -303,6 +303,29 @@ class KorisniciDB {
         $iskaz->closeCursor();
         return $tmp;
     }
+    public static function odobri_ucesnika_u_organizatora($idK) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE korisnici"
+                . " SET tip=1"
+                . " WHERE idK=:idK";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        
+        $upit = "INSERT INTO organizatori"
+                . " (idK)"
+                . " VALUES (:idK)";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        
+        return $tmp;
+    }
     
     public static function dodaj_test($str="default") {
         $db = Baza::getInstanca();

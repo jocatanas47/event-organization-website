@@ -203,6 +203,8 @@ class RadioniceDB {
         return $tmp;
     }
     
+    
+    
     public static function azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor,
             $opis_kratki, $opis_dugi, $max_broj_posetilaca) {
         $db = Baza::getInstanca();
@@ -235,6 +237,56 @@ class RadioniceDB {
         $tmp = $iskaz->execute();
         $iskaz->closeCursor();
         return $tmp;
+    }
+    public static function odobri_radionicu($idR) {
+        $db = Baza::getInstanca();
+        $upit = "UPDATE radionice"
+                . " SET odobrena=1"
+                . " WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        return $tmp;
+    }
+    
+    public static function izbrisi_radionicu($idR) {
+        $db = Baza::getInstanca();
+        
+        $upit = "DELETE FROM radionice WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        $upit = "DELETE FROM prijave WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idK", $idK);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        $upit = "DELETE FROM svidjanja WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        $upit = "DELETE FROM komentari WHERE idR=:idR";
+        $iskaz = $db->prepare($upit);
+        $iskaz->bindValue(":idR", $idR);
+        $tmp = $iskaz->execute();
+        $iskaz->closeCursor();
+        if (!$tmp) {
+            return false;
+        }
+        
+        return true;
     }
     
     public static function korisnik_bio_na_radionici($idK, $idR) {
