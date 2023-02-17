@@ -29,8 +29,6 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function promeni_profilnu() {
-        // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
-        // - do kesiranja je - ne znam kako to da popravim
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         
@@ -45,16 +43,6 @@ class Korisnik {
             Korisnik::Profil($greska);
             return;
         }
-        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-        // TODO: popraviti to
-        /*$a = getimagesize($_FILES["slika"]["tmp_name"]);
-        $image_type = $a[2];
-        
-        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-            $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-            Korisnik::profil($greska);
-            return;
-        }*/
         list($width, $height) = getimagesize($_FILES["slika"]["tmp_name"]);
         if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
             $greska = "Greška: Slika nije zadovoljavajućih dimenzija (100x100px do 300x300px)";
@@ -94,11 +82,11 @@ class Korisnik {
     }
     
     public static function azuriraj_podatke() {
-        $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
-        $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
-        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
-        $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
-        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $ime = filter_input(INPUT_POST, "ime");
+        $prezime = filter_input(INPUT_POST, "prezime");
+        $kor_ime = filter_input(INPUT_POST, "kor_ime");
+        $telefon = filter_input(INPUT_POST, "telefon");
+        $mejl = filter_input(INPUT_POST, "mejl");
         
         $idK = $_SESSION["korisnik"];
         
@@ -124,9 +112,9 @@ class Korisnik {
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
         
-        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
+        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka");
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka");
+        $potvrda = filter_input(INPUT_POST, "potvrda");
         
         $lozinka;
         if ($korisnik["lozinka_promenjena"]) {
@@ -160,8 +148,8 @@ class Korisnik {
         header("Location: routes.php?kontroler=gost&akcija=izloguj_se");
     }
     public static function promeni_komentar() {
-        $komentar = filter_input(INPUT_POST, "komentar", FILTER_SANITIZE_STRING);
-        $idKom = filter_input(INPUT_POST, "idKom", FILTER_SANITIZE_STRING);
+        $komentar = filter_input(INPUT_POST, "komentar");
+        $idKom = filter_input(INPUT_POST, "idKom");
         $tmp = KomentariDB::promeni_komentar($idKom, $komentar);
         if (!$tmp) {
             $greska = "Greška: Greška pri promeni komentara";
@@ -170,7 +158,7 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function izbrisi_komentar() {
-        $idKom = filter_input(INPUT_POST, "idKom", FILTER_SANITIZE_STRING);
+        $idKom = filter_input(INPUT_POST, "idKom");
         $tmp = KomentariDB::izbrisi_komentar($idKom);
         if (!$tmp) {
             $greska = "Greška: Greška pri brisanju komentara";
@@ -179,7 +167,7 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=profil");
     }
     public static function povuci_svidjanje() {
-        $idS = filter_input(INPUT_POST, "idS", FILTER_SANITIZE_STRING);
+        $idS = filter_input(INPUT_POST, "idS");
         $tmp = SvidjanjaDB::povuci_svidjanje($idS);
         if (!$tmp) {
             $greska = "Greška: Greška pri povlačenju sviđanja";
@@ -200,8 +188,8 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $naziv = filter_input(INPUT_POST, "naziv");
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Korisnik::radionice();
             return;
@@ -218,7 +206,7 @@ class Korisnik {
         Korisnik::radionice("", $radionice);
     }
     public static function otkazi_prijavu() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR");
         $idK = $_SESSION["korisnik"];
         $tmp = PrijaveDB::izbrisi_prijavu($idR, $idK);
         if (!$tmp) {
@@ -231,7 +219,7 @@ class Korisnik {
     
     public static function radionica_detalji($idR=NULL, $greska=NULL) {
         if ($idR == NULL) {
-            $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+            $idR = filter_input(INPUT_GET, "idR");
         }
         $idK = $_SESSION["korisnik"];
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
@@ -250,7 +238,7 @@ class Korisnik {
         include("view/footer.php");
     }
     public static function prijavi_radionicu() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR");
         $idK = $_SESSION["korisnik"];
         KorisniciDB::dodaj_test("idR".$idR."-"."idK".$idK);
         $tmp = PrijaveDB::dodaj_prijavu($idR, $idK);
@@ -262,14 +250,14 @@ class Korisnik {
         header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);
     }
     public static function svidjanja() {
-        $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_GET, "idR");
         $korisnici = KorisniciDB::get_korisnike_kojima_se_svidja_radionica($idR);
         include("view/korisnik/header_ucesnik.php");
         include("view/korisnik/svidjanja.php");
         include("view/footer.php");
     }
     public static function lajkuj_radionicu() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR");
         KorisniciDB::dodaj_test($idR);
         $idK = $_SESSION["korisnik"];
         SvidjanjaDB::lajkuj_radionicu($idK, $idR);
@@ -277,8 +265,8 @@ class Korisnik {
     }
     public static function komentarisi_radionicu() {
         $idK = $_SESSION["korisnik"];
-        $komentar = filter_input(INPUT_POST, "komentar", FILTER_SANITIZE_STRING);
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $komentar = filter_input(INPUT_POST, "komentar");
+        $idR = filter_input(INPUT_POST, "idR");
         
         $tmp = KomentariDB::dodaj_komentar($idK, $idR, $komentar);
         if (!$tmp) {
@@ -301,14 +289,14 @@ class Korisnik {
             Korisnik::predlog_radionice($greska);
         }
         
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv");
         $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $x_kor = filter_input(INPUT_POST, "x_kor", FILTER_VALIDATE_FLOAT);
-        $y_kor = filter_input(INPUT_POST, "y_kor", FILTER_VALIDATE_FLOAT);
-        $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
-        $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
-        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $x_kor = filter_input(INPUT_POST, "x_kor");
+        $y_kor = filter_input(INPUT_POST, "y_kor");
+        $opis_kratki = filter_input(INPUT_POST, "opis_kratki");
+        $opis_dugi = filter_input(INPUT_POST, "opis_dugi");
+        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca");
         $idO = $_SESSION["korisnik"];
 
         $glavna_slika = $_FILES["glavna_slika"];
@@ -325,16 +313,6 @@ class Korisnik {
             Korisnik::predlog_radionice($greska);
             return;
         }
-        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-        // TODO: popraviti to
-        /* $a = getimagesize($glavna_slika["tmp_name"]);
-          $image_type = $a[2];
-
-          if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-          $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-          Organizator::dodavanje_radionice($greska);
-          return;
-          } */
         if (!is_uploaded_file($glavna_slika["tmp_name"])) {
             $greska = "Greška: Nije pronađen fajl";
             Korisnik::predlog_radionice($greska);
@@ -354,16 +332,6 @@ class Korisnik {
                     Korisnik::predlog_radionice($greska);
                     return;
                 }
-                // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-                // TODO: popraviti to
-                /* $a = getimagesize($slika["tmp_name"]);
-                  $image_type = $a[2];
-
-                  if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-                  $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-                  Organizator::dodavanje_radionice($greska);
-                  return;
-                  } */
                 if (!is_uploaded_file($slika)) {
                     $greska = "Greška: Nije pronađen fajl";
                     Korisnik::predlog_radionice($greska);

@@ -16,8 +16,6 @@ include("model/radionice_DB.php");
 include("model/slike_DB.php");
 
 class Organizator {
-    // TODO staviti ogranicenje svuda na datetime input da moze da bude samo u buducnosti
-
     public static function promena_lozinke($greska = NULL) {
         include("view/organizator/header_organizator.php");
         include("view/organizator/promena_lozinke.php");
@@ -28,9 +26,9 @@ class Organizator {
         $idK = $_SESSION["korisnik"];
         $korisnik = KorisniciDB::get_korisnika_po_idK($idK);
 
-        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka", FILTER_SANITIZE_STRING);
-        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
+        $stara_lozinka = filter_input(INPUT_POST, "stara_lozinka");
+        $nova_lozinka = filter_input(INPUT_POST, "nova_lozinka");
+        $potvrda = filter_input(INPUT_POST, "potvrda");
 
         $lozinka;
         if ($korisnik["lozinka_promenjena"]) {
@@ -77,8 +75,8 @@ class Organizator {
     }
 
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $naziv = filter_input(INPUT_POST, "naziv");
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Organizator::radionice();
             return;
@@ -97,7 +95,7 @@ class Organizator {
 
     public static function uredjivanje_radionice($idR = NULL, $greska = NULL) {
         if ($idR == NULL) {
-            $idR = filter_input(INPUT_GET, "idR", FILTER_SANITIZE_STRING);
+            $idR = filter_input(INPUT_GET, "idR");
         }
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $prijave = PrijaveDB::get_sve_neodobrene_prijave($idR);
@@ -106,15 +104,15 @@ class Organizator {
         include("view/footer.php");
     }
     public static function azuriraj_podatke_radionica() {
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv");
         $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $x_kor = filter_input(INPUT_POST, "x_kor", FILTER_VALIDATE_FLOAT);
-        $y_kor = filter_input(INPUT_POST, "y_kor", FILTER_VALIDATE_FLOAT);
-        $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
-        $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
-        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
-        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $x_kor = filter_input(INPUT_POST, "x_kor");
+        $y_kor = filter_input(INPUT_POST, "y_kor");
+        $opis_kratki = filter_input(INPUT_POST, "opis_kratki");
+        $opis_dugi = filter_input(INPUT_POST, "opis_dugi");
+        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca");
+        $idR = filter_input(INPUT_POST, "idR");
 
         $tmp = RadioniceDB::azuriraj_radionicu($idR, $naziv, $datum, $mesto, $x_kor, $y_kor, $opis_kratki, $opis_dugi, $max_broj_posetilaca);
         if (!$tmp) {
@@ -125,9 +123,7 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function azuriraj_glavnu_sliku() {
-        // TODO: Nakon dodavanja komentara ne radi menjanje profilne??????
-        // - do kesiranja je - ne znam kako to da popravim
-        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "idR");
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
 
         if ($_FILES["slika"]["error"] != 0) {
@@ -141,16 +137,6 @@ class Organizator {
             Organizator::uredjivanje_radionice($idR, $greska);
             return;
         }
-        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-        // TODO: popraviti to
-        /* $a = getimagesize($_FILES["slika"]["tmp_name"]);
-          $image_type = $a[2];
-
-          if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-          $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-          Korisnik::profil($greska);
-          return;
-          } */
         $slika = $_FILES["slika"]["tmp_name"];
         if (!is_uploaded_file($slika)) {
             $greska = "Greška: Greška pri menjanju glavne slike";
@@ -186,7 +172,7 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function azuriraj_galeriju() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "idR");
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
 
         if ($_FILES["galerija"]["error"][0] != 0) {
@@ -207,16 +193,6 @@ class Organizator {
                 Organizator::uredjivanje_radionice($idR, $greska);
                 return;
             }
-            // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-            // TODO: popraviti to
-            /* $a = getimagesize($_FILES["slika"]["tmp_name"]);
-              $image_type = $a[2];
-
-              if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-              $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-              Korisnik::profil($greska);
-              return;
-              } */
             if (!is_uploaded_file($slika)) {
                 $greska = "Greška: Greška pri menjanju galerije";
                 Organizator::uredjivanje_radionice($idR, $greska);
@@ -259,8 +235,8 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function prihvati_korisnika() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
-        $idK = filter_input(INPUT_POST, "idK", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR");
+        $idK = filter_input(INPUT_POST, "idK");
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
         $broj_prijavljenih = PrijaveDB::get_broj_prijavljenih_na_radionicu($idR);
         if ($broj_prijavljenih >= $radionica["max_broj_posetilaca"]) {
@@ -277,7 +253,7 @@ class Organizator {
         header("Location: routes.php?kontroler=organizator&akcija=uredjivanje_radionice&idR=" . $idR);
     }
     public static function otkazi_radionicu() {
-        $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        $idR = filter_input(INPUT_POST, "idR");
         $korisnici = KorisniciDB::get_korisnike_koji_su_prijavljeni_na_radionicu($idR);
         
         $radionica = RadioniceDB::get_radionicu_po_idR($idR);
@@ -323,7 +299,7 @@ class Organizator {
         include("view/footer.php");
     }
     public static function izaberi_sablon() {
-        $idR = filter_input(INPUT_POST, "sablon", FILTER_VALIDATE_INT);
+        $idR = filter_input(INPUT_POST, "sablon");
         if ($idR == -1) {
             header("Location: routes.php?kontroler=organizator&akcija=dodavanje_radionice");
             return;
@@ -332,15 +308,14 @@ class Organizator {
     }
 
     public static function dodaj_radionicu() {
-        // TODO: kako se povecava maksimalni upload
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv");
         $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $x_kor = filter_input(INPUT_POST, "x_kor", FILTER_VALIDATE_FLOAT);
-        $y_kor = filter_input(INPUT_POST, "y_kor", FILTER_VALIDATE_FLOAT);
-        $opis_kratki = filter_input(INPUT_POST, "opis_kratki", FILTER_SANITIZE_STRING);
-        $opis_dugi = filter_input(INPUT_POST, "opis_dugi", FILTER_SANITIZE_STRING);
-        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca", FILTER_VALIDATE_INT);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $x_kor = filter_input(INPUT_POST, "x_kor");
+        $y_kor = filter_input(INPUT_POST, "y_kor");
+        $opis_kratki = filter_input(INPUT_POST, "opis_kratki");
+        $opis_dugi = filter_input(INPUT_POST, "opis_dugi");
+        $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca");
         $idO = $_SESSION["korisnik"];
 
         $glavna_slika = $_FILES["glavna_slika"];
@@ -357,16 +332,6 @@ class Organizator {
             Organizator::dodavanje_radionice($greska);
             return;
         }
-        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-        // TODO: popraviti to
-        /* $a = getimagesize($glavna_slika["tmp_name"]);
-          $image_type = $a[2];
-
-          if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-          $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-          Organizator::dodavanje_radionice($greska);
-          return;
-          } */
         if (!is_uploaded_file($glavna_slika["tmp_name"])) {
             $greska = "Greška: Nije pronađen fajl";
             Organizator::dodavanje_radionice($greska);
@@ -386,16 +351,6 @@ class Organizator {
                     Organizator::dodavanje_radionice($greska);
                     return;
                 }
-                // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-                // TODO: popraviti to
-                /* $a = getimagesize($slika["tmp_name"]);
-                  $image_type = $a[2];
-
-                  if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-                  $greska = "Greška: Slika nije u odgovarajućem formatu (PNG ili JPG)";
-                  Organizator::dodavanje_radionice($greska);
-                  return;
-                  } */
                 if (!is_uploaded_file($slika)) {
                     $greska = "Greška: Nije pronađen fajl";
                     Organizator::dodavanje_radionice($greska);

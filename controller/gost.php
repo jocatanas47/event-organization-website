@@ -23,8 +23,8 @@ class Gost {
         include("view/footer.php");
     }
     public static function prijavi_se() {
-        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
-        $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
+        $kor_ime = filter_input(INPUT_POST, "kor_ime");
+        $lozinka = filter_input(INPUT_POST, "lozinka");
         
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         if (!$korisnik) {
@@ -69,7 +69,7 @@ class Gost {
         include("view/footer.php");
     }
     public static function resetuj_lozinku() {
-        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $mejl = filter_input(INPUT_POST, "mejl");
         
         $dobra_lozinka = false;
         $nova_lozinka = "";
@@ -126,10 +126,6 @@ class Gost {
         include("view/footer.php");
     }
     public static function dodaj_sliku($slika, $kor_ime) {
-        // TODO: AJAX ko zna sta se salje kao slika nemam pojma
-        // reseno VALJDA po peti put
-        
-        
         $korisnik = KorisniciDB::get_korisnika_po_kor_ime($kor_ime);
         $idK = $korisnik["idK"];
         
@@ -142,14 +138,6 @@ class Gost {
         if (!$flag) {
             return false;
         }
-        // kada dohvatimo tip slike vraca IMAGETYPE_COUNT iz nekog razloga
-        // TODO: popraviti to
-        /*$a = getimagesize($slika["tmp_name"]);
-        $image_type = $a[2];
-        
-        if(!in_array($image_type , array(IMAGETYPE_PNG, IMAGETYPE_JPEG))) {
-            return false;
-        }*/
         list($width, $height) = getimagesize($slika["tmp_name"]);
         if (!($width >= 100 && $width <= 300 && $height >= 100 && $height <= 300)) {
             return false;
@@ -174,13 +162,13 @@ class Gost {
         return true;
     }
     public static function registracija_ucesnika() {
-        $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
-        $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
-        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
-        $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
-        $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
-        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $ime = filter_input(INPUT_POST, "ime");
+        $prezime = filter_input(INPUT_POST, "prezime");
+        $kor_ime = filter_input(INPUT_POST, "kor_ime");
+        $lozinka = filter_input(INPUT_POST, "lozinka");
+        $potvrda = filter_input(INPUT_POST, "potvrda");
+        $telefon = filter_input(INPUT_POST, "telefon");
+        $mejl = filter_input(INPUT_POST, "mejl");
         $ima_slika = filter_input(INPUT_POST, "ima_slika", FILTER_VALIDATE_BOOLEAN);
         
         $greska = "";
@@ -229,22 +217,22 @@ class Gost {
     
     public static function registracija_organizatora() {
         KorisniciDB::dodaj_test("ddd");
-        $ime = filter_input(INPUT_POST, "ime", FILTER_SANITIZE_STRING);
-        $prezime = filter_input(INPUT_POST, "prezime", FILTER_SANITIZE_STRING);
-        $kor_ime = filter_input(INPUT_POST, "kor_ime", FILTER_SANITIZE_STRING);
-        $lozinka = filter_input(INPUT_POST, "lozinka", FILTER_SANITIZE_STRING);
-        $potvrda = filter_input(INPUT_POST, "potvrda", FILTER_SANITIZE_STRING);
-        $telefon = filter_input(INPUT_POST, "telefon", FILTER_SANITIZE_STRING);
-        $mejl = filter_input(INPUT_POST, "mejl", FILTER_SANITIZE_STRING);
+        $ime = filter_input(INPUT_POST, "ime");
+        $prezime = filter_input(INPUT_POST, "prezime");
+        $kor_ime = filter_input(INPUT_POST, "kor_ime");
+        $lozinka = filter_input(INPUT_POST, "lozinka");
+        $potvrda = filter_input(INPUT_POST, "potvrda");
+        $telefon = filter_input(INPUT_POST, "telefon");
+        $mejl = filter_input(INPUT_POST, "mejl");
         $ima_slika = filter_input(INPUT_POST, "ima_slika", FILTER_VALIDATE_BOOLEAN);
         
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
-        $maticni_broj = filter_input(INPUT_POST, "maticni_broj", FILTER_VALIDATE_INT);
-        $drzava = filter_input(INPUT_POST, "drzava", FILTER_SANITIZE_STRING);
-        $grad = filter_input(INPUT_POST, "grad", FILTER_SANITIZE_STRING);
-        $postanski_broj = filter_input(INPUT_POST, "postanski_broj", FILTER_VALIDATE_INT);
-        $ulica = filter_input(INPUT_POST, "ulica", FILTER_SANITIZE_STRING);
-        $adresa_broj = filter_input(INPUT_POST, "adresa_broj", FILTER_SANITIZE_STRING);
+        $naziv = filter_input(INPUT_POST, "naziv");
+        $maticni_broj = filter_input(INPUT_POST, "maticni_broj");
+        $drzava = filter_input(INPUT_POST, "drzava");
+        $grad = filter_input(INPUT_POST, "grad");
+        $postanski_broj = filter_input(INPUT_POST, "postanski_broj");
+        $ulica = filter_input(INPUT_POST, "ulica");
+        $adresa_broj = filter_input(INPUT_POST, "adresa_broj");
         
         $greska = "";
         
@@ -301,8 +289,8 @@ class Gost {
         include("view/footer.php");
     }
     public static function filtriraj_radionice() {
-        $mesto = filter_input(INPUT_POST, "mesto", FILTER_SANITIZE_STRING);
-        $naziv = filter_input(INPUT_POST, "naziv", FILTER_SANITIZE_STRING);
+        $mesto = filter_input(INPUT_POST, "mesto");
+        $naziv = filter_input(INPUT_POST, "naziv");
         if ($mesto == "izaberite mesto" && $naziv == "") {
             Gost::radionice();
             return;
