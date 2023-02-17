@@ -270,6 +270,7 @@ class Korisnik {
     }
     public static function lajkuj_radionicu() {
         $idR = filter_input(INPUT_POST, "idR", FILTER_SANITIZE_STRING);
+        KorisniciDB::dodaj_test($idR);
         $idK = $_SESSION["korisnik"];
         SvidjanjaDB::lajkuj_radionicu($idK, $idR);
         header("Location: routes.php?kontroler=korisnik&akcija=radionica_detalji&idR=".$idR);

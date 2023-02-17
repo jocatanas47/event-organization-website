@@ -14,19 +14,34 @@
         <div class="row justify-content-center">
             <div class="col-10 col-md-5 card">
                 <?php if ($galerija != NULL): ?>
-                    <div class="row justify-content-center">
-                        <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
-                            <div class="col-8 col-md-4">
-                                <img class="img-fluid" src=<?= $slika ?>>
-                            </div>
-                        <?php endforeach; ?>
+                    <div id="galerija" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <?php $flag = true; ?>
+                            <?php foreach (glob($galerija["putanja"] . "/*") as $slika): ?>
+                                <div class="carousel-item<?php
+                                if ($flag) {
+                                    $flag = false;
+                                    echo " active";
+                                }
+                                ?>">
+                                    <img class="d-block w-100" src=<?= $slika ?>>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#galerija" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#galerija" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                     <br>
                 <?php endif; ?>
                 <div>
                     <?= $radionica["opis_dugi"] ?>
                 </div>
-
             </div>
             <div class="col-8 col-md-4">
                 <div id="mapa">
@@ -62,7 +77,7 @@
                     </div>
                     <div class="col-4 col-md-2">
                         <?php if (RadioniceDB::korisnik_bio_na_radionici($idK, $idR)): ?>
-                            <form>
+                            <form method="post" action="routes.php">
                                 <input type="hidden" id="kontroler" name="kontroler" value="korisnik">
                                 <input type="hidden" id="akcija" name="akcija" value="lajkuj_radionicu">
                                 <input type="hidden" name="idR" id="idR" value="<?= $idR ?>">
