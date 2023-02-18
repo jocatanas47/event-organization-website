@@ -63,9 +63,13 @@ class PrijaveDB {
     
     public static function korisnik_prijavljen_na_radionicu($idK) {
         $db = Baza::getInstanca();
-        $upit = "SELECT COUNT(idP) FROM prijave WHERE idK=:idK";
+        $tren_vreme = date('Y-m-d H:i:s', time());
+        $upit = "SELECT COUNT(idP)"
+                . " FROM prijave JOIN radionice ON prijave.idR=radionice.idR"
+                . " WHERE (idK=:idK AND datum>:tren_vreme)";
         $iskaz = $db->prepare($upit);
         $iskaz->bindValue(":idK", $idK);
+        $iskaz->bindValue(":tren_vreme", $tren_vreme);
         $iskaz->execute();
         $broj = $iskaz->fetchColumn();
         $iskaz->closeCursor();

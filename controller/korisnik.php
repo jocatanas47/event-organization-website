@@ -287,6 +287,7 @@ class Korisnik {
         if (KorisniciDB::korisnik_predlozio_radionicu($idK)) {
             $greska = "Greška: Već ste predložili radionicu";
             Korisnik::predlog_radionice($greska);
+            return;
         }
         
         $naziv = filter_input(INPUT_POST, "naziv");

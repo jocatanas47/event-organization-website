@@ -471,7 +471,7 @@ class Administrator {
         include("view/administrator/radionica_detalji.php");
         include("view/footer.php");
     }
-    public static function azuriraj_podatke_radionica() {
+    public static function azuriraj_podatke_radionice() {
         $naziv = filter_input(INPUT_POST, "naziv");
         $datum = date("Y-m-d H:i:s", strtotime($_POST["datum"]));
         $mesto = filter_input(INPUT_POST, "mesto");
@@ -617,7 +617,7 @@ class Administrator {
         $opis_kratki = filter_input(INPUT_POST, "opis_kratki");
         $opis_dugi = filter_input(INPUT_POST, "opis_dugi");
         $max_broj_posetilaca = filter_input(INPUT_POST, "max_broj_posetilaca");
-        $idO = $_SESSION["korisnik"];
+        $idO = -1;
 
         $glavna_slika = $_FILES["glavna_slika"];
         $galerija_slika = $_FILES["galerija_slika"];

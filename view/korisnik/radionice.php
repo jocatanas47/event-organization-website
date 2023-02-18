@@ -1,5 +1,10 @@
 <div class="row content">
     <div class="col-12">
+        <div class="row">
+            <div class="col-12 justify-content-center">
+                <?= $greska ?>
+            </div>
+        </div>
         <br>
         <div class="row justify-content-center">
             <br>
@@ -44,7 +49,7 @@
                                                     <?php if (RadioniceDB::vise_od_12h_do_radionice($idR)): ?>
                                                     <br>
                                                     <div class="col-12">
-                                                        <form>
+                                                        <form action="routes.php" method="post">
                                                             <input type="hidden" name="kontroler" id="kontroler" value="korisnik">
                                                             <input type="hidden" name="akcija" id="akcija" value="otkazi_prijavu">
                                                             <input type="hidden" name="idR" id="idR" value="<?= $radionica["idR"] ?>">

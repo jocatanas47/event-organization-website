@@ -43,7 +43,7 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "filtriraj_radionice", "svidjanja", "promeni_komentar",
                                 "izbrisi_komentar", "povuci_svidjanje", "otkazi_prijavu",
                                 "predlog_radionice", "predlozi_radionicu"],
-                    "organizator" => ["radionice", "moje_radionice", "dodavanje_radionice",
+                    "organizator" => ["radionice", "dodavanje_radionice",
                                 "dodaj_radionicu", "izaberi_sablon", "filtriraj_radionice",
                                 "uredjivanje_radionice", "prihvati_korisnika", "promena_lozinke",
                                 "promeni_lozinku", "azuriraj_podatke_radionica", "azuriraj_glavnu_sliku",
@@ -53,7 +53,8 @@ $kontroleri = array("gost" => ["prijava", "registracija",
                                 "azuriraj_podatke", "promeni_lozinku_korisniku", "korisnik_detalji",
                                 "odobri_korisnika", "odbij_korisnika", "izbrisi_korisnika", "azuriraj_podatke_firme",
                                 "dodavanje_korisnika", "dodaj_korisnika", "izbrisi_radionicu", "odobri_radionicu",
-                                "odobri_ucesnika_u_organizatora", "radionica_detalji"]);
+                                "odobri_ucesnika_u_organizatora", "radionica_detalji", "dodavanje_radionice", "dodaj_radionicu",
+                                "azuriraj_podatke_radionice", "azuriraj_galeriju", "azuriraj_glavnu_sliku"]);
 
 
 if (array_key_exists($kontroler, $kontroleri)) {

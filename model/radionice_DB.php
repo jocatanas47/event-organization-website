@@ -222,6 +222,7 @@ class RadioniceDB {
         $iskaz->bindValue(":opis_kratki", $opis_kratki);
         $iskaz->bindValue(":opis_dugi", $opis_dugi);
         $iskaz->bindValue(":max_broj_posetilaca", $max_broj_posetilaca);
+        $iskaz->bindValue(":idR", $idR);
         $tmp = $iskaz->execute();
         $iskaz->closeCursor();
         return $tmp;
