@@ -106,7 +106,7 @@ class Gost {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'radionice.projekat@gmail.com';
-        $mail->Password = 'ilsimlvuihgulbxc';
+        $mail->Password = ''; // ovde se stavi token sa gmail-a
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
         $mail->setFrom('radionice.projekat@gmail.com', 'Mailer');
